@@ -88,7 +88,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://images0.cnblogs.com/blog/305504/201303/04214621-bde3e339931444a1a56ce66dd73d1f9b.png">
 <meta property="og:image" content="https://images0.cnblogs.com/blog/305504/201303/04221026-166e3bca62d14ea7bb37eee0e6390d2d.png">
-<meta property="og:updated_time" content="2019-08-13T17:44:55.844Z">
+<meta property="og:updated_time" content="2019-09-02T09:34:48.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="递归的详细理解">
 <meta name="twitter:description" content="一、什么是递归函数直接或间接调用自身的过程称为递归，相应的函数称为递归函数。使用递归算法，可以很容易地解决某些问题。此类问题的示例包括河内塔TOH，订单/预订/后序树遍历，图表DFS等。 2.1递归时间复杂度给出一个递归算法，其时间复杂度 O(T)通常是递归调用的数量（记作 {R） 和计算的时间复杂度的乘积（表示为 O(S)的乘积：$$O(T)=R∗O(s)$$ 2.1递归空间复杂度二、正常递归算">
@@ -102,7 +102,7 @@
     root: '/bolgzxy.github.io/',
     scheme: 'Muse',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -193,6 +193,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/bolgzxy.github.io/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bolgzxy.github.io/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/bolgzxy.github.io/archives/" rel="section">
             
@@ -240,7 +260,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="半世烟尘">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/bolgzxy.github.io/images/avatar.gif">
+      <meta itemprop="image" content="/bolgzxy.github.io/images/user.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -330,7 +350,7 @@
 <p>下面是当n=5的递归的情况</p>
 <p><img src="https://images0.cnblogs.com/blog/305504/201303/04214621-bde3e339931444a1a56ce66dd73d1f9b.png" alt="img"></p>
 <p>尾递归</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FibonacciTailRecursive</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> ret1,<span class="keyword">int</span> ret2)</span></span></span><br><span class="line"><span class="function">2 </span>&#123;</span><br><span class="line"><span class="number">3</span>    <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line"><span class="number">4</span>       <span class="keyword">return</span> ret1; </span><br><span class="line"><span class="number">5</span>     <span class="keyword">return</span> FibonacciTailRecursive(n<span class="number">-1</span>,ret2,ret1+ret2);</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FibonacciTailRecursive</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> ret1,<span class="keyword">int</span> ret2)</span></span></span><br><span class="line"><span class="function">2 </span>&#123;</span><br><span class="line"><span class="number">3</span>    <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line"><span class="number">4</span>       <span class="keyword">return</span> ret1;</span><br><span class="line"><span class="number">5</span>     <span class="keyword">return</span> FibonacciTailRecursive(n<span class="number">-1</span>,ret2,ret1+ret2);</span><br><span class="line"><span class="number">6</span>&#125;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images0.cnblogs.com/blog/305504/201303/04221026-166e3bca62d14ea7bb37eee0e6390d2d.png" alt="img"></p>
 <h5 id="3-2Quicksort尾部调用优化（将最坏情况空间减少到Log-n）"><a href="#3-2Quicksort尾部调用优化（将最坏情况空间减少到Log-n）" class="headerlink" title="3.2Quicksort尾部调用优化（将最坏情况空间减少到Log n）"></a>3.2<strong><em>Quicksort尾部调用优化（将最坏情况空间减少到Log n）</em></strong></h5><p>在一般的快排中，调用的不是尾递归。Quicksort的一个简单实现会对自身进行两次调用，最坏的情况是在函数调用堆栈上需要O（n）空间。</p>
@@ -354,6 +374,15 @@
     
 
     
+       <div>
+       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　文章看完啦　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+         
+      </div>
 
     <footer class="post-footer">
       
@@ -366,7 +395,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bolgzxy.github.io/2019/08/05/article-title/" rel="next" title="动态规划问题">
+              <a href="/bolgzxy.github.io/2019/08/05/动态规划相关/" rel="next" title="动态规划问题">
                 <i class="fa fa-chevron-left"></i> 动态规划问题
               </a>
             
@@ -444,6 +473,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/bolgzxy.github.io/images/user.jpg" alt="半世烟尘">
+            
               <p class="site-author-name" itemprop="name">半世烟尘</p>
               <p class="site-description motion-element" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</p>
           </div>
@@ -455,20 +486,54 @@
               
                 <a href="/bolgzxy.github.io/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bolgzxy.github.io/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bolgzxy.github.io/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/COTVZHAOYUEXING" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1998lovexs@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
           
 
           
@@ -550,6 +615,8 @@
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/bolgzxy.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/bolgzxy.github.io/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bolgzxy.github.io/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bolgzxy.github.io/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bolgzxy.github.io/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bolgzxy.github.io/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="由于在前文的《STL算法剖析》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。 merge合并算法源码剖析1234567891011121314151617181920">
+<meta property="og:type" content="article">
+<meta property="og:title" content="し半世烟尘">
+<meta property="og:url" content="https://yoursite.com/2019/09/11/STL/merge/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="由于在前文的《STL算法剖析》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。 merge合并算法源码剖析1234567891011121314151617181920">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-11T03:14:28.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="し半世烟尘">
+<meta name="twitter:description" content="由于在前文的《STL算法剖析》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。 merge合并算法源码剖析1234567891011121314151617181920">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bolgzxy.github.io/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yoursite.com/2019/09/11/STL/merge/">
+
+
+
+
+
+  <title> | し半世烟尘</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bolgzxy.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bolgzxy.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bolgzxy.github.io/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bolgzxy.github.io/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bolgzxy.github.io/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/bolgzxy.github.io/2019/09/11/STL/merge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/bolgzxy.github.io/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T11:14:02+08:00">
+                2019-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于在前文的《<a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">STL算法剖析</a>》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。</p>
+<h3 id="merge合并算法源码剖析"><a href="#merge合并算法源码剖析" class="headerlink" title="merge合并算法源码剖析"></a>merge合并算法源码剖析</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// merge, with and without an explicitly supplied comparison function.</span></span><br><span class="line"><span class="comment">//将两个已排序的区间[first1,last1)和区间[first2,last2)合并</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">函数功能：Combines the elements in the sorted ranges [first1,last1) and [first2,last2), </span></span><br><span class="line"><span class="comment">into a new range beginning at result with all its elements sorted.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">函数原型：</span></span><br><span class="line"><span class="comment">default (1)	：版本一</span></span><br><span class="line"><span class="comment">	template &lt;class InputIterator1, class InputIterator2, class OutputIterator&gt;</span></span><br><span class="line"><span class="comment">	OutputIterator merge (InputIterator1 first1, InputIterator1 last1,</span></span><br><span class="line"><span class="comment">                        InputIterator2 first2, InputIterator2 last2,</span></span><br><span class="line"><span class="comment">                        OutputIterator result);</span></span><br><span class="line"><span class="comment">custom (2)	：版本二</span></span><br><span class="line"><span class="comment">	template &lt;class InputIterator1, class InputIterator2,</span></span><br><span class="line"><span class="comment">          class OutputIterator, class Compare&gt;</span></span><br><span class="line"><span class="comment">	OutputIterator merge (InputIterator1 first1, InputIterator1 last1,</span></span><br><span class="line"><span class="comment">                        InputIterator2 first2, InputIterator2 last2,</span></span><br><span class="line"><span class="comment">                        OutputIterator result, Compare comp);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//版本一：</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">InputIter1</span>, <span class="title">class</span> _<span class="title">InputIter2</span>, <span class="title">class</span> _<span class="title">OutputIter</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">OutputIter</span> <span class="title">merge</span>(_<span class="title">InputIter1</span> __<span class="title">first1</span>, _<span class="title">InputIter1</span> __<span class="title">last1</span>,</span></span><br><span class="line"><span class="class">                  _<span class="title">InputIter2</span> __<span class="title">first2</span>, _<span class="title">InputIter2</span> __<span class="title">last2</span>,</span></span><br><span class="line"><span class="class">                  _<span class="title">OutputIter</span> __<span class="title">result</span>) &#123;</span></span><br><span class="line">  __STL_REQUIRES(_InputIter1, _InputIterator);</span><br><span class="line">  __STL_REQUIRES(_InputIter2, _InputIterator);</span><br><span class="line">  __STL_REQUIRES(_OutputIter, _OutputIterator);</span><br><span class="line">  __STL_REQUIRES_SAME_TYPE(</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter1&gt;::value_type,</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter2&gt;::value_type);</span><br><span class="line">  __STL_REQUIRES(<span class="keyword">typename</span> iterator_traits&lt;_InputIter1&gt;::value_type,</span><br><span class="line">                 _LessThanComparable);</span><br><span class="line">  <span class="comment">//两个序列都尚未到达尾端，则执行while循环</span></span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">  情况1：若序列二元素较小,则记录到目标区，且移动序列二的迭代器，但是序列一的迭代器不变.</span></span><br><span class="line"><span class="comment">  情况2：若序列一元素较小或相等,则记录到目标区，且移动序列一的迭代器，但是序列二的迭代器不变.</span></span><br><span class="line"><span class="comment">  最后：把剩余元素的序列复制到目标区</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="keyword">while</span> (__first1 != __last1 &amp;&amp; __first2 != __last2) &#123;</span><br><span class="line">	  <span class="comment">//情况1</span></span><br><span class="line">    <span class="keyword">if</span> (*__first2 &lt; *__first1) &#123;<span class="comment">//若序列二元素较小</span></span><br><span class="line">      *__result = *__first2;<span class="comment">//将元素记录到目标区</span></span><br><span class="line">      ++__first2;<span class="comment">//移动迭代器</span></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//情况2</span></span><br><span class="line">    <span class="keyword">else</span> &#123;<span class="comment">//若序列一元素较小或相等</span></span><br><span class="line">      *__result = *__first1;<span class="comment">//将元素记录到目标区</span></span><br><span class="line">      ++__first1;<span class="comment">//移动迭代器</span></span><br><span class="line">    &#125;</span><br><span class="line">    ++__result;<span class="comment">//更新目标区位置，以便下次记录数据</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//若有序列到达尾端，则把没到达尾端的序列剩余元素复制到目标区</span></span><br><span class="line">  <span class="comment">//此时，区间[first1,last1)和区间[first2,last2)至少一个必定为空</span></span><br><span class="line">  <span class="keyword">return</span> copy(__first2, __last2, copy(__first1, __last1, __result));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本二</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">InputIter1</span>, <span class="title">class</span> _<span class="title">InputIter2</span>, <span class="title">class</span> _<span class="title">OutputIter</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">OutputIter</span> <span class="title">merge</span>(_<span class="title">InputIter1</span> __<span class="title">first1</span>, _<span class="title">InputIter1</span> __<span class="title">last1</span>,</span></span><br><span class="line"><span class="class">                  _<span class="title">InputIter2</span> __<span class="title">first2</span>, _<span class="title">InputIter2</span> __<span class="title">last2</span>,</span></span><br><span class="line"><span class="class">                  _<span class="title">OutputIter</span> __<span class="title">result</span>, _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  __STL_REQUIRES(_InputIter1, _InputIterator);</span><br><span class="line">  __STL_REQUIRES(_InputIter2, _InputIterator);</span><br><span class="line">  __STL_REQUIRES_SAME_TYPE(</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter1&gt;::value_type,</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter2&gt;::value_type);</span><br><span class="line">  __STL_REQUIRES(_OutputIter, _OutputIterator);</span><br><span class="line">  __STL_BINARY_FUNCTION_CHECK(_Compare, <span class="keyword">bool</span>,</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter1&gt;::value_type,</span><br><span class="line">          <span class="keyword">typename</span> iterator_traits&lt;_InputIter1&gt;::value_type);</span><br><span class="line">  <span class="keyword">while</span> (__first1 != __last1 &amp;&amp; __first2 != __last2) &#123;</span><br><span class="line">    <span class="keyword">if</span> (__comp(*__first2, *__first1)) &#123;</span><br><span class="line">      *__result = *__first2;</span><br><span class="line">      ++__first2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      *__result = *__first1;</span><br><span class="line">      ++__first1;</span><br><span class="line">    &#125;</span><br><span class="line">    ++__result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> copy(__first2, __last2, copy(__first1, __last1, __result));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//merge函数举例：</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	#include &lt;iostream&gt;     // std::cout</span></span><br><span class="line"><span class="comment">	#include &lt;algorithm&gt;    // std::merge, std::sort</span></span><br><span class="line"><span class="comment">	#include &lt;vector&gt;       // std::vector</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	int main () &#123;</span></span><br><span class="line"><span class="comment">	  int first[] = &#123;5,10,15,20,25&#125;;</span></span><br><span class="line"><span class="comment">	  int second[] = &#123;50,40,30,20,10&#125;;</span></span><br><span class="line"><span class="comment">	  std::vector&lt;int&gt; v(10);</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  std::sort (first,first+5);</span></span><br><span class="line"><span class="comment">	  std::sort (second,second+5);</span></span><br><span class="line"><span class="comment">	  std::merge (first,first+5,second,second+5,v.begin());</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  std::cout &lt;&lt; "The resulting vector contains:";</span></span><br><span class="line"><span class="comment">	  for (std::vector&lt;int&gt;::iterator it=v.begin(); it!=v.end(); ++it)</span></span><br><span class="line"><span class="comment">		std::cout &lt;&lt; ' ' &lt;&lt; *it;</span></span><br><span class="line"><span class="comment">	  std::cout &lt;&lt; '\n';</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  return 0;</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	Output:</span></span><br><span class="line"><span class="comment">	The resulting vector contains: 5 10 10 15 20 20 25 30 40 50</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// inplace_merge and its auxiliary functions. </span></span><br><span class="line"><span class="comment">//版本一的辅助函数，无缓冲区的操作</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Distance</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> __<span class="title">merge_without_buffer</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">BidirectionalIter</span> __<span class="title">last</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">Distance</span> __<span class="title">len1</span>, _<span class="title">Distance</span> __<span class="title">len2</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__len1 == <span class="number">0</span> || __len2 == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (__len1 + __len2 == <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (*__middle &lt; *__first)</span><br><span class="line">      iter_swap(__first, __middle);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  _BidirectionalIter __first_cut = __first;</span><br><span class="line">  _BidirectionalIter __second_cut = __middle;</span><br><span class="line">  _Distance __len11 = <span class="number">0</span>;</span><br><span class="line">  _Distance __len22 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (__len1 &gt; __len2) &#123;</span><br><span class="line">    __len11 = __len1 / <span class="number">2</span>;</span><br><span class="line">    advance(__first_cut, __len11);</span><br><span class="line">    __second_cut = lower_bound(__middle, __last, *__first_cut);</span><br><span class="line">    distance(__middle, __second_cut, __len22);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    __len22 = __len2 / <span class="number">2</span>;</span><br><span class="line">    advance(__second_cut, __len22);</span><br><span class="line">    __first_cut = upper_bound(__first, __middle, *__second_cut);</span><br><span class="line">    distance(__first, __first_cut, __len11);</span><br><span class="line">  &#125;</span><br><span class="line">  _BidirectionalIter __new_middle</span><br><span class="line">    = rotate(__first_cut, __middle, __second_cut);</span><br><span class="line">  __merge_without_buffer(__first, __first_cut, __new_middle,</span><br><span class="line">                         __len11, __len22);</span><br><span class="line">  __merge_without_buffer(__new_middle, __second_cut, __last, __len1 - __len11,</span><br><span class="line">                         __len2 - __len22);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Distance</span>, <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> __<span class="title">merge_without_buffer</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">BidirectionalIter</span> __<span class="title">last</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">Distance</span> __<span class="title">len1</span>, _<span class="title">Distance</span> __<span class="title">len2</span>,</span></span><br><span class="line"><span class="class">                            _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__len1 == <span class="number">0</span> || __len2 == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (__len1 + __len2 == <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (__comp(*__middle, *__first))</span><br><span class="line">      iter_swap(__first, __middle);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  _BidirectionalIter __first_cut = __first;</span><br><span class="line">  _BidirectionalIter __second_cut = __middle;</span><br><span class="line">  _Distance __len11 = <span class="number">0</span>;</span><br><span class="line">  _Distance __len22 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (__len1 &gt; __len2) &#123;</span><br><span class="line">    __len11 = __len1 / <span class="number">2</span>;</span><br><span class="line">    advance(__first_cut, __len11);</span><br><span class="line">    __second_cut = lower_bound(__middle, __last, *__first_cut, __comp);</span><br><span class="line">    distance(__middle, __second_cut, __len22);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    __len22 = __len2 / <span class="number">2</span>;</span><br><span class="line">    advance(__second_cut, __len22);</span><br><span class="line">    __first_cut = upper_bound(__first, __middle, *__second_cut, __comp);</span><br><span class="line">    distance(__first, __first_cut, __len11);</span><br><span class="line">  &#125;</span><br><span class="line">  _BidirectionalIter __new_middle</span><br><span class="line">    = rotate(__first_cut, __middle, __second_cut);</span><br><span class="line">  __merge_without_buffer(__first, __first_cut, __new_middle, __len11, __len22,</span><br><span class="line">                         __comp);</span><br><span class="line">  __merge_without_buffer(__new_middle, __second_cut, __last, __len1 - __len11,</span><br><span class="line">                         __len2 - __len22, __comp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本一的辅助函数，有缓冲区的操作</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter1</span>, <span class="title">class</span> _<span class="title">BidirectionalIter2</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">Distance</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">BidirectionalIter1</span> __<span class="title">rotate_adaptive</span>(_<span class="title">BidirectionalIter1</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                                      _<span class="title">BidirectionalIter1</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                                      _<span class="title">BidirectionalIter1</span> __<span class="title">last</span>,</span></span><br><span class="line"><span class="class">                                      _<span class="title">Distance</span> __<span class="title">len1</span>, _<span class="title">Distance</span> __<span class="title">len2</span>,</span></span><br><span class="line"><span class="class">                                      _<span class="title">BidirectionalIter2</span> __<span class="title">buffer</span>,</span></span><br><span class="line"><span class="class">                                      _<span class="title">Distance</span> __<span class="title">buffer_size</span>) &#123;</span></span><br><span class="line">  _BidirectionalIter2 __buffer_end;</span><br><span class="line">  <span class="keyword">if</span> (__len1 &gt; __len2 &amp;&amp; __len2 &lt;= __buffer_size) &#123;<span class="comment">//缓冲区足够放置序列二</span></span><br><span class="line">    __buffer_end = copy(__middle, __last, __buffer);</span><br><span class="line">    copy_backward(__first, __middle, __last);</span><br><span class="line">    <span class="keyword">return</span> copy(__buffer, __buffer_end, __first);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (__len1 &lt;= __buffer_size) &#123;<span class="comment">//缓冲区足够放置序列一</span></span><br><span class="line">    __buffer_end = copy(__first, __middle, __buffer);</span><br><span class="line">    copy(__middle, __last, __first);</span><br><span class="line">    <span class="keyword">return</span> copy_backward(__buffer, __buffer_end, __last);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span><span class="comment">//若缓冲区仍然不够，则调用STL算法rotate，不使用缓冲区</span></span><br><span class="line">    <span class="keyword">return</span> rotate(__first, __middle, __last);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter1</span>, <span class="title">class</span> _<span class="title">BidirectionalIter2</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">BidirectionalIter3</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">BidirectionalIter3</span> __<span class="title">merge_backward</span>(_<span class="title">BidirectionalIter1</span> __<span class="title">first1</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter1</span> __<span class="title">last1</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter2</span> __<span class="title">first2</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter2</span> __<span class="title">last2</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter3</span> __<span class="title">result</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__first1 == __last1)</span><br><span class="line">    <span class="keyword">return</span> copy_backward(__first2, __last2, __result);</span><br><span class="line">  <span class="keyword">if</span> (__first2 == __last2)</span><br><span class="line">    <span class="keyword">return</span> copy_backward(__first1, __last1, __result);</span><br><span class="line">  --__last1;</span><br><span class="line">  --__last2;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (*__last2 &lt; *__last1) &#123;</span><br><span class="line">      *--__result = *__last1;</span><br><span class="line">      <span class="keyword">if</span> (__first1 == __last1)</span><br><span class="line">        <span class="keyword">return</span> copy_backward(__first2, ++__last2, __result);</span><br><span class="line">      --__last1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      *--__result = *__last2;</span><br><span class="line">      <span class="keyword">if</span> (__first2 == __last2)</span><br><span class="line">        <span class="keyword">return</span> copy_backward(__first1, ++__last1, __result);</span><br><span class="line">      --__last2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter1</span>, <span class="title">class</span> _<span class="title">BidirectionalIter2</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">BidirectionalIter3</span>, <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">BidirectionalIter3</span> __<span class="title">merge_backward</span>(_<span class="title">BidirectionalIter1</span> __<span class="title">first1</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter1</span> __<span class="title">last1</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter2</span> __<span class="title">first2</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter2</span> __<span class="title">last2</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">BidirectionalIter3</span> __<span class="title">result</span>,</span></span><br><span class="line"><span class="class">                                     _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__first1 == __last1)</span><br><span class="line">    <span class="keyword">return</span> copy_backward(__first2, __last2, __result);</span><br><span class="line">  <span class="keyword">if</span> (__first2 == __last2)</span><br><span class="line">    <span class="keyword">return</span> copy_backward(__first1, __last1, __result);</span><br><span class="line">  --__last1;</span><br><span class="line">  --__last2;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (__comp(*__last2, *__last1)) &#123;</span><br><span class="line">      *--__result = *__last1;</span><br><span class="line">      <span class="keyword">if</span> (__first1 == __last1)</span><br><span class="line">        <span class="keyword">return</span> copy_backward(__first2, ++__last2, __result);</span><br><span class="line">      --__last1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      *--__result = *__last2;</span><br><span class="line">      <span class="keyword">if</span> (__first2 == __last2)</span><br><span class="line">        <span class="keyword">return</span> copy_backward(__first1, ++__last1, __result);</span><br><span class="line">      --__last2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本一的辅助函数，有缓冲区的操作</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Distance</span>, <span class="title">class</span> _<span class="title">Pointer</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> __<span class="title">merge_adaptive</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>, </span></span><br><span class="line"><span class="class">                      _<span class="title">BidirectionalIter</span> __<span class="title">last</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">Distance</span> __<span class="title">len1</span>, _<span class="title">Distance</span> __<span class="title">len2</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">Pointer</span> __<span class="title">buffer</span>, _<span class="title">Distance</span> __<span class="title">buffer_size</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__len1 &lt;= __len2 &amp;&amp; __len1 &lt;= __buffer_size) &#123;</span><br><span class="line">	  <span class="comment">//case1：把序列一放在缓冲区</span></span><br><span class="line">    _Pointer __buffer_end = copy(__first, __middle, __buffer);</span><br><span class="line">	<span class="comment">//直接调用归并函数merge</span></span><br><span class="line">    merge(__buffer, __buffer_end, __middle, __last, __first);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (__len2 &lt;= __buffer_size) &#123;</span><br><span class="line">	  <span class="comment">//case2：把序列二放在缓冲区</span></span><br><span class="line">    _Pointer __buffer_end = copy(__middle, __last, __buffer);</span><br><span class="line">    __merge_backward(__first, __middle, __buffer, __buffer_end, __last);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;<span class="comment">//case3：缓冲区不足放置任何一个序列</span></span><br><span class="line">    _BidirectionalIter __first_cut = __first;</span><br><span class="line">    _BidirectionalIter __second_cut = __middle;</span><br><span class="line">    _Distance __len11 = <span class="number">0</span>;</span><br><span class="line">    _Distance __len22 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (__len1 &gt; __len2) &#123;<span class="comment">//若序列一比较长</span></span><br><span class="line">      __len11 = __len1 / <span class="number">2</span>;<span class="comment">//计算序列一的一半</span></span><br><span class="line">      advance(__first_cut, __len11);<span class="comment">//让first_cut指向序列一的中间位置</span></span><br><span class="line">	  <span class="comment">//找出*__first_cut在[middle,last)区间中的第一个不小于*__first_cut的元素位置</span></span><br><span class="line">      __second_cut = lower_bound(__middle, __last, *__first_cut);</span><br><span class="line">	  <span class="comment">//计算middle到__second_cut之间的距离，保存在__len22</span></span><br><span class="line">      distance(__middle, __second_cut, __len22); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;<span class="comment">//若序列二比较长</span></span><br><span class="line">      __len22 = __len2 / <span class="number">2</span>;<span class="comment">//计算序列二的一半</span></span><br><span class="line">      advance(__second_cut, __len22);<span class="comment">//让__second_cut指向序列二的中间位置</span></span><br><span class="line">	  <span class="comment">//找出*__second_cut在[first,middle)区间中的第一个大于*__second_cut的元素位置</span></span><br><span class="line">      __first_cut = upper_bound(__first, __middle, *__second_cut);</span><br><span class="line">	  <span class="comment">//计算__first到__first_cut之间的距离，保存在__len11</span></span><br><span class="line">      distance(__first, __first_cut, __len11);</span><br><span class="line">    &#125;</span><br><span class="line">    _BidirectionalIter __new_middle =</span><br><span class="line">      __rotate_adaptive(__first_cut, __middle, __second_cut, __len1 - __len11,</span><br><span class="line">                        __len22, __buffer, __buffer_size);</span><br><span class="line">	<span class="comment">//对左半段递归调用</span></span><br><span class="line">    __merge_adaptive(__first, __first_cut, __new_middle, __len11,</span><br><span class="line">                     __len22, __buffer, __buffer_size);</span><br><span class="line">	<span class="comment">//对右半段递归调用</span></span><br><span class="line">    __merge_adaptive(__new_middle, __second_cut, __last, __len1 - __len11,</span><br><span class="line">                     __len2 - __len22, __buffer, __buffer_size);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Distance</span>, <span class="title">class</span> _<span class="title">Pointer</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> __<span class="title">merge_adaptive</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>, </span></span><br><span class="line"><span class="class">                      _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>, </span></span><br><span class="line"><span class="class">                      _<span class="title">BidirectionalIter</span> __<span class="title">last</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">Distance</span> __<span class="title">len1</span>, _<span class="title">Distance</span> __<span class="title">len2</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">Pointer</span> __<span class="title">buffer</span>, _<span class="title">Distance</span> __<span class="title">buffer_size</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  <span class="keyword">if</span> (__len1 &lt;= __len2 &amp;&amp; __len1 &lt;= __buffer_size) &#123;</span><br><span class="line">    _Pointer __buffer_end = copy(__first, __middle, __buffer);</span><br><span class="line">    merge(__buffer, __buffer_end, __middle, __last, __first, __comp);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (__len2 &lt;= __buffer_size) &#123;</span><br><span class="line">    _Pointer __buffer_end = copy(__middle, __last, __buffer);</span><br><span class="line">    __merge_backward(__first, __middle, __buffer, __buffer_end, __last,</span><br><span class="line">                     __comp);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    _BidirectionalIter __first_cut = __first;</span><br><span class="line">    _BidirectionalIter __second_cut = __middle;</span><br><span class="line">    _Distance __len11 = <span class="number">0</span>;</span><br><span class="line">    _Distance __len22 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (__len1 &gt; __len2) &#123;</span><br><span class="line">      __len11 = __len1 / <span class="number">2</span>;</span><br><span class="line">      advance(__first_cut, __len11);</span><br><span class="line">      __second_cut = lower_bound(__middle, __last, *__first_cut, __comp);</span><br><span class="line">      distance(__middle, __second_cut, __len22);   </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      __len22 = __len2 / <span class="number">2</span>;</span><br><span class="line">      advance(__second_cut, __len22);</span><br><span class="line">      __first_cut = upper_bound(__first, __middle, *__second_cut, __comp);</span><br><span class="line">      distance(__first, __first_cut, __len11);</span><br><span class="line">    &#125;</span><br><span class="line">    _BidirectionalIter __new_middle =</span><br><span class="line">      __rotate_adaptive(__first_cut, __middle, __second_cut, __len1 - __len11,</span><br><span class="line">                        __len22, __buffer, __buffer_size);</span><br><span class="line">    __merge_adaptive(__first, __first_cut, __new_middle, __len11,</span><br><span class="line">                     __len22, __buffer, __buffer_size, __comp);</span><br><span class="line">    __merge_adaptive(__new_middle, __second_cut, __last, __len1 - __len11,</span><br><span class="line">                     __len2 - __len22, __buffer, __buffer_size, __comp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本一的辅助函数</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Tp</span>, <span class="title">class</span> _<span class="title">Distance</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> __<span class="title">inplace_merge_aux</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                                _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                                _<span class="title">BidirectionalIter</span> __<span class="title">last</span>, _<span class="title">Tp</span>*, _<span class="title">Distance</span>*) &#123;</span></span><br><span class="line">  _Distance __len1 = <span class="number">0</span>;</span><br><span class="line">  distance(__first, __middle, __len1);<span class="comment">//计算序列一的长度</span></span><br><span class="line">  _Distance __len2 = <span class="number">0</span>;</span><br><span class="line">  distance(__middle, __last, __len2);<span class="comment">//计算序列二的长度</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//使用暂时缓冲区</span></span><br><span class="line">  _Temporary_buffer&lt;_BidirectionalIter, _Tp&gt; __buf(__first, __last);</span><br><span class="line">  <span class="keyword">if</span> (__buf.begin() == <span class="number">0</span>)<span class="comment">//若缓冲区配置失败</span></span><br><span class="line">	  <span class="comment">//则调用不使用缓冲区的合并操作</span></span><br><span class="line">    __merge_without_buffer(__first, __middle, __last, __len1, __len2);</span><br><span class="line">  <span class="keyword">else</span><span class="comment">//若分配成功</span></span><br><span class="line">	  <span class="comment">//则调用具有缓冲区的合并操作</span></span><br><span class="line">    __merge_adaptive(__first, __middle, __last, __len1, __len2,</span><br><span class="line">                     __buf.begin(), _Distance(__buf.size()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Tp</span>, </span></span><br><span class="line"><span class="class">          <span class="title">class</span> _<span class="title">Distance</span>, <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> __<span class="title">inplace_merge_aux</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                                _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                                _<span class="title">BidirectionalIter</span> __<span class="title">last</span>, _<span class="title">Tp</span>*, _<span class="title">Distance</span>*,</span></span><br><span class="line"><span class="class">                                _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  _Distance __len1 = <span class="number">0</span>;</span><br><span class="line">  distance(__first, __middle, __len1);</span><br><span class="line">  _Distance __len2 = <span class="number">0</span>;</span><br><span class="line">  distance(__middle, __last, __len2);</span><br><span class="line"></span><br><span class="line">  _Temporary_buffer&lt;_BidirectionalIter, _Tp&gt; __buf(__first, __last);</span><br><span class="line">  <span class="keyword">if</span> (__buf.begin() == <span class="number">0</span>)</span><br><span class="line">    __merge_without_buffer(__first, __middle, __last, __len1, __len2, __comp);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    __merge_adaptive(__first, __middle, __last, __len1, __len2,</span><br><span class="line">                     __buf.begin(), _Distance(__buf.size()),</span><br><span class="line">                     __comp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将两个已排序的序列[first,middle)和[middle,last)合并成单一有序序列.</span></span><br><span class="line"><span class="comment">//若原来是增序，现在也是递增排序，若原来是递减排序，现在也是递减排序</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">函数功能：Merges two consecutive sorted ranges: [first,middle) and [middle,last), </span></span><br><span class="line"><span class="comment">putting the result into the combined sorted range [first,last).</span></span><br><span class="line"><span class="comment">函数原型：</span></span><br><span class="line"><span class="comment">default (1)	：版本一</span></span><br><span class="line"><span class="comment">	template &lt;class BidirectionalIterator&gt;</span></span><br><span class="line"><span class="comment">	void inplace_merge (BidirectionalIterator first, BidirectionalIterator middle,</span></span><br><span class="line"><span class="comment">                      BidirectionalIterator last);</span></span><br><span class="line"><span class="comment">custom (2)	：版本二</span></span><br><span class="line"><span class="comment">	template &lt;class BidirectionalIterator, class Compare&gt;</span></span><br><span class="line"><span class="comment">	void inplace_merge (BidirectionalIterator first, BidirectionalIterator middle,</span></span><br><span class="line"><span class="comment">                      BidirectionalIterator last, Compare comp);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//版本一</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">inplace_merge</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                          _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                          _<span class="title">BidirectionalIter</span> __<span class="title">last</span>) &#123;</span></span><br><span class="line">  __STL_REQUIRES(_BidirectionalIter, _Mutable_BidirectionalIterator);</span><br><span class="line">  __STL_REQUIRES(<span class="keyword">typename</span> iterator_traits&lt;_BidirectionalIter&gt;::value_type,</span><br><span class="line">                 _LessThanComparable);</span><br><span class="line">  <span class="keyword">if</span> (__first == __middle || __middle == __last)<span class="comment">//若有空序列，则之间返回</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  __inplace_merge_aux(__first, __middle, __last,</span><br><span class="line">                      __VALUE_TYPE(__first), __DISTANCE_TYPE(__first));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本二</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">BidirectionalIter</span>, <span class="title">class</span> _<span class="title">Compare</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">inplace_merge</span>(_<span class="title">BidirectionalIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                          _<span class="title">BidirectionalIter</span> __<span class="title">middle</span>,</span></span><br><span class="line"><span class="class">                          _<span class="title">BidirectionalIter</span> __<span class="title">last</span>, _<span class="title">Compare</span> __<span class="title">comp</span>) &#123;</span></span><br><span class="line">  __STL_REQUIRES(_BidirectionalIter, _Mutable_BidirectionalIterator);</span><br><span class="line">  __STL_BINARY_FUNCTION_CHECK(_Compare, <span class="keyword">bool</span>,</span><br><span class="line">           <span class="keyword">typename</span> iterator_traits&lt;_BidirectionalIter&gt;::value_type,</span><br><span class="line">           <span class="keyword">typename</span> iterator_traits&lt;_BidirectionalIter&gt;::value_type);</span><br><span class="line">  <span class="keyword">if</span> (__first == __middle || __middle == __last)</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  __inplace_merge_aux(__first, __middle, __last,</span><br><span class="line">                      __VALUE_TYPE(__first), __DISTANCE_TYPE(__first),</span><br><span class="line">                      __comp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//inplace_merge函数举例：</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	#include &lt;iostream&gt;     // std::cout</span></span><br><span class="line"><span class="comment">	#include &lt;algorithm&gt;    // std::inplace_merge, std::sort, std::copy</span></span><br><span class="line"><span class="comment">	#include &lt;vector&gt;       // std::vector</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	int main () &#123;</span></span><br><span class="line"><span class="comment">	  int first[] = &#123;5,10,15,20,25&#125;;</span></span><br><span class="line"><span class="comment">	  int second[] = &#123;50,40,30,20,10&#125;;</span></span><br><span class="line"><span class="comment">	  std::vector&lt;int&gt; v(10);</span></span><br><span class="line"><span class="comment">	  std::vector&lt;int&gt;::iterator it;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  std::sort (first,first+5);</span></span><br><span class="line"><span class="comment">	  std::sort (second,second+5);</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  it=std::copy (first, first+5, v.begin());</span></span><br><span class="line"><span class="comment">		 std::copy (second,second+5,it);</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  std::inplace_merge (v.begin(),v.begin()+5,v.end());</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  std::cout &lt;&lt; "The resulting vector contains:";</span></span><br><span class="line"><span class="comment">	  for (it=v.begin(); it!=v.end(); ++it)</span></span><br><span class="line"><span class="comment">		std::cout &lt;&lt; ' ' &lt;&lt; *it;</span></span><br><span class="line"><span class="comment">	  std::cout &lt;&lt; '\n';</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	  return 0;</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	Output：</span></span><br><span class="line"><span class="comment">	The resulting vector contains: 5 10 10 15 20 20 25 30 40 50</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+       <div>
+       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　文章看完啦　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+         
+      </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/11/STL/find/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/11/STL/remove/" rel="prev" title>
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/bolgzxy.github.io/images/user.jpg" alt="半世烟尘">
+            
+              <p class="site-author-name" itemprop="name">半世烟尘</p>
+              <p class="site-description motion-element" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bolgzxy.github.io/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bolgzxy.github.io/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bolgzxy.github.io/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/COTVZHAOYUEXING" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1998lovexs@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#merge合并算法源码剖析"><span class="nav-number">1.</span> <span class="nav-text">merge合并算法源码剖析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+
+  
+</div>
+
+
+
+
+
+
+  <span class="post-meta-divider">一江白练伏地藏，万丈红霞落佛光</span>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bolgzxy.github.io/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/bolgzxy.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/bolgzxy.github.io/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bolgzxy.github.io/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bolgzxy.github.io/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bolgzxy.github.io/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bolgzxy.github.io/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述红黑树是平衡二叉搜索树的一种，其通过特定的操作来保持二叉查找树的平衡。首先，我们来复习一下二叉查找树的知识，建议如果对二叉查找树不理解的先去搜一下相关博客来了解一下。 二叉搜索树是指一个空树或者具有以下性质的二叉树：  任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 任意节点的左、右子树也分别为二叉查找树；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="し半世烟尘">
+<meta property="og:url" content="https://yoursite.com/2019/09/11/STL/RB-tree/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="概述红黑树是平衡二叉搜索树的一种，其通过特定的操作来保持二叉查找树的平衡。首先，我们来复习一下二叉查找树的知识，建议如果对二叉查找树不理解的先去搜一下相关博客来了解一下。 二叉搜索树是指一个空树或者具有以下性质的二叉树：  任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 任意节点的左、右子树也分别为二叉查找树；">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyj3b8rj30k607xdg6.jpg">
+<meta property="og:image" content="http://obd5s81mp.bkt.clouddn.com/STLRbtree.png">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyhi8o9j30me0cdabl.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfynyzckj30ha0acdgd.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfykuu26j30l009baan.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfyjxqufj30li09n0t9.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfyr8ogqj30kt09474r.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfylqfcnj30su08qwfc.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfylqfcnj30su08qwfc.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyql0n5j30sr093756.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfys6slgj30ob07kwfa.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyphkp5j30iz07a74u.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyi70nej30q306uaax.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfymw4rxj30ps07iq3t.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfysv1zbj30gh06zdgd.jpg">
+<meta property="og:updated_time" content="2019-09-11T03:10:43.612Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="し半世烟尘">
+<meta name="twitter:description" content="概述红黑树是平衡二叉搜索树的一种，其通过特定的操作来保持二叉查找树的平衡。首先，我们来复习一下二叉查找树的知识，建议如果对二叉查找树不理解的先去搜一下相关博客来了解一下。 二叉搜索树是指一个空树或者具有以下性质的二叉树：  任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 任意节点的左、右子树也分别为二叉查找树；">
+<meta name="twitter:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyj3b8rj30k607xdg6.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bolgzxy.github.io/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yoursite.com/2019/09/11/STL/RB-tree/">
+
+
+
+
+
+  <title> | し半世烟尘</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bolgzxy.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bolgzxy.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bolgzxy.github.io/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bolgzxy.github.io/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bolgzxy.github.io/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/bolgzxy.github.io/2019/09/11/STL/RB-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/bolgzxy.github.io/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T11:09:42+08:00">
+                2019-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>红黑树是平衡二叉搜索树的一种，其通过特定的操作来保持二叉查找树的平衡。首先，我们来复习一下二叉查找树的知识，建议如果对二叉查找树不理解的先去搜一下相关博客来了解一下。</p>
+<p>二叉搜索树是指一个空树或者具有以下性质的二叉树：</p>
+<ul>
+<li>任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值；</li>
+<li>任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值；</li>
+<li>任意节点的左、右子树也分别为二叉查找树；</li>
+<li>没有键值相等的节点</li>
+</ul>
+<p>我们知道，一颗由n个节点随机构造的二叉搜索树的高度为logn，但是，由于输入值往往不够随机，导致二叉搜索树可能失去平衡，造成搜索效率低下的情况。从而，引出了平衡二叉搜索树的概念。对于“平衡”这个约束不同的结构有不同的规定，如AVL树要求任何节点的两个子树的高度最大差别为1，可谓是高度平衡啊；而红黑树仅仅确保没有一条路径会比其他路径长出两倍，因而达到接近平衡的目的。红黑数不仅是一个平衡二叉搜索树，而且还定义了相当多的约束来确保插入和删除等操作后能达到平衡。</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyj3b8rj30k607xdg6.jpg" alt="balancedTree"></p>
+<p>那么，红黑树究竟是怎么定义，来使得能够达到平衡的目的呢？我们接着看下去。</p>
+<h1 id="红黑树的定义"><a href="#红黑树的定义" class="headerlink" title="红黑树的定义"></a>红黑树的定义</h1><p>红黑树既然属于二叉搜索树的一种，当然需要满足上述二叉搜索树的性质，除此之外，红黑树还为每一个节点增加了一个存储位来表示节点的颜色属性，它可以为red或者black，通过对任何一条从根到叶子节点的路径上每个点进行着色方式的限制，来确保没有一条路径会比其他路径长出两倍，因而达到接近平衡的目的。</p>
+<p>那么，红黑树是如何进行着色的呢？下面引出了红黑树的五条性质：</p>
+<ul>
+<li>每个节点或者是黑色，或者是红色。</li>
+<li>根节点是黑色。</li>
+<li>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</li>
+<li>如果一个节点是红色的，则它的子节点必须是黑色的。</li>
+<li>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</li>
+</ul>
+<p>正是这五条性质，使得红黑树的高度能保持在logn，从而达到平衡的目的，进而使得其在查找、插入和删除的时间复杂度最坏为O(logn)，下面就是一棵典型的红黑树。</p>
+<p><img src="http://obd5s81mp.bkt.clouddn.com/STLRbtree.png" alt="红黑树"></p>
+<blockquote>
+<p>注: 因本人能力有限可能无法将红黑树讲得很清楚全面，而且STL红黑树的实现也较为复杂，建议先到下面推荐的几篇博客里去补补知识</p>
+<ul>
+<li><a href="http://blog.csdn.net/v_july_v/article/details/6105630" target="_blank" rel="noopener">教你初步了解红黑树</a></li>
+<li><a href="http://blog.csdn.net/eson_15/article/details/51144079" target="_blank" rel="noopener">【数据结构和算法05】 红-黑树（看完包懂~）</a></li>
+<li><a href="http://blog.csdn.net/v_JULY_v/article/details/6124989" target="_blank" rel="noopener">一步一图一代码，一定要让你真正彻底明白红黑树</a></li>
+</ul>
+</blockquote>
+<h1 id="红黑树的节点结构"><a href="#红黑树的节点结构" class="headerlink" title="红黑树的节点结构"></a>红黑树的节点结构</h1><p>红黑树的节点在二叉树的节点结构上增加了颜色属性，而且，为了更好的进行插入和删除操作，进而增加了指向父节点的指针。为了更好的弹性，STL红黑树的节点采用双层设计，将不依赖模板的参数提取出来，作为base结构，然后用带模板的节点结构取继承它。下面是红黑树节点结构的源码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">bool</span> __rb_tree_color_type;</span><br><span class="line"><span class="keyword">const</span> __rb_tree_color_type __rb_tree_red = <span class="literal">false</span>;  <span class="comment">// 紅色為 0</span></span><br><span class="line"><span class="keyword">const</span> __rb_tree_color_type __rb_tree_black = <span class="literal">true</span>; <span class="comment">// 黑色為 1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">rb_tree_node_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_color_type color_type;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node_base* base_ptr;</span><br><span class="line"></span><br><span class="line">  color_type color;	<span class="comment">// 节点颜色</span></span><br><span class="line">  base_ptr parent;	<span class="comment">// 指向父节点</span></span><br><span class="line">  base_ptr left;		<span class="comment">// 指向左子节点</span></span><br><span class="line">  base_ptr right;		<span class="comment">// 指向右子节点</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 一直往左走，就能找到红黑树的最小值节点</span></span><br><span class="line">  <span class="comment">// 二叉搜索树的性质</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> base_ptr <span class="title">minimum</span><span class="params">(base_ptr x)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (x-&gt;left != <span class="number">0</span>) x = x-&gt;left;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 一直往右走，就能找到红黑树的最大值节点</span></span><br><span class="line">  <span class="comment">// 二叉搜索树的性质</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> base_ptr <span class="title">maximum</span><span class="params">(base_ptr x)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (x-&gt;right != <span class="number">0</span>) x = x-&gt;right;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正的节点定义，采用双层节点结构</span></span><br><span class="line"><span class="comment">// 基类中不包含模板参数</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">rb_tree_node</span> :</span> <span class="keyword">public</span> __rb_tree_node_base</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">typedef</span> __rb_tree_node&lt;Value&gt;* link_type;</span><br><span class="line">	Value value_field;    <span class="comment">// 節點實值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="红黑树的迭代器"><a href="#红黑树的迭代器" class="headerlink" title="红黑树的迭代器"></a>红黑树的迭代器</h1><p>为了将RBtree实现为一个泛型容器，迭代器的设计很关键。我们要考虑它的型别，以及前进(increment)、后退(devrement)、提领(dereference)和成员访问(member access)等操作。</p>
+<p>迭代器和节点一样，采用双层设计，STL红黑树的节点<strong>rb_tree_node继承于</strong>rb_tree_node_base；STL的迭代器结构<strong>rb_tree_iterator继承于</strong>rb_tree_base_iterator，我们可以用一张图来解释这样的设计目的。</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyhi8o9j30me0cdabl.jpg" alt="STLRbTreeNodeAndIterator"></p>
+<p>将这些分开设计，可以保证对节点和迭代器的操作更具有弹性。下面来看迭代器的源码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">rb_tree_base_iterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node_base::base_ptr base_ptr;</span><br><span class="line">  <span class="keyword">typedef</span> bidirectional_iterator_tag iterator_category;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;</span><br><span class="line"></span><br><span class="line">  base_ptr node;	<span class="comment">// 用来连接红黑树的节点</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 寻找该节点的后继节点上</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;right != <span class="number">0</span>) &#123;	<span class="comment">// 如果存在右子节点</span></span><br><span class="line">      node = node-&gt;right;		<span class="comment">// 直接跳到右子节点上</span></span><br><span class="line">      <span class="keyword">while</span> (node-&gt;left != <span class="number">0</span>) <span class="comment">// 然后一直往左子树走，直到左子树为空</span></span><br><span class="line">        node = node-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;                    <span class="comment">// 没有右子节点</span></span><br><span class="line">      base_ptr y = node-&gt;parent;    <span class="comment">// 找出父节点</span></span><br><span class="line">      <span class="keyword">while</span> (node == y-&gt;right) &#123;    <span class="comment">// 如果该节点一直为它的父节点的右子节点</span></span><br><span class="line">        node = y;                		<span class="comment">// 就一直往上找，直到不为右子节点为止</span></span><br><span class="line">        y = y-&gt;parent;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (node-&gt;right != y)      <span class="comment">// 若此时该节点不为它的父节点的右子节点</span></span><br><span class="line">        node = y;                <span class="comment">// 此时的父节点即为要找的后继节点</span></span><br><span class="line">                                 <span class="comment">// 否则此时的node即为要找的后继节点，此为特殊情况，如下</span></span><br><span class="line">                                 <span class="comment">// 我们要寻找根节点的下一个节点，而根节点没有右子节点</span></span><br><span class="line">                                 <span class="comment">// 此种情况需要配合rbtree的header节点的特殊设计，后面会讲到</span></span><br><span class="line">    &#125;                        </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 寻找该节点你的前置节点</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">decrement</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;color == __rb_tree_red &amp;&amp; <span class="comment">// 如果此节点是红节点</span></span><br><span class="line">        node-&gt;parent-&gt;parent == node)		<span class="comment">// 且父节点的父节点等于自己</span></span><br><span class="line">      node = node-&gt;right;								<span class="comment">// 则其右子节点即为其前置节点</span></span><br><span class="line">    <span class="comment">// 以上情况发生在node为header时，即node为end()时</span></span><br><span class="line">    <span class="comment">// 注意：header的右子节点为mostright，指向整棵树的max节点，后面会有解释</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (node-&gt;left != <span class="number">0</span>) &#123;					<span class="comment">// 如果存在左子节点</span></span><br><span class="line">      base_ptr y = node-&gt;left;					<span class="comment">// 跳到左子节点上</span></span><br><span class="line">      <span class="keyword">while</span> (y-&gt;right != <span class="number">0</span>)							<span class="comment">// 然后一直往右找，知道右子树为空</span></span><br><span class="line">        y = y-&gt;right;			</span><br><span class="line">      node = y;													<span class="comment">// 则找到前置节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;															<span class="comment">// 如果该节点不存在左子节点</span></span><br><span class="line">      base_ptr y = node-&gt;parent;				<span class="comment">// 跳到它的父节点上</span></span><br><span class="line">      <span class="keyword">while</span> (node == y-&gt;left) &#123;					<span class="comment">// 如果它等于它的父子节点的左子节点</span></span><br><span class="line">        node = y;												<span class="comment">// 则一直往上查找</span></span><br><span class="line">        y = y-&gt;parent;									</span><br><span class="line">      &#125;																	<span class="comment">// 直到它不为父节点的左子节点未知</span></span><br><span class="line">      node = y;													<span class="comment">// 此时他的父节点即为要找的前置节点</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">Ref</span>, <span class="title">class</span> <span class="title">Ptr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">rb_tree_iterator</span> :</span> <span class="keyword">public</span> __rb_tree_base_iterator</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 配合迭代器萃取机制的一些声明</span></span><br><span class="line">  <span class="keyword">typedef</span> Value value_type;</span><br><span class="line">  <span class="keyword">typedef</span> Ref reference;</span><br><span class="line">  <span class="keyword">typedef</span> Ptr pointer;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_iterator&lt;Value, Value&amp;, Value*&gt;     iterator;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_iterator&lt;Value, <span class="keyword">const</span> Value&amp;, <span class="keyword">const</span> Value*&gt; const_iterator;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_iterator&lt;Value, Ref, Ptr&gt;   self;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node&lt;Value&gt;* link_type;</span><br><span class="line">  <span class="comment">// 迭代器的构造函数</span></span><br><span class="line">  __rb_tree_iterator() &#123;&#125;</span><br><span class="line">  __rb_tree_iterator(link_type x) &#123; node = x; &#125;</span><br><span class="line">  __rb_tree_iterator(<span class="keyword">const</span> iterator&amp; it) &#123; node = it.node; &#125;</span><br><span class="line">  <span class="comment">// 提领和成员访问函数，重载了*和-&gt;操作符</span></span><br><span class="line">  reference <span class="keyword">operator</span>*() <span class="keyword">const</span> &#123; <span class="keyword">return</span> link_type(node)-&gt;value_field; &#125;</span><br><span class="line">  pointer <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span> &#123; <span class="keyword">return</span> &amp;(<span class="keyword">operator</span>*()); &#125;</span><br><span class="line">  <span class="comment">// 前置++和后置++</span></span><br><span class="line">  self&amp; <span class="keyword">operator</span>++() &#123; increment(); <span class="keyword">return</span> *<span class="keyword">this</span>; &#125;</span><br><span class="line">  self <span class="keyword">operator</span>++(<span class="keyword">int</span>) &#123;</span><br><span class="line">    self tmp = *<span class="keyword">this</span>;</span><br><span class="line">    increment();		<span class="comment">// 直接调用increment函数</span></span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 前置--和后置--</span></span><br><span class="line">  self&amp; <span class="keyword">operator</span>--() &#123; decrement(); <span class="keyword">return</span> *<span class="keyword">this</span>; &#125;</span><br><span class="line">  self <span class="keyword">operator</span>--(<span class="keyword">int</span>) &#123;</span><br><span class="line">    self tmp = *<span class="keyword">this</span>;</span><br><span class="line">    decrement();		<span class="comment">// 直接调用decrement函数</span></span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在上述源代码中，一直提到STL RBTree特殊节点header的设计，这个会在RBTree结构中讲到，下面跟着我一起继续往下看吧。</p>
+<h1 id="红黑树的数据结构"><a href="#红黑树的数据结构" class="headerlink" title="红黑树的数据结构"></a>红黑树的数据结构</h1><p>有了上面的节点和迭代器设计，就能很好的定义出一颗RBTree了。废话不多说，一步一步来剖析源代码吧。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">rb_tree</span> &#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">void</span>* void_pointer;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node_base* base_ptr;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_node&lt;Value&gt; rb_tree_node;		</span><br><span class="line">  <span class="keyword">typedef</span> simple_alloc&lt;rb_tree_node, Alloc&gt; rb_tree_node_allocator; <span class="comment">// 专属配置器</span></span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_color_type color_type;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 一些类型声明</span></span><br><span class="line">  <span class="keyword">typedef</span> Key key_type;</span><br><span class="line">  <span class="keyword">typedef</span> Value value_type;</span><br><span class="line">  <span class="keyword">typedef</span> value_type* pointer;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type* const_pointer;</span><br><span class="line">  <span class="keyword">typedef</span> value_type&amp; reference;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type&amp; const_reference;</span><br><span class="line">  <span class="keyword">typedef</span> rb_tree_node* link_type;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="comment">// RB-tree的数据结构</span></span><br><span class="line">  size_type node_count; <span class="comment">// 记录树的节点个数</span></span><br><span class="line">  link_type header;  		<span class="comment">// header节点设计</span></span><br><span class="line">  Compare key_compare;	<span class="comment">// 节点间的键值大小比较准则</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以下三个函数用来取得header的成员</span></span><br><span class="line">  <span class="function">link_type&amp; <span class="title">root</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;) header-&gt;parent; &#125;</span><br><span class="line">  <span class="function">link_type&amp; <span class="title">leftmost</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;) header-&gt;left; &#125;</span><br><span class="line">  <span class="function">link_type&amp; <span class="title">rightmost</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;) header-&gt;right; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以下六个函数用来取得节点的成员</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">left</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;left); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">right</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;right); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">parent</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;parent); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> reference <span class="title">value</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> x-&gt;value_field; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">const</span> Key&amp; <span class="title">key</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> KeyOfValue()(value(x)); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> color_type&amp; <span class="title">color</span><span class="params">(link_type x)</span> </span>&#123; <span class="keyword">return</span> (color_type&amp;)(x-&gt;color); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以下六个函数用来取得节点的成员，由于双层设计，导致这里需要两个定义</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">left</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;left); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">right</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;right); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type&amp; <span class="title">parent</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> (link_type&amp;)(x-&gt;parent); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> reference <span class="title">value</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> ((link_type)x)-&gt;value_field; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">const</span> Key&amp; <span class="title">key</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> KeyOfValue()(value(link_type(x)));&#125; </span><br><span class="line">  <span class="function"><span class="keyword">static</span> color_type&amp; <span class="title">color</span><span class="params">(base_ptr x)</span> </span>&#123; <span class="keyword">return</span> (color_type&amp;)(link_type(x)-&gt;color); &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 求取极大值和极小值，这里直接调用节点结构的函数极可</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type <span class="title">minimum</span><span class="params">(link_type x)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> (link_type)  __rb_tree_node_base::minimum(x);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> link_type <span class="title">maximum</span><span class="params">(link_type x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (link_type) __rb_tree_node_base::maximum(x);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// RBTree的迭代器定义</span></span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_iterator&lt;value_type, reference, pointer&gt; iterator;</span><br><span class="line">  <span class="keyword">typedef</span> __rb_tree_iterator&lt;value_type, const_reference, const_pointer&gt; </span><br><span class="line">          const_iterator;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">Compare <span class="title">key_comp</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> key_compare; &#125;	<span class="comment">// 由于红黑树自带排序功能，所以必须传入一个比较器函数</span></span><br><span class="line">  <span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> leftmost(); &#125;        <span class="comment">// RBTree的起始节点为左边最小值节点</span></span><br><span class="line">  <span class="function">const_iterator <span class="title">begin</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> leftmost(); &#125;</span><br><span class="line">  <span class="function">iterator <span class="title">end</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> header; &#125;							<span class="comment">// RBTree的终止节点为右边最大值节点</span></span><br><span class="line">  <span class="function">const_iterator <span class="title">end</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> header; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> node_count == <span class="number">0</span>; &#125;	<span class="comment">// 判断红黑树是否为空	</span></span><br><span class="line">  <span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> node_count; &#125;		<span class="comment">// 获取红黑树的节点个数</span></span><br><span class="line">  <span class="function">size_type <span class="title">max_size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(<span class="number">-1</span>); &#125;	<span class="comment">// 获取红黑树的最大节点个数，</span></span><br><span class="line">																												<span class="comment">// 没有容量的概念，故为sizetype最大值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，在RBTree的数据结构中，定义了RBTree节点和迭代器，然后添加了header节点，以及node_count参数，其他都是一下简单的函数声明和类型声明。除此之外，并没有过多的增加东西。这里理解起来还是比较简单，至于header有什么作用，请继续往下看。</p>
+<h1 id="红黑树的构造与内存管理"><a href="#红黑树的构造与内存管理" class="headerlink" title="红黑树的构造与内存管理"></a>红黑树的构造与内存管理</h1><h2 id="红黑树的构造函数"><a href="#红黑树的构造函数" class="headerlink" title="红黑树的构造函数"></a>红黑树的构造函数</h2><p>红黑树的空构造函数将创建一个空树，此”空树“非彼二叉树的空树也。空构造函数首先配置一个节点空间，使header指向该节点空间，然后将header的leftmost和rightmost指向自己，父节点指向0。非空的STL RBTree中，header和root之间互为父节点，然后header的leftmost始终指向该树的最小值节点，rightmost始终指向该树的最大值节点，其示例图如下（左图为空树，右图为非空树）：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfynyzckj30ha0acdgd.jpg" alt="STLRBTreeInit"></p>
+<p>下面来看看它的构造函数代码吧：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">rb_tree</span> &#123;</span></span><br><span class="line">	<span class="comment">// 这部分代码是从红黑树的结构定义中提取出来的</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">typedef</span> simple_alloc&lt;rb_tree_node, Alloc&gt; rb_tree_node_allocator; <span class="comment">// 专属配置器</span></span><br><span class="line"></span><br><span class="line">  <span class="function">link_type <span class="title">get_node</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> rb_tree_node_allocator::allocate(); &#125; <span class="comment">// 配置空间</span></span><br><span class="line"></span><br><span class="line">  <span class="function">link_type <span class="title">create_node</span><span class="params">(<span class="keyword">const</span> value_type&amp; x)</span> </span>&#123;</span><br><span class="line">    link_type tmp = get_node();            <span class="comment">// 配置空間</span></span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">      construct(&amp;tmp-&gt;value_field, x);    <span class="comment">// 构造内容</span></span><br><span class="line">    &#125;</span><br><span class="line">    __STL_UNWIND(put_node(tmp));</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 初始化函数，用来初始化一棵RBTree</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    header = get_node();    <span class="comment">// 产生一个节点空间，令header指向它</span></span><br><span class="line">    color(header) = __rb_tree_red; <span class="comment">// 令header为红色，用来区分header和root</span></span><br><span class="line">    root() = <span class="number">0</span>;</span><br><span class="line">    leftmost() = header;    <span class="comment">// 令header的左子节点为其自己</span></span><br><span class="line">    rightmost() = header;    <span class="comment">// 令header的右子节点为其自己</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 真正的默认构造函数</span></span><br><span class="line">  rb_tree(<span class="keyword">const</span> Compare&amp; comp = Compare())</span><br><span class="line">  : node_count(<span class="number">0</span>), key_compare(comp) &#123; init(); &#125;	<span class="comment">// 直接调用初始化函数</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 带参构造函数，以另一棵RBTree为初值来初始化</span></span><br><span class="line">  rb_tree(<span class="keyword">const</span> rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;&amp; x) </span><br><span class="line">    : node_count(<span class="number">0</span>), key_compare(x.key_compare)</span><br><span class="line">  &#123; </span><br><span class="line">    header = get_node();    <span class="comment">// 產生一個節點空間，令 header 指向它</span></span><br><span class="line">    color(header) = __rb_tree_red;    <span class="comment">// 令 header 為紅色</span></span><br><span class="line">    <span class="keyword">if</span> (x.root() == <span class="number">0</span>) &#123;    <span class="comment">//  如果 x 是個空白樹</span></span><br><span class="line">      root() = <span class="number">0</span>;</span><br><span class="line">      leftmost() = header;     <span class="comment">// 令 header 的左子節點為自己。</span></span><br><span class="line">      rightmost() = header; <span class="comment">// 令 header 的右子節點為自己。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;    <span class="comment">//  x 不是一個空白樹</span></span><br><span class="line">      __STL_TRY &#123;</span><br><span class="line">        root() = __copy(x.root(), header);        <span class="comment">//调用copy函数</span></span><br><span class="line">      &#125;</span><br><span class="line">      __STL_UNWIND(put_node(header));</span><br><span class="line">      leftmost() = minimum(root());    <span class="comment">// 令 header 的左子節點為最小節點</span></span><br><span class="line">      rightmost() = maximum(root());    <span class="comment">// 令 header 的右子節點為最大節點</span></span><br><span class="line">    &#125;</span><br><span class="line">    node_count = x.node_count;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// copy函数定义如下</span></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">V</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class">	<span class="title">typename</span> <span class="title">rb_tree</span>&lt;K, V, KeyOfValue, Compare, Alloc&gt;:</span>:link_type </span><br><span class="line">	rb_tree&lt;K, V, KeyOfValue, Compare, Alloc&gt;::__copy(link_type x, link_type p) &#123;</span><br><span class="line">	  link_type top = clone_node(x); <span class="comment">// 克隆root节点</span></span><br><span class="line">	  top-&gt;parent = p;	<span class="comment">// 将root节点父节点指向p</span></span><br><span class="line">	 	<span class="comment">// 以下为非递归的二叉树复制过程</span></span><br><span class="line">	  __STL_TRY &#123;</span><br><span class="line">	    <span class="keyword">if</span> (x-&gt;right)</span><br><span class="line">	      top-&gt;right = __copy(right(x), top); <span class="comment">// 一直copy右子节点</span></span><br><span class="line">	    p = top;	</span><br><span class="line">	    x = left(x);	<span class="comment">// 取左节点</span></span><br><span class="line"></span><br><span class="line">	    <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;	<span class="comment">// 左子节点不为空</span></span><br><span class="line">	      link_type y = clone_node(x);	<span class="comment">// 克隆左子节点</span></span><br><span class="line">	      p-&gt;left = y;	<span class="comment">// p的左子节点设为y</span></span><br><span class="line">	      y-&gt;parent = p;	<span class="comment">// y的父节点设为p</span></span><br><span class="line">	      <span class="keyword">if</span> (x-&gt;right)		<span class="comment">// 如果左子节点还有右子节点，继续复制</span></span><br><span class="line">	        y-&gt;right = __copy(right(x), y);</span><br><span class="line">	      p = y;	<span class="comment">// 直到没有左子节点</span></span><br><span class="line">	      x = left(x);</span><br><span class="line">	    &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	  __STL_UNWIND(__erase(top));</span><br><span class="line"></span><br><span class="line">	  <span class="keyword">return</span> top;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// clone一个节点函数</span></span><br><span class="line">  <span class="function">link_type <span class="title">clone_node</span><span class="params">(link_type x)</span> </span>&#123;    <span class="comment">// 複製一個節點（的值和色）</span></span><br><span class="line">	  link_type tmp = create_node(x-&gt;value_field);</span><br><span class="line">	  tmp-&gt;color = x-&gt;color;</span><br><span class="line">	  tmp-&gt;left = <span class="number">0</span>;</span><br><span class="line">	  tmp-&gt;right = <span class="number">0</span>;</span><br><span class="line">	  <span class="keyword">return</span> tmp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="红黑树的析构函数"><a href="#红黑树的析构函数" class="headerlink" title="红黑树的析构函数"></a>红黑树的析构函数</h2><p>析构函数负责清除和释放红黑树上的每一个节点，并且初始化该红黑树为空树，即恢复header为初始状态</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>,</span></span><br><span class="line"><span class="class">          <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">rb_tree</span> &#123;</span></span><br><span class="line">	<span class="comment">// 这部分代码是从红黑树的结构定义中提取出来的</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">put_node</span><span class="params">(link_type p)</span> </span>&#123; rb_tree_node_allocator::deallocate(p); &#125;</span><br><span class="line">	<span class="comment">// 析构一个节点</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">destroy_node</span><span class="params">(link_type p)</span> </span>&#123;</span><br><span class="line">    destroy(&amp;p-&gt;value_field);        <span class="comment">// 析构内容</span></span><br><span class="line">    put_node(p);                    <span class="comment">// 释放空间 </span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 析构函数</span></span><br><span class="line">  ~rb_tree() &#123;</span><br><span class="line">    clear();</span><br><span class="line">    put_node(header);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 清除整棵树并初始化header节点</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node_count != <span class="number">0</span>) &#123;</span><br><span class="line">      __erase(root());</span><br><span class="line">      <span class="comment">// 初始化Header节点</span></span><br><span class="line">      leftmost() = header;</span><br><span class="line">      root() = <span class="number">0</span>;</span><br><span class="line">      rightmost() = header;</span><br><span class="line">      node_count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 清除RBTree的每个节点</span></span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class">	<span class="title">void</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:__erase(link_type x) &#123;</span><br><span class="line">	  <span class="comment">// 直接清，不用调平衡</span></span><br><span class="line">	  <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">	    __erase(right(x));</span><br><span class="line">	    link_type y = left(x);</span><br><span class="line">	    destroy_node(x);</span><br><span class="line">	    x = y;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="红黑树的插入"><a href="#红黑树的插入" class="headerlink" title="红黑树的插入"></a>红黑树的插入</h1><p>红黑树在插入节点的时候，会破坏其平衡，这时候需要旋转和变色来使红黑树重新达到平衡。这才是红黑树的精髓所在啊！所以这部分很长，大家耐心看，最好拿纸笔画一下。</p>
+<h2 id="平衡二叉树的插入"><a href="#平衡二叉树的插入" class="headerlink" title="平衡二叉树的插入"></a>平衡二叉树的插入</h2><p>我们先来看看平衡二叉树的旋转问题。平衡二叉树中，插入一个节点后，有可能会破坏二叉树的平衡，这时候可以通过左旋和右旋函数来使其重新恢复平衡。</p>
+<p>通常破坏平衡二叉树平衡的插入情况有如下四种：</p>
+<ul>
+<li>插入点位于X节点的左子节点的左子树，左左</li>
+<li>插入点位于X节点的右子节点的右子树，右右</li>
+<li>插入点位于X节点的左子节点的右子树，左右</li>
+<li>插入点位于X节点的右子节点的左子树，右左</li>
+</ul>
+<p>其中，情况1和2彼此对称，称为外侧插入，可以采用单旋转操作来调整；情况3和4彼此对称，称为内侧插入，需要采用双旋转操作来调整。</p>
+<h3 id="外侧插入"><a href="#外侧插入" class="headerlink" title="外侧插入"></a>外侧插入</h3><p>对于外侧插入，我们通常采用一次旋转就能解决问题，请看下面两种外侧插入的示意图，其中左图对应上述情况1，右图对应上述情况2。</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfykuu26j30l009baan.jpg" alt="AVLTreeOutSideInsert"></p>
+<p>对于左图的情况，采用一次右旋操作，可以使二叉树重新恢复平衡，操作示意图如下所示：</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfyjxqufj30li09n0t9.jpg" alt="AVLTreeRightRotate"></p>
+<p>对于右图的情况，采用一次左旋操作，可以使二叉树重新恢复平衡，操作示意图如下所示：</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfyr8ogqj30kt09474r.jpg" alt="AVLTreeLeftRotate"></p>
+<h3 id="内侧插入"><a href="#内侧插入" class="headerlink" title="内侧插入"></a>内侧插入</h3><p>对于内侧插入，通常比较复杂，需要采用两次旋转操作来调整平衡。请看下面的内侧插入的示意图，其中左图对于上述情况3，右图对应上述情况4。</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfylqfcnj30su08qwfc.jpg" alt="AVLTreeInsideInsert"></p>
+<p>对于左图的情况，需要先进行依次左旋操作，再进行一次右旋操作即可调整平衡，操作示意图如下：</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gw1fbkfylqfcnj30su08qwfc.jpg" alt="AVLTreeTwoRatate"></p>
+<p>对于右图的情况，需要先进行依次右旋操作，再进行一次左旋操作即可调整平衡，操作示意图如下：</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyql0n5j30sr093756.jpg" alt="AVLTreeTwoRatate2"></p>
+<h2 id="红黑树的插入-1"><a href="#红黑树的插入-1" class="headerlink" title="红黑树的插入"></a>红黑树的插入</h2><p>有了上面的单旋转和双旋转知识，应该就很好理解红黑数的平衡调整过程。红黑树在插入节点的时候，不仅需要考虑插入导致的不平衡，还要考虑颜色属性是否满足其性质要求。为了更清楚的表达整个过程，我们先来定义一下几个标示量，使用X来表示一个新插入的节点，使用P来表示新插入节点的父节点，使用U来表示P节点的兄弟节点，使用G来表示P节点的父亲节点，使用N代表NIL节点。于是，可以将插入情况分为一下几类：</p>
+<h3 id="树为空"><a href="#树为空" class="headerlink" title="树为空"></a>树为空</h3><p>新插入的节点为红色，因为此时树为空，那么插入该节点后只需要把节点颜色调整为黑色即可。</p>
+<h3 id="父节点为黑"><a href="#父节点为黑" class="headerlink" title="父节点为黑"></a>父节点为黑</h3><p>如果插入的节点的父节点为黑色，那么插入一个红节点将不会影响树的平衡，直接插入即可。这里就体现了黑红树的优势，O(1)时间内就能判断是否破坏了平衡，如果这里是AVL树的话就需要进行一次O(logn)判断是否平衡。</p>
+<h3 id="父节点为红色"><a href="#父节点为红色" class="headerlink" title="父节点为红色"></a>父节点为红色</h3><p>当父节点为红色的时候，就不满足条件4，即父节点为红色的时候，子节点必须为黑色，而新加入的节点为红色。这个时候需要考虑如下两种情况</p>
+<h4 id="1）叔父节点为红色"><a href="#1）叔父节点为红色" class="headerlink" title="1）叔父节点为红色"></a>1）叔父节点为红色</h4><p>这种情况下，需要将父节点和叔父节点变为黑色，将祖父节点变为红色即可，不过如果祖父节点为红色的话，还是违反了红黑树的性质，此时必须执行一个继续向上迭代的程序来对红黑树的颜色进行调整，最后需要将根节点设置为黑色，如下图所示：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gw1fbkfys6slgj30ob07kwfa.jpg" alt="RBTreeInsert1"></p>
+<h4 id="2）叔父节点为黑色-Nil节点为黑"><a href="#2）叔父节点为黑色-Nil节点为黑" class="headerlink" title="2）叔父节点为黑色(Nil节点为黑)"></a>2）叔父节点为黑色(Nil节点为黑)</h4><p>这时候，需要对其进行旋转操作，和上面AVL树的旋转一样，分为4种情况，下面一一举例来说明这四种情况：</p>
+<ul>
+<li>左左，外侧插入</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyphkp5j30iz07a74u.jpg" alt="RBTreeInsert2"></p>
+<ul>
+<li>左右，内侧插入</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfyi70nej30q306uaax.jpg" alt="RBTreeInsert3"></p>
+<ul>
+<li>右左，内侧插入</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfymw4rxj30ps07iq3t.jpg" alt="RBTreeInsert4"></p>
+<ul>
+<li>右右，外侧插入</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkfysv1zbj30gh06zdgd.jpg" alt="RBTreeInsert5"></p>
+<h2 id="红黑树的插入源代码分析"><a href="#红黑树的插入源代码分析" class="headerlink" title="红黑树的插入源代码分析"></a>红黑树的插入源代码分析</h2><p>红黑树的插入主要靠以下三个函数来实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 左旋函数</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span></span><br><span class="line">__rb_tree_rotate_left(__rb_tree_node_base* x, __rb_tree_node_base*&amp; root)</span><br><span class="line"><span class="comment">// 右旋函数</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span></span><br><span class="line">__rb_tree_rotate_right(__rb_tree_node_base* x, __rb_tree_node_base*&amp; root)</span><br><span class="line"><span class="comment">// 插入后调节平衡函数</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span></span><br><span class="line">__rb_tree_rebalance(__rb_tree_node_base* x, __rb_tree_node_base*&amp; root)</span><br><span class="line"><span class="comment">// 插入的核心函数</span></span><br><span class="line">iterator __insert(base_ptr x, base_ptr y, <span class="keyword">const</span> value_type&amp; v);</span><br></pre></td></tr></table></figure>
+
+<p>上述三个函数就代表了上一小节示例图中的左旋，右旋和变色的源代码接口。</p>
+<p>另外，STL还提供了两个个接口函数，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 允许出现相同的值</span></span><br><span class="line"><span class="function">iterator <span class="title">insert_equal</span><span class="params">(<span class="keyword">const</span> value_type&amp; x)</span></span>;</span><br><span class="line"><span class="comment">// 不允许出现相同的值</span></span><br><span class="line"><span class="function">iterator <span class="title">insert_unique</span><span class="params">(iterator position, <span class="keyword">const</span> value_type&amp; x)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>下面就针对这五个函数一一来分析一下他们的源代码(以insert_unique为例)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此插入函数不允许重复</span></span><br><span class="line"><span class="comment">// 返回的是一个pair，第一个元素为红黑树的迭代器，指向新增节点</span></span><br><span class="line"><span class="comment">// 第二个元素表示插入操作是否成功的</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span> , <span class="title">class</span> <span class="title">Value</span> , <span class="title">class</span> <span class="title">KeyOfValue</span> , <span class="title">class</span> <span class="title">Compare</span> , <span class="title">class</span> <span class="title">Alloc</span>&gt;  </span></span><br><span class="line"><span class="class"><span class="title">pair</span>&lt;typename rb_tree&lt;Key , Value , KeyOfValue , Compare , Alloc&gt;::iterator , bool&gt;  </span></span><br><span class="line"><span class="class"><span class="title">rb_tree</span>&lt;Key , Value , KeyOfValue , Compare , Alloc&gt;:</span>:insert_unique(<span class="keyword">const</span> Value &amp;v)  </span><br><span class="line">&#123;  </span><br><span class="line">    rb_tree_node* y = header;    <span class="comment">// 根节点root的父节点  </span></span><br><span class="line">    rb_tree_node* x = root();    <span class="comment">// 从根节点开始  </span></span><br><span class="line">    <span class="keyword">bool</span> comp = <span class="literal">true</span>;  </span><br><span class="line">    <span class="keyword">while</span>(x != <span class="number">0</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        y = x;  </span><br><span class="line">        comp = key_compare(KeyOfValue()(v) , key(x));    <span class="comment">// v键值小于目前节点之键值？  </span></span><br><span class="line">        x = comp ? left(x) : right(x);   <span class="comment">// 遇“大”则往左，遇“小于或等于”则往右  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="comment">// 离开while循环之后，y所指即插入点之父节点（此时的它必为叶节点）  </span></span><br><span class="line">    iterator j = iterator(y);     <span class="comment">// 令迭代器j指向插入点之父节点y  </span></span><br><span class="line">    <span class="keyword">if</span>(comp)     <span class="comment">// 如果离开while循环时comp为真（表示遇“大”，将插入于左侧）  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(j == begin())    <span class="comment">// 如果插入点之父节点为最左节点  </span></span><br><span class="line">            <span class="keyword">return</span> pair&lt;iterator , <span class="keyword">bool</span>&gt;(_insert(x , y , z) , <span class="literal">true</span>);<span class="comment">// 调用_insert函数</span></span><br><span class="line">        <span class="keyword">else</span>     <span class="comment">// 否则（插入点之父节点不为最左节点）  </span></span><br><span class="line">            --j;   <span class="comment">// 调整j，回头准备测试  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">if</span>(key_compare(key(j.node) , KeyOfValue()(v) ))  </span><br><span class="line">        <span class="comment">// 新键值不与既有节点之键值重复，于是以下执行安插操作  </span></span><br><span class="line">        <span class="keyword">return</span> pair&lt;iterator , <span class="keyword">bool</span>&gt;(_insert(x , y , z) , <span class="literal">true</span>);  </span><br><span class="line">    <span class="comment">// 以上，x为新值插入点，y为插入点之父节点，v为新值  </span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 进行至此，表示新值一定与树中键值重复，那么就不应该插入新值  </span></span><br><span class="line">    <span class="keyword">return</span> pair&lt;iterator , <span class="keyword">bool</span>&gt;(j , <span class="literal">false</span>);  </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正地插入执行程序 _insert()  </span></span><br><span class="line"><span class="comment">// 返回新插入节点的迭代器</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span> , <span class="title">class</span> <span class="title">Value</span> , <span class="title">class</span> <span class="title">KeyOfValue</span> , <span class="title">class</span> <span class="title">Compare</span> , <span class="title">class</span> <span class="title">Alloc</span>&gt;  </span></span><br><span class="line"><span class="class"><span class="title">typename</span>&lt;Key , Value , KeyOfValue , Compare , Alloc&gt;:</span>:_insert(base_ptr x_ , base_ptr y_ , <span class="keyword">const</span> Value &amp;v)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="comment">// 参数x_ 为新值插入点，参数y_为插入点之父节点，参数v为新值  </span></span><br><span class="line">    link_type x = (link_type) x_;  </span><br><span class="line">    link_type y = (link_type) y_;  </span><br><span class="line">    link_type z;  </span><br><span class="line">    <span class="comment">// key_compare 是键值大小比较准则。应该会是个function object  </span></span><br><span class="line">    <span class="keyword">if</span>(y == header || x != <span class="number">0</span> || key_compare(KeyOfValue()(v) , key(y) ))  </span><br><span class="line">    &#123;  </span><br><span class="line">        z = create_node(v);    <span class="comment">// 产生一个新节点  </span></span><br><span class="line">        left(y) = z;           <span class="comment">// 这使得当y即为header时，leftmost() = z  </span></span><br><span class="line">        <span class="keyword">if</span>(y == header)  </span><br><span class="line">        &#123;  </span><br><span class="line">            root() = z;  </span><br><span class="line">            rightmost() = z;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(y == leftmost())     <span class="comment">// 如果y为最左节点  </span></span><br><span class="line">            leftmost() = z;          <span class="comment">// 维护leftmost()，使它永远指向最左节点  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">else</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        z = create_node(v);        <span class="comment">// 产生一个新节点  </span></span><br><span class="line">        right(y) = z;              <span class="comment">// 令新节点成为插入点之父节点y的右子节点  </span></span><br><span class="line">        <span class="keyword">if</span>(y == rightmost())  </span><br><span class="line">            rightmost() = z;       <span class="comment">// 维护rightmost()，使它永远指向最右节点  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    parent(z) = y;      <span class="comment">// 设定新节点的父节点  </span></span><br><span class="line">    left(z) = <span class="number">0</span>;        <span class="comment">// 设定新节点的左子节点  </span></span><br><span class="line">    right(z) = <span class="number">0</span>;       <span class="comment">// 设定新节点的右子节点  </span></span><br><span class="line">    <span class="comment">// 新节点的颜色将在_rb_tree_rebalance()设定（并调整）  </span></span><br><span class="line">    _rb_tree_rebalance(z , header-&gt;parent);      <span class="comment">// 参数一为新增节点，参数二为根节点root  </span></span><br><span class="line">    ++node_count;       <span class="comment">// 节点数累加  </span></span><br><span class="line">    <span class="keyword">return</span> iterator(z);  <span class="comment">// 返回一个迭代器，指向新增节点  </span></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局函数  </span></span><br><span class="line"><span class="comment">// 重新令树形平衡（改变颜色及旋转树形）  </span></span><br><span class="line"><span class="comment">// 参数一为新增节点，参数二为根节点root  </span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> _rb_tree_rebalance(_rb_tree_node_base* x , _rb_tree_node_base*&amp; root)  </span><br><span class="line">&#123;  </span><br><span class="line">    x-&gt;color = _rb_tree_red;    <span class="comment">//新节点必为红  </span></span><br><span class="line">    <span class="keyword">while</span>(x != root &amp;&amp; x-&gt;parent-&gt;color == _rb_tree_red)    <span class="comment">// 父节点为红  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(x-&gt;parent == x-&gt;parent-&gt;parent-&gt;left)      <span class="comment">// 父节点为祖父节点之左子节点  </span></span><br><span class="line">        &#123;  </span><br><span class="line">            _rb_tree_node_base* y = x-&gt;parent-&gt;parent-&gt;right;    <span class="comment">// 令y为伯父节点  </span></span><br><span class="line">            <span class="keyword">if</span>(y &amp;&amp; y-&gt;color == _rb_tree_red)    <span class="comment">// 伯父节点存在，且为红  </span></span><br><span class="line">            &#123;  </span><br><span class="line">                x-&gt;parent-&gt;color = _rb_tree_black;           <span class="comment">// 更改父节点为黑色  </span></span><br><span class="line">                y-&gt;color = _rb_tree_black;                   <span class="comment">// 更改伯父节点为黑色  </span></span><br><span class="line">                x-&gt;parent-&gt;parent-&gt;color = _rb_tree_red;     <span class="comment">// 更改祖父节点为红色  </span></span><br><span class="line">                x = x-&gt;parent-&gt;parent;  </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="keyword">else</span>    <span class="comment">// 无伯父节点，或伯父节点为黑色  </span></span><br><span class="line">            &#123;  </span><br><span class="line">                <span class="keyword">if</span>(x == x-&gt;parent-&gt;right)   <span class="comment">// 如果新节点为父节点之右子节点  </span></span><br><span class="line">                &#123;  </span><br><span class="line">                    x = x-&gt;parent;  </span><br><span class="line">                    _rb_tree_rotate_left(x , root);    <span class="comment">// 第一个参数为左旋点  </span></span><br><span class="line">                &#125;  </span><br><span class="line">                x-&gt;parent-&gt;color = _rb_tree_black;     <span class="comment">// 改变颜色  </span></span><br><span class="line">                x-&gt;parent-&gt;parent-&gt;color = _rb_tree_red;  </span><br><span class="line">                _rb_tree_rotate_right(x-&gt;parent-&gt;parent , root);    <span class="comment">// 第一个参数为右旋点  </span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">else</span>          <span class="comment">// 父节点为祖父节点之右子节点  </span></span><br><span class="line">        &#123;  </span><br><span class="line">            _rb_tree_node_base* y = x-&gt;parent-&gt;parent-&gt;left;    <span class="comment">// 令y为伯父节点  </span></span><br><span class="line">            <span class="keyword">if</span>(y &amp;&amp; y-&gt;color == _rb_tree_red)    <span class="comment">// 有伯父节点，且为红  </span></span><br><span class="line">            &#123;  </span><br><span class="line">                x-&gt;parent-&gt;color = _rb_tree_black;           <span class="comment">// 更改父节点为黑色  </span></span><br><span class="line">                y-&gt;color = _rb_tree_black;                   <span class="comment">// 更改伯父节点为黑色  </span></span><br><span class="line">                x-&gt;parent-&gt;parent-&gt;color = _rb_tree_red;     <span class="comment">// 更改祖父节点为红色  </span></span><br><span class="line">                x = x-&gt;parent-&gt;parent;          <span class="comment">// 准备继续往上层检查  </span></span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="keyword">else</span>    <span class="comment">// 无伯父节点，或伯父节点为黑色  </span></span><br><span class="line">            &#123;  </span><br><span class="line">                <span class="keyword">if</span>(x == x-&gt;parent-&gt;left)        <span class="comment">// 如果新节点为父节点之左子节点  </span></span><br><span class="line">                &#123;  </span><br><span class="line">                    x = x-&gt;parent;  </span><br><span class="line">                    _rb_tree_rotate_right(x , root);    <span class="comment">// 第一个参数为右旋点  </span></span><br><span class="line">                &#125;  </span><br><span class="line">                x-&gt;parent-&gt;color = _rb_tree_black;     <span class="comment">// 改变颜色  </span></span><br><span class="line">                x-&gt;parent-&gt;parent-&gt;color = _rb_tree_red;  </span><br><span class="line">                _rb_tree_rotate_left(x-&gt;parent-&gt;parent , root);    <span class="comment">// 第一个参数为左旋点  </span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;<span class="comment">//while  </span></span><br><span class="line">    root-&gt;color = _rb_tree_black;    <span class="comment">// 根节点永远为黑色  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 左旋函数  </span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> _rb_tree_rotate_left(_rb_tree_node_base* x , _rb_tree_node_base*&amp; root)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="comment">// x 为旋转点  </span></span><br><span class="line">    _rb_tree_node_base* y = x-&gt;right;          <span class="comment">// 令y为旋转点的右子节点  </span></span><br><span class="line">    x-&gt;right = y-&gt;left;  </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;left != <span class="number">0</span>)  </span><br><span class="line">        y-&gt;left-&gt;parent = x;           <span class="comment">// 别忘了回马枪设定父节点  </span></span><br><span class="line">    y-&gt;parent = x-&gt;parent;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 令y完全顶替x的地位（必须将x对其父节点的关系完全接收过来）  </span></span><br><span class="line">    <span class="keyword">if</span>(x == root)    <span class="comment">// x为根节点  </span></span><br><span class="line">        root = y;  </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x == x-&gt;parent-&gt;left)         <span class="comment">// x为其父节点的左子节点  </span></span><br><span class="line">        x-&gt;parent-&gt;left = y;  </span><br><span class="line">    <span class="keyword">else</span>                                  <span class="comment">// x为其父节点的右子节点  </span></span><br><span class="line">        x-&gt;parent-&gt;right = y;  </span><br><span class="line">    y-&gt;left = x;  </span><br><span class="line">    x-&gt;parent = y;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 右旋函数  </span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> _rb_tree_rotate_right(_rb_tree_node_base* x , _rb_tree_node_base*&amp; root)  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="comment">// x 为旋转点  </span></span><br><span class="line">    _rb_tree_node_base* y = x-&gt;left;          <span class="comment">// 令y为旋转点的左子节点  </span></span><br><span class="line">    x-&gt;left = y-&gt;right;  </span><br><span class="line">    <span class="keyword">if</span>(y-&gt;right != <span class="number">0</span>)  </span><br><span class="line">        y-&gt;right-&gt;parent = x;           <span class="comment">// 别忘了回马枪设定父节点  </span></span><br><span class="line">    y-&gt;parent = x-&gt;parent;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 令y完全顶替x的地位（必须将x对其父节点的关系完全接收过来）  </span></span><br><span class="line">    <span class="keyword">if</span>(x == root)  </span><br><span class="line">        root = y;  </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(x == x-&gt;parent-&gt;right)         <span class="comment">// x为其父节点的右子节点  </span></span><br><span class="line">        x-&gt;parent-&gt;right = y;  </span><br><span class="line">    <span class="keyword">else</span>                                  <span class="comment">// x为其父节点的左子节点  </span></span><br><span class="line">        x-&gt;parent-&gt;left = y;  </span><br><span class="line">    y-&gt;right = x;  </span><br><span class="line">    x-&gt;parent = y;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="红黑树的删除"><a href="#红黑树的删除" class="headerlink" title="红黑树的删除"></a>红黑树的删除</h1><p>红黑树在删除节点后，需要调整以使得红黑树保持平衡，由于删除后调节平衡实在太复杂，本文就不做分析，只提供其接口函数。</p>
+<p>如果对其感兴趣的话，可以参考一下这篇博文：<a href="https://www.cnblogs.com/deliver/p/5392768.html" target="_blank" rel="noopener">(图解）红黑树的插入和删除</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除节点后调节平衡</span></span><br><span class="line"><span class="keyword">inline</span> __rb_tree_node_base*</span><br><span class="line">__rb_tree_rebalance_for_erase(__rb_tree_node_base* z,</span><br><span class="line">                              __rb_tree_node_base*&amp; root,</span><br><span class="line">                              __rb_tree_node_base*&amp; leftmost,</span><br><span class="line">                              __rb_tree_node_base*&amp; rightmost);</span><br></pre></td></tr></table></figure>
+
+<p>STL为红黑树提供了以下删除操作的节点函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除指定位置的节点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(iterator position)</span></span>;</span><br><span class="line"><span class="comment">// 删除迭代器区间位置内的节点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(iterator first, iterator last)</span></span>;</span><br><span class="line"><span class="comment">// 清除所有的节点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>下面来看看它们的源码实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除指定位置的节点</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span></span></span><br><span class="line"><span class="class"><span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:erase(iterator position) &#123;</span><br><span class="line">  <span class="comment">// 删除节点后需要使其重新恢复平衡</span></span><br><span class="line">  link_type y = (link_type) __rb_tree_rebalance_for_erase(position.node,</span><br><span class="line">                                                          header-&gt;parent,</span><br><span class="line">                                                          header-&gt;left,</span><br><span class="line">                                                          header-&gt;right);</span><br><span class="line">  <span class="comment">// 清除掉被删除的节点，释放内存</span></span><br><span class="line">  destroy_node(y);</span><br><span class="line">  --node_count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 清除掉区间内的节点</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:erase(iterator first, </span><br><span class="line">                                                            iterator last) &#123;</span><br><span class="line">  <span class="keyword">if</span> (first == begin() &amp;&amp; last == end())</span><br><span class="line">    clear();</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">while</span> (first != last) erase(first++);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 清除所有的节点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (node_count != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 这里不需要调用上面的__rb_tree_rebalance_for_erase</span></span><br><span class="line">    <span class="comment">// 而是直接调用不需要调节平衡的删除节点函数，见下面</span></span><br><span class="line">    __erase(root()); </span><br><span class="line">    leftmost() = header;</span><br><span class="line">    root() = <span class="number">0</span>;</span><br><span class="line">    rightmost() = header;</span><br><span class="line">    node_count = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 删除红黑树的节点，删除过程中不需要调节平衡</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:__erase(link_type x) &#123;</span><br><span class="line">  <span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</span><br><span class="line">    __erase(right(x));</span><br><span class="line">    link_type y = left(x);</span><br><span class="line">    destroy_node(x);</span><br><span class="line">    x = y;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="红黑树的元素搜寻"><a href="#红黑树的元素搜寻" class="headerlink" title="红黑树的元素搜寻"></a>红黑树的元素搜寻</h1><p>find函数用于查找是否存在键值为k的节点。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 寻找RBTree中是否存在键值为k的节点</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:iterator </span><br><span class="line">rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::find(<span class="keyword">const</span> Key&amp; k) &#123;</span><br><span class="line">  link_type y = header;        <span class="comment">// Last node which is not less than k. </span></span><br><span class="line">  link_type x = root();        <span class="comment">// Current node. </span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (x != <span class="number">0</span>) </span><br><span class="line">    <span class="comment">// key_compare是节点键值大小比较函数</span></span><br><span class="line">    <span class="keyword">if</span> (!key_compare(key(x), k)) </span><br><span class="line">      <span class="comment">// 如果节点x的键值大于k，则继续往左子树查找</span></span><br><span class="line">      y = x, x = left(x);    <span class="comment">// </span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="comment">// 如果节点x的键值小于k，则继续往右子树查找</span></span><br><span class="line">      x = right(x);</span><br><span class="line">  iterator j = iterator(y); </span><br><span class="line">  <span class="comment">// y的键值不小于k，返回的时候需要判断与k是相等还是小于  </span></span><br><span class="line">  <span class="keyword">return</span> (j == end() || key_compare(k, key(j.node))) ? end() : j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，STL的红黑树还针对multiset和multimap提供了几个搜寻函数，分别如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算键值为x的节点的个数</span></span><br><span class="line"><span class="function">size_type <span class="title">count</span><span class="params">(<span class="keyword">const</span> key_type&amp; x)</span></span></span><br><span class="line"><span class="function"><span class="comment">// 提供了查询与某个键值相等的节点迭代器范围</span></span></span><br><span class="line">pair&lt;iterator,iterator&gt; equal_range(const key_type&amp; x);</span><br><span class="line"><span class="comment">//返回不小于k的第一个节点迭代器</span></span><br><span class="line"><span class="function">iterator <span class="title">lower_bound</span><span class="params">(<span class="keyword">const</span> key_type&amp; x)</span></span>;</span><br><span class="line"><span class="comment">//返回大于k的第一个节点迭代器</span></span><br><span class="line"><span class="function">iterator <span class="title">upper_bound</span><span class="params">(<span class="keyword">const</span> key_type&amp; x)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>其实现函数也一并贴出来，让大家好理解一下吧。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算RBTree的节点值为k的节点个数</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:size_type </span><br><span class="line">rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::count(<span class="keyword">const</span> Key&amp; k) &#123;</span><br><span class="line">  pair&lt;const_iterator, const_iterator&gt; p = equal_range(k);</span><br><span class="line">  size_type n = <span class="number">0</span>;</span><br><span class="line">  distance(p.first, p.second, n);</span><br><span class="line">  <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 查询与键值k相等的节点迭代器范围</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">pair</span>&lt;typename rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::iterator,</span></span><br><span class="line"><span class="class">            typename rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::iterator&gt;</span></span><br><span class="line"><span class="class"><span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:equal_range(<span class="keyword">const</span> Key&amp; k) &#123;</span><br><span class="line">  <span class="keyword">return</span> pair&lt;iterator, iterator&gt;(lower_bound(k), upper_bound(k));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回不小于k的第一个节点迭代器</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:iterator </span><br><span class="line">rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::lower_bound(<span class="keyword">const</span> Key&amp; k) &#123;</span><br><span class="line">  link_type y = header; <span class="comment">/* Last node which is not less than k. */</span></span><br><span class="line">  link_type x = root(); <span class="comment">/* Current node. */</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (x != <span class="number">0</span>) </span><br><span class="line">    <span class="keyword">if</span> (!key_compare(key(x), k))</span><br><span class="line">      y = x, x = left(x);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      x = right(x);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> iterator(y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回大于k的第一个节点迭代器</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">KeyOfValue</span>, <span class="title">class</span> <span class="title">Compare</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">rb_tree</span>&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;:</span>:iterator </span><br><span class="line">rb_tree&lt;Key, Value, KeyOfValue, Compare, Alloc&gt;::upper_bound(<span class="keyword">const</span> Key&amp; k) &#123;</span><br><span class="line">  link_type y = header; <span class="comment">/* Last node which is greater than k. */</span></span><br><span class="line">  link_type x = root(); <span class="comment">/* Current node. */</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">while</span> (x != <span class="number">0</span>) </span><br><span class="line">     <span class="keyword">if</span> (key_compare(k, key(x)))</span><br><span class="line">       y = x, x = left(x);</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">       x = right(x);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> iterator(y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+       <div>
+       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　文章看完啦　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+         
+      </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/11/STL/Stcak和Queue/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/11/STL/Set和Map/" rel="prev" title>
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/bolgzxy.github.io/images/user.jpg" alt="半世烟尘">
+            
+              <p class="site-author-name" itemprop="name">半世烟尘</p>
+              <p class="site-description motion-element" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bolgzxy.github.io/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bolgzxy.github.io/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bolgzxy.github.io/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/COTVZHAOYUEXING" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1998lovexs@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的定义"><span class="nav-number">2.</span> <span class="nav-text">红黑树的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的节点结构"><span class="nav-number">3.</span> <span class="nav-text">红黑树的节点结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的迭代器"><span class="nav-number">4.</span> <span class="nav-text">红黑树的迭代器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的数据结构"><span class="nav-number">5.</span> <span class="nav-text">红黑树的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的构造与内存管理"><span class="nav-number">6.</span> <span class="nav-text">红黑树的构造与内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树的构造函数"><span class="nav-number">6.1.</span> <span class="nav-text">红黑树的构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树的析构函数"><span class="nav-number">6.2.</span> <span class="nav-text">红黑树的析构函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的插入"><span class="nav-number">7.</span> <span class="nav-text">红黑树的插入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#平衡二叉树的插入"><span class="nav-number">7.1.</span> <span class="nav-text">平衡二叉树的插入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外侧插入"><span class="nav-number">7.1.1.</span> <span class="nav-text">外侧插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内侧插入"><span class="nav-number">7.1.2.</span> <span class="nav-text">内侧插入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树的插入-1"><span class="nav-number">7.2.</span> <span class="nav-text">红黑树的插入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#树为空"><span class="nav-number">7.2.1.</span> <span class="nav-text">树为空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父节点为黑"><span class="nav-number">7.2.2.</span> <span class="nav-text">父节点为黑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父节点为红色"><span class="nav-number">7.2.3.</span> <span class="nav-text">父节点为红色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1）叔父节点为红色"><span class="nav-number">7.2.3.1.</span> <span class="nav-text">1）叔父节点为红色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2）叔父节点为黑色-Nil节点为黑"><span class="nav-number">7.2.3.2.</span> <span class="nav-text">2）叔父节点为黑色(Nil节点为黑)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树的插入源代码分析"><span class="nav-number">7.3.</span> <span class="nav-text">红黑树的插入源代码分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的删除"><span class="nav-number">8.</span> <span class="nav-text">红黑树的删除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的元素搜寻"><span class="nav-number">9.</span> <span class="nav-text">红黑树的元素搜寻</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+
+  
+</div>
+
+
+
+
+
+
+  <span class="post-meta-divider">一江白练伏地藏，万丈红霞落佛光</span>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bolgzxy.github.io/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
