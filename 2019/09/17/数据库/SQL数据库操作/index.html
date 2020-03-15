@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/bolgzxy.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/bolgzxy.github.io/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bolgzxy.github.io/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bolgzxy.github.io/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bolgzxy.github.io/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bolgzxy.github.io/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、插入使用SQL INSERT语句来将数据插入表中。 INSERT常见作用  向表中插入一行 向表中插入多行 将行从一个表复制到另一个表中。  123一行INSERT INTO table(column1,column2....)VALUES(value1,value2....)在添加新行之前，数据库系统检查所有完整性约束，例如，外键约束，主键约束，检查约束和非空约束。如果违反了其中一个约束，数">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL数据库操作">
+<meta property="og:url" content="https://yoursite.com/2019/09/17/数据库/SQL数据库操作/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="1、插入使用SQL INSERT语句来将数据插入表中。 INSERT常见作用  向表中插入一行 向表中插入多行 将行从一个表复制到另一个表中。  123一行INSERT INTO table(column1,column2....)VALUES(value1,value2....)在添加新行之前，数据库系统检查所有完整性约束，例如，外键约束，主键约束，检查约束和非空约束。如果违反了其中一个约束，数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-18T11:32:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL数据库操作">
+<meta name="twitter:description" content="1、插入使用SQL INSERT语句来将数据插入表中。 INSERT常见作用  向表中插入一行 向表中插入多行 将行从一个表复制到另一个表中。  123一行INSERT INTO table(column1,column2....)VALUES(value1,value2....)在添加新行之前，数据库系统检查所有完整性约束，例如，外键约束，主键约束，检查约束和非空约束。如果违反了其中一个约束，数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bolgzxy.github.io/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yoursite.com/2019/09/17/数据库/SQL数据库操作/">
+
+
+
+
+
+  <title>SQL数据库操作 | し半世烟尘</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bolgzxy.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bolgzxy.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bolgzxy.github.io/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bolgzxy.github.io/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bolgzxy.github.io/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/bolgzxy.github.io/2019/09/17/数据库/SQL数据库操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/bolgzxy.github.io/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQL数据库操作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-17T00:00:00+08:00">
+                2019-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bolgzxy.github.io/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="1、插入"><a href="#1、插入" class="headerlink" title="1、插入"></a>1、插入</h4><p>使用SQL <code>INSERT</code>语句来将数据插入表中。</p>
+<p><code>INSERT</code>常见作用</p>
+<blockquote>
+<p><strong>向表中插入一行</strong></p>
+<p><strong>向表中插入多行</strong></p>
+<p><strong>将行从一个表复制到另一个表中。</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一行</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">table</span>(column1,column2....)<span class="keyword">VALUES</span>(value1,value2....)</span><br><span class="line">在添加新行之前，数据库系统检查所有完整性约束，例如，外键约束，主键约束，检查约束和非空约束。如果违反了其中一个约束，数据库系统将发出错误并终止语句，而不向表中插入任何新行</span><br></pre></td></tr></table></figure>
+
+<p>如果在插入的时候省略的某一列，这一列则会按照默认值填写，比如说时NULL 自动增量等等</p>
+<p>如果一列的是链接两张表的外键，则在添加之前会自动检测值是否重复。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">多行</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">table</span></span><br><span class="line">(column1,column2....)</span><br><span class="line"> <span class="keyword">VALUES</span></span><br><span class="line">  (value1,value2....),</span><br><span class="line">  (value1,value2....),</span><br><span class="line">  (value1,value2....),</span><br><span class="line">  ....;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">从其他表复制行记录</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table1 (column1, column2) </span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    column1,</span><br><span class="line">    column2</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    table2</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    condition1</span><br><span class="line">    将整个表都复制到另外一张表里面</span><br></pre></td></tr></table></figure>
+
+<p>如果要在表中插入多行。 除<code>INSERT INTO</code>外，还将<code>Insert</code>与<code>select</code>语句结合使用。</p>
+<p>在此命令中，假设一个表需要使用另一个表中的数据信息来插入。</p>
+<p>下面来看看sql <code>insert</code>的<code>select</code>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">"table 1"</span> (<span class="string">"column1"</span>, <span class="string">"column2"</span>,....)  </span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">"column3"</span>, <span class="string">"column4"</span>,....  </span><br><span class="line"><span class="keyword">FROM</span> <span class="string">"table2"</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>INSERT INTO</code>语句还可以包含许多子句，如：<code>SELECT</code>，<code>GROUP BY</code>，<code>HAVING</code>以及<code>JOIN</code>和<code>ALIAS</code>。 因此，<code>insert into select</code>语句可能会有些复杂。</p>
+<p><strong>插入多行</strong></p>
+<ol>
+<li>传统方法(简单插入)</li>
+<li>SQL insert select</li>
+<li>SQL server 2008+ 行构建</li>
+</ol>
+<p><strong>传统方法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CREATR TABLE student(</span><br><span class="line">ID INT,</span><br><span class="line">NAMm CHAR(50)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student(<span class="keyword">ID</span>,<span class="keyword">NAME</span>)</span><br><span class="line"><span class="keyword">VALUES</span>(<span class="number">1</span>,<span class="string">"ZHAO"</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student(<span class="keyword">ID</span>,<span class="keyword">NAME</span>)</span><br><span class="line"><span class="keyword">VALUES</span>(<span class="number">2</span>,<span class="string">"YUE"</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student(<span class="keyword">ID</span>,<span class="keyword">NAME</span>)</span><br><span class="line"><span class="keyword">VALUES</span>(<span class="number">3</span>,<span class="string">"XING"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> student;</span><br></pre></td></tr></table></figure>
+
+<p><code>INSERT SELECT</code><strong>方法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student(<span class="keyword">ID</span>,<span class="keyword">NAME</span>)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="number">1</span>,<span class="string">"ZHAO"</span></span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="number">2</span>,<span class="string">"YUE"</span></span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="number">3</span>,<span class="string">"XING"</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>SQL Server 2008+行构建</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> student (<span class="keyword">ID</span>, <span class="keyword">NAME</span>)  </span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">'ARMAAN'</span>), (<span class="number">2</span>, <span class="string">'BILLY'</span>), (<span class="number">3</span>, <span class="string">'CHARLIE'</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、更新"><a href="#2、更新" class="headerlink" title="2、更新"></a>2、更新</h4><p>要更改表中的现有数据，请使用<code>UPDATE</code>语句。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> table_name</span><br><span class="line"><span class="keyword">SET</span> column1=value1,</span><br><span class="line">    column2=value2</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line"> condition;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的语法中 - </p>
+<ul>
+<li>首先，在<code>UPDATE</code>子句中指明要更新的表。</li>
+<li>其次，在<code>SET</code>子句中指定要修改的列。 <code>SET</code>子句中未列出的列的值不会被修改。</li>
+<li>第三，指定<code>WHERE</code>子句中要更新的行。</li>
+</ul>
+<p><strong>更新的例子</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> employees </span><br><span class="line"><span class="keyword">SET</span> </span><br><span class="line">    last_name = <span class="string">'Zhang'</span></span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    employee_id = <span class="number">192</span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">UPDATE</span> 更新多行数据的例子</span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> </span><br><span class="line">   employees</span><br><span class="line"><span class="keyword">SET</span> </span><br><span class="line">   salary=<span class="number">3000</span>;</span><br><span class="line">WHERE </span><br><span class="line">   salary&lt;3000;</span><br></pre></td></tr></table></figure>
+
+<p><code>UPDATE JOIN</code>可使用一个表和连接条件来更新另一个表.</p>
+<p>比如说，有两个表是这个样子的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM table1;</span><br><span class="line">+<span class="comment">---------+---------+---------+</span></span><br><span class="line">| column1 | column2 | column3 |</span><br><span class="line">+<span class="comment">---------+---------+---------+</span></span><br><span class="line">|       1 |      11 | FIRST   |</span><br><span class="line">|      11 |      12 | SECOND  |</span><br><span class="line">|      21 |      13 | THIRD   |</span><br><span class="line">|      31 |      14 | FOURTH  |</span><br><span class="line">+<span class="comment">---------+---------+---------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> table2;</span><br><span class="line">+<span class="comment">---------+---------+-----------+</span></span><br><span class="line">| column1 | column2 | column3   |</span><br><span class="line">+<span class="comment">---------+---------+-----------+</span></span><br><span class="line">|       1 |      21 | TWO-ONE   |</span><br><span class="line">|      11 |      22 | TWO-TWO   |</span><br><span class="line">|      21 |      23 | TWO-THREE |</span><br><span class="line">|      31 |      24 | TWO-FOUR  |</span><br><span class="line">+<span class="comment">---------+---------+-----------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span></span><br></pre></td></tr></table></figure>
+
+<p>现在要把表2中column1中等于21 和31的column2和column3的值跟新到table2中的column2和column3</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">table</span> t1</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> table2 t2</span><br><span class="line"><span class="keyword">ON</span> t1.column1=t2.column1</span><br><span class="line">SETt1.column2 = t2.column2,  </span><br><span class="line">t1.column3 = t2.column3 </span><br><span class="line"><span class="keyword">WHERE</span> t1.column1(<span class="number">21</span>,<span class="number">31</span>);</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+       <div>
+       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　文章看完啦　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+         
+      </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bolgzxy.github.io/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/17/数据库/数据库基础知识/" rel="next" title="数据库基础知识">
+                <i class="fa fa-chevron-left"></i> 数据库基础知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/17/数据库/Mysql数据库相关/" rel="prev" title="Mysql数据库相关">
+                Mysql数据库相关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/bolgzxy.github.io/images/user.jpg" alt="半世烟尘">
+            
+              <p class="site-author-name" itemprop="name">半世烟尘</p>
+              <p class="site-description motion-element" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bolgzxy.github.io/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bolgzxy.github.io/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bolgzxy.github.io/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/COTVZHAOYUEXING" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1998lovexs@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、插入"><span class="nav-number">1.</span> <span class="nav-text">1、插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、更新"><span class="nav-number">2.</span> <span class="nav-text">2、更新</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+
+  
+</div>
+
+
+
+
+
+
+  <span class="post-meta-divider">一江白练伏地藏，万丈红霞落佛光</span>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bolgzxy.github.io/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

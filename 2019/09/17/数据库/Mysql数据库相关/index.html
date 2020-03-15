@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/bolgzxy.github.io/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/bolgzxy.github.io/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bolgzxy.github.io/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bolgzxy.github.io/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bolgzxy.github.io/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bolgzxy.github.io/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Mysql数据库相关SQL基本语法 到底什么是SQL：SQL是关系型数据库通用的查询语言，不同的关系型数据库(SQLServer, MySQL，Oracle，Sqlite）都支持SQL。他们的SQL语法是大同小异的。">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql数据库相关">
+<meta property="og:url" content="https://yoursite.com/2019/09/17/数据库/Mysql数据库相关/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="Mysql数据库相关SQL基本语法 到底什么是SQL：SQL是关系型数据库通用的查询语言，不同的关系型数据库(SQLServer, MySQL，Oracle，Sqlite）都支持SQL。他们的SQL语法是大同小异的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T15:16:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql数据库相关">
+<meta name="twitter:description" content="Mysql数据库相关SQL基本语法 到底什么是SQL：SQL是关系型数据库通用的查询语言，不同的关系型数据库(SQLServer, MySQL，Oracle，Sqlite）都支持SQL。他们的SQL语法是大同小异的。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bolgzxy.github.io/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yoursite.com/2019/09/17/数据库/Mysql数据库相关/">
+
+
+
+
+
+  <title>Mysql数据库相关 | し半世烟尘</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bolgzxy.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bolgzxy.github.io/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bolgzxy.github.io/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bolgzxy.github.io/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bolgzxy.github.io/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/bolgzxy.github.io/2019/09/17/数据库/Mysql数据库相关/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/bolgzxy.github.io/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Mysql数据库相关</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-17T00:00:00+08:00">
+                2019-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bolgzxy.github.io/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Mysql数据库相关"><a href="#Mysql数据库相关" class="headerlink" title="Mysql数据库相关"></a>Mysql数据库相关</h3><p><strong>SQL基本语法</strong></p>
+<p>到底什么是SQL：SQL是关系型数据库通用的查询语言，不同的关系型数据库(SQLServer, MySQL，Oracle，Sqlite）都支持SQL。他们的SQL语法是大同小异的。</p>
+<a id="more"></a>
+
+<h4 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h4><h6 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a><strong>创建表</strong></h6><p>$$<br>CREATE TABLE &lt;表名&gt;([字段1 [类型] [其它约束] ], [字段2 [类型] [其它约束] ], …)<br>$$</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">--表:customers</span><br><span class="line">CREAT TABLE customers(</span><br><span class="line">    CustomerID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,</span><br><span class="line">    FirstName NVARCHAR (40) NOT NULL,</span><br><span class="line">    LastName NVARCHAR (20) NOT NULL,</span><br><span class="line">    Company NVARCHAR (80),</span><br><span class="line">    Address NVARCHAR (70),</span><br><span class="line">    City NVARCHAR (40),</span><br><span class="line">    State NVARCHAR (40),</span><br><span class="line">    Country NVARCHAR (40),</span><br><span class="line">    PostalCode NVARCHAR (10),</span><br><span class="line">    Phone NVARCHAR (24),</span><br><span class="line">    Fax NVARCHAR (24),</span><br><span class="line">    Email NVARCHAR (60) NOT NULL,</span><br><span class="line">    SupportRepId INTEGER,//这里这个键是外键</span><br><span class="line">    FOREING KEY(SupportRepId)</span><br><span class="line">    REFERENCES employees (EmployeeId) ON DELETE NO ACTION</span><br><span class="line">                                      ON UPDATE NO ACTION</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">CREATE TABLE customers ‐‐创建一个customers的表</span><br><span class="line">CustomerId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL  CustomerId字段 其类型为 INTEGER，具有主键约束、自动增长、非空约束。</span><br><span class="line">AUTO_INCREMENT。表示当在courses表中插入新行而不提供course_id列的值时，数据库系统将为该列生成一个</span><br><span class="line">整数值。</span><br><span class="line">FirstName NVARCHAR (40) NOT NULL,FirstName字段，类型为NVARCHAR（定长），长度为40，非空约束。</span><br><span class="line"></span><br><span class="line">FOREIGN KEY (</span><br><span class="line">SupportRepId</span><br><span class="line">)</span><br><span class="line">REFERENCES employees (EmployeeId) ON DELETE NO ACTION ON UPDATE NO ACTION</span><br><span class="line"></span><br><span class="line">以上，设置了外键，该外键，引用的是employees表中的EmployeeId（主键)。并且，这个外键在当前表的别名，叫做SupportRepId。</span><br></pre></td></tr></table></figure>
+
+<h6 id="更新表"><a href="#更新表" class="headerlink" title="更新表"></a><strong>更新表</strong></h6><p>$$<br>ALTER TABLE<br>$$</p>
+<p>使用<code>ADD</code>子句添加新列。</p>
+<p>使用<code>MODIFY</code>子句修改列的属性，例如：约束，默认值等。</p>
+<p>使用<code>DROP</code>子句删除列。</p>
+<p><strong>SQL ALTER TABLE MODIFY列</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AFTER TABLE table_name</span><br><span class="line">ADD new_cloum data_type coolumn_constraint[AFTER existing_colum];</span><br><span class="line"></span><br><span class="line">如果省略 AFTER 字句 会在最后一列之后添加新的列</span><br><span class="line"></span><br><span class="line">ALTER TABLE courses ADD credit_hours INT NOT NULL;</span><br></pre></td></tr></table></figure>
+
+<p>使用单个<code>ALTER TABLE</code>语句向表中添加多个列。 </p>
+<p>例如，以下语句一次将<code>fee</code>和<code>max_limit</code>列添加到<code>courses</code>表中，并将这些列放在<code>course_name</code>列之后。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE courses </span><br><span class="line"></span><br><span class="line">ADD fee NUMERIC (10, 2) AFTER course_name,</span><br><span class="line"></span><br><span class="line">ADD max_limit INT AFTER course_name;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ALTER TABLE MODIFY列</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE table_name</span><br><span class="line"></span><br><span class="line">MODIFY column_definition;</span><br><span class="line"></span><br><span class="line">请注意，应该修改没有数据的表的列的属性。 因为更改已包含数据的表中列的属性可能会导致永久性数据丢失。</span><br></pre></td></tr></table></figure>
+
+<p><strong>SQL ALTER TABLE DROP列</strong></p>
+<p>当表的列已过时且未被任何其他数据库对象(如触发器，视图，存储过程和存储过程)使用时，需要将其从表中删除。</p>
+<p>要删除一个或多个列，请使用以下语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">DROP</span> column_name,</span><br><span class="line"><span class="keyword">DROP</span> colum_name,</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">如果只删除其中的一个列</span><br><span class="line"><span class="keyword">AFTER</span> <span class="keyword">TABLE</span> course <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> fre;</span><br><span class="line"></span><br><span class="line">如果要删除多个列</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> courses </span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">COLUMN</span> max_limit,</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">COLUMN</span> credit_hours;</span><br></pre></td></tr></table></figure>
+
+<h6 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a><strong>删除表</strong></h6><p>**SQL DROP TABLE<br>$$<br>DROP TABLE [IF EXISTS] table name;<br>$$<br><code>DROP TABLE</code>语句永久删除表的数据和结构，某些数据库系统要求表中的记录必须为空时才能从数据库中删除。 这有助于防止意外删除仍在使用的表。</p>
+<p>要删除表中的所有数据，可以使用<a href="http://www.yiibai.com/sql/sql-delete.html" target="_blank" rel="noopener">DELETE</a>或<a href="http://www.yiibai.com/sql/sql-truncate-table.html" target="_blank" rel="noopener">TRUNCATE TABLE</a>语句。<br>要删除由另一个表的外键约束引用的表，必须在删除表之前禁用或删除外部约束。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> demo_contacts (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">INT</span> AUTO_INCREMENT PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">    first_name <span class="built_in">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    last_name <span class="built_in">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    relationship <span class="built_in">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    employee_id <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span>  demo_contacts;</span><br></pre></td></tr></table></figure>
+
+<h6 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a><strong>截断表</strong></h6><p>要删除表中的所有数据，可使用不带<code>WHERE</code>子句的<code>DELETE</code>语句。但是对于具有几百万行的大表，<code>DELETE</code>语句很慢且效率不高。</p>
+<p>要快速删除大表中的所有行，以下使用<code>TRUNCATE TABLE</code>语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<p>在此语法中，要指定在<code>TRUNCATE TABLE</code>[主语]后删除数据的<code>table_name</code>。</p>
+<p>某些数据库系统（如MySQL的和PostgreSQL的）直接网求允许省略<code>TABLE</code>关键字，因此<code>TRUNCATE TABLE</code>语句如下所示：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> table_name;</span><br><span class="line">或者是</span><br><span class="line"><span class="keyword">TRUNCATE</span> table_name1,table_name2,......</span><br></pre></td></tr></table></figure>
+
+<p>逻辑上，<code>TRUNCATE TABLE</code>语句和不带<code>WHERE</code>子句的<code>DELETE</code>语句提供了从表中删除所有数据的相同效果。但是，它们确实存在一些差别</p>
+<p>  使用<code>DELETE</code>，数据库可以回滚，但是<code>TRUNCATE TABLE</code>不行</p>
+<p>  要从外键约束引用的表中删除数据，不能使用<code>TRUNCATE TABLE</code>语句。在这种情况下，必须使用<code>DELETE</code>语句。</p>
+<p>  执行<code>TRUNCATE TABLE</code>语句后，某些数据库系统会将自动增量列（或标识，序列等）的值重置为其起始值。 <code>DELETE</code>语句不是这种情况。</p>
+<p>  带有<code>WHERE</code>[主语]的<code>DELETE</code>语句从表中删除部分数据，而<code>TRUNCATE TABLE</code>语句始终从表中删除所有数据。</p>
+<h6 id="重命名表"><a href="#重命名表" class="headerlink" title="重命名表"></a>重命名表</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name   </span><br><span class="line"></span><br><span class="line"><span class="keyword">RENAME</span> <span class="keyword">TO</span> new_table_name;</span><br><span class="line"></span><br><span class="line">或者是</span><br><span class="line"><span class="keyword">RENAME</span> old_table _name <span class="keyword">To</span> new_table_name;</span><br></pre></td></tr></table></figure>
+
+<h6 id="复制表"><a href="#复制表" class="headerlink" title="复制表"></a>复制表</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">INTO</span> &lt;destination_table&gt; <span class="keyword">FROM</span> &lt;source_table&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="增加列"><a href="#增加列" class="headerlink" title="增加列"></a>增加列</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> [<span class="keyword">COLUMN</span>] column_definition;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> candidates (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">INT</span> PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">    first_name <span class="built_in">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    last_name <span class="built_in">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    email <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">UNIQUE</span></span><br><span class="line">);</span><br><span class="line">增加一列</span><br><span class="line">ADD COLUMN phone VARCHAR(50);</span><br></pre></td></tr></table></figure>
+
+<h6 id="删除列"><a href="#删除列" class="headerlink" title="删除列"></a>删除列</h6><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">COLUMN</span> column_name1,</span><br><span class="line">[<span class="keyword">DROP</span> <span class="keyword">COLUMN</span> column_name2];</span><br><span class="line"></span><br><span class="line">下面是举例</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> candidates (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">INT</span> PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">    first_name <span class="built_in">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    last_name <span class="built_in">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    email <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">UNIQUE</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">DROP</span> CLOUMN first_name;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+       <div>
+       
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------　　　　文章看完啦　<i class="fa fa-heart"></i>　感谢您的阅读　　　　-------------</div>
+    
+</div>
+         
+      </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bolgzxy.github.io/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/17/数据库/SQL数据库操作/" rel="next" title="SQL数据库操作">
+                <i class="fa fa-chevron-left"></i> SQL数据库操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bolgzxy.github.io/2019/09/21/面试/面试没有回答上来的问题/" rel="prev" title="面试没有回答上来的问题">
+                面试没有回答上来的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/bolgzxy.github.io/images/user.jpg" alt="半世烟尘">
+            
+              <p class="site-author-name" itemprop="name">半世烟尘</p>
+              <p class="site-description motion-element" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bolgzxy.github.io/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bolgzxy.github.io/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bolgzxy.github.io/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/COTVZHAOYUEXING" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1998lovexs@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql数据库相关"><span class="nav-number">1.</span> <span class="nav-text">Mysql数据库相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表操作"><span class="nav-number">1.1.</span> <span class="nav-text">表操作</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#创建表"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#更新表"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">更新表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除表"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">删除表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#截断表"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">截断表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#重命名表"><span class="nav-number">1.1.0.5.</span> <span class="nav-text">重命名表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#复制表"><span class="nav-number">1.1.0.6.</span> <span class="nav-text">复制表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#增加列"><span class="nav-number">1.1.0.7.</span> <span class="nav-text">增加列</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除列"><span class="nav-number">1.1.0.8.</span> <span class="nav-text">删除列</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+
+  
+</div>
+
+
+
+
+
+
+  <span class="post-meta-divider">一江白练伏地藏，万丈红霞落佛光</span>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bolgzxy.github.io/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bolgzxy.github.io/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bolgzxy.github.io/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
