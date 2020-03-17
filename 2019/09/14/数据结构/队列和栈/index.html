@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、队列和栈队列—–&amp;gt;先入先出 栈——–&amp;gt;后入先出 1、队列">
+<meta name="keywords" content="队列和栈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="队列和栈">
+<meta property="og:url" content="https://yoursite.com/2019/09/14/数据结构/队列和栈/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="一、队列和栈队列—–&amp;gt;先入先出 栈——–&amp;gt;后入先出 1、队列">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/08/14/screen-shot-2018-05-03-at-151021.png">
+<meta property="og:image" content="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/06/03/screen-shot-2018-06-02-at-203523.png">
+<meta property="og:updated_time" content="2020-03-17T05:56:06.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="队列和栈">
+<meta name="twitter:description" content="一、队列和栈队列—–&amp;gt;先入先出 栈——–&amp;gt;后入先出 1、队列">
+<meta name="twitter:image" content="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/08/14/screen-shot-2018-05-03-at-151021.png">
+
+<link rel="canonical" href="https://yoursite.com/2019/09/14/数据结构/队列和栈/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+// background
+
+body {
+  background-image:url(../images/user.jpg);
+  height:100%;
+  width:100%;
+  background-repeat:repeat-x;
+  background-attachment:fixed;
+  background-size:cover;
+}
+  <title>队列和栈 | し半世烟尘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/14/数据结构/队列和栈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          队列和栈
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-14T00:00:00+08:00">2019-09-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:56:06" itemprop="dateModified" datetime="2020-03-17T13:56:06+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、队列和栈"><a href="#一、队列和栈" class="headerlink" title="一、队列和栈"></a>一、队列和栈</h2><p>队列—–&gt;先入先出</p>
+<p>栈——–&gt;后入先出</p>
+<h4 id="1、队列"><a href="#1、队列" class="headerlink" title="1、队列"></a>1、队列</h4><p><img src="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/08/14/screen-shot-2018-05-03-at-151021.png" alt="img"></p>
+<a id="more"></a>
+
+<p>在 FIFO 数据结构中，将首先处理添加到队列中的第一个元素。</p>
+<p>如上图所示，队列是典型的 FIFO 数据结构。插入（insert）操作也称作入队（enqueue），新元素始终被添加在队列的末尾。 删除（delete）操作也被称为出队（dequeue)。 你只能移除第一个元素</p>
+<h5 id="1-1队列的实现"><a href="#1-1队列的实现" class="headerlink" title="1.1队列的实现"></a>1.1队列的实现</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyQueue</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="comment">// store elements</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; data;       </span><br><span class="line">        <span class="comment">// a pointer to indicate the start position</span></span><br><span class="line">        <span class="keyword">int</span> p_start;            </span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        MyQueue() &#123;p_start = <span class="number">0</span>;&#125;</span><br><span class="line">    <span class="comment">//插入数据</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">enQueue</span><span class="params">(<span class="keyword">int</span> x)</span> </span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            data.push_back(x);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">//删除数据</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">deQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (isEmpty()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p_start++;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">Front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> data[p_start];</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">isEmpty</span><span class="params">()</span>  </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> p_start &gt;= data.size();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyQueue q;</span><br><span class="line">    q.enQueue(<span class="number">5</span>);</span><br><span class="line">    q.enQueue(<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">if</span> (!q.isEmpty()) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; q.Front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q.deQueue();</span><br><span class="line">    <span class="keyword">if</span> (!q.isEmpty()) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; q.Front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q.deQueue();</span><br><span class="line">    <span class="keyword">if</span> (!q.isEmpty()) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; q.Front() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-1-2循环队列"><a href="#1-1-2循环队列" class="headerlink" title="1.1.2循环队列"></a>1.1.2循环队列</h5><h5 id="1-1-3队列和BFS（广度优先搜索）"><a href="#1-1-3队列和BFS（广度优先搜索）" class="headerlink" title="1.1.3队列和BFS（广度优先搜索）"></a>1.1.3队列和BFS（广度优先搜索）</h5><p>  问题1.岛屿数量</p>
+<p>​        </p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">&gt; <span class="keyword">public</span>:</span><br><span class="line">&gt;     <span class="function"><span class="keyword">int</span> <span class="title">numIslands</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">&gt;         <span class="keyword">if</span> (grid.size()==<span class="number">0</span>||grid[<span class="number">0</span>].size()==<span class="number">0</span>)</span><br><span class="line">&gt;             <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&gt;      <span class="keyword">int</span> cols=grid.size();</span><br><span class="line">&gt;      <span class="keyword">int</span> row=grid[<span class="number">0</span>].size();</span><br><span class="line">&gt;          <span class="keyword">int</span> conut=<span class="number">0</span>;</span><br><span class="line">&gt;         <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt;visit(cols+<span class="number">1</span>,<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(row+<span class="number">1</span>));</span><br><span class="line">&gt;         <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;cols;i++)</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;             <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;row;j++)</span><br><span class="line">&gt;             &#123;</span><br><span class="line">&gt;                 <span class="keyword">if</span>(grid[i][j]==<span class="string">'0'</span>||visit[i][j])</span><br><span class="line">&gt;                     <span class="keyword">continue</span>;</span><br><span class="line">&gt;                 Check_grid(grid,visit,i,j);</span><br><span class="line">&gt;                 ++conut;</span><br><span class="line">&gt;             &#125;</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         <span class="keyword">return</span> conut;</span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt;     <span class="comment">//完成一件事的时候分为多解决问题</span></span><br><span class="line">&gt;     </span><br><span class="line">&gt;     <span class="function"><span class="keyword">void</span> <span class="title">Check_grid</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt;&amp;visit,<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">&gt;    <span class="keyword">if</span>(i&lt;<span class="number">0</span>||i&gt;=grid.size()||j&lt;<span class="number">0</span>||j&gt;=grid[<span class="number">0</span>].size()||grid[i][j]==<span class="string">'0'</span>||visit[i][j])</span><br><span class="line">&gt;         <span class="keyword">return</span> ;</span><br><span class="line">&gt;      visit[i][j]=<span class="literal">true</span>;</span><br><span class="line">&gt;      Check_grid(grid,visit,i,j<span class="number">-1</span>);</span><br><span class="line">&gt;      Check_grid(grid,visit,i,j+<span class="number">1</span>);</span><br><span class="line">&gt;      Check_grid(grid,visit,i<span class="number">-1</span>,j);</span><br><span class="line">&gt;      Check_grid(grid,visit,i+<span class="number">1</span>,j);</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="2、栈"><a href="#2、栈" class="headerlink" title="2、栈"></a>2、栈</h4><p>在 LIFO 数据结构中，将首先处理添加到队列中的最新元素。</p>
+<p>与队列不同，栈是一个 LIFO 数据结构。通常，插入操作在栈中被称作入栈 push 。与队列类似，总是在堆栈的末尾添加一个新元素。但是，删除操作，退栈 pop ，将始终删除队列中相对于它的最后一个元素</p>
+<p><img src="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/06/03/screen-shot-2018-06-02-at-203523.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/Moonstar-Z.github.io/tags/队列和栈/" rel="tag"># 队列和栈</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/14/C++基础知识/深拷贝和浅拷贝/" rel="prev" title="深拷贝和浅拷贝">
+      <i class="fa fa-chevron-left"></i> 深拷贝和浅拷贝
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/14/设计模式/设计模式/" rel="next" title="设计模式">
+      设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、队列和栈"><span class="nav-number">1.</span> <span class="nav-text">一、队列和栈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、队列"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、队列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1队列的实现"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">1.1队列的实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2循环队列"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">1.1.2循环队列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3队列和BFS（广度优先搜索）"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">1.1.3队列和BFS（广度优先搜索）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、栈"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、栈</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">半世烟尘</p>
+  <div class="site-description" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

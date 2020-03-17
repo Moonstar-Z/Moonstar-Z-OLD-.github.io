@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）前言： 二叉树是一种非常重要的数据结构，很多其它数据结构都是基于二叉树的基础演变而来的。对于二叉树，有深度遍历和广度遍历，深度遍历有前序、中序以及后序三种遍历方法，广度遍历即我们平常所说的层次遍历。因为树的定义本身就是递归定义，因此采用递归的方法去实现树的三种遍历不仅容易理解而且代码很简洁，而对于广度遍历来说，需要其他数据结构的支撑，比如">
+<meta name="keywords" content="树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树遍历">
+<meta property="og:url" content="https://yoursite.com/2019/09/14/数据结构/二叉树的遍历方式/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）前言： 二叉树是一种非常重要的数据结构，很多其它数据结构都是基于二叉树的基础演变而来的。对于二叉树，有深度遍历和广度遍历，深度遍历有前序、中序以及后序三种遍历方法，广度遍历即我们平常所说的层次遍历。因为树的定义本身就是递归定义，因此采用递归的方法去实现树的三种遍历不仅容易理解而且代码很简洁，而对于广度遍历来说，需要其他数据结构的支撑，比如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20150204101904649?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTXlfSm9icw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2020-03-17T05:41:35.067Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉树遍历">
+<meta name="twitter:description" content="二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）前言： 二叉树是一种非常重要的数据结构，很多其它数据结构都是基于二叉树的基础演变而来的。对于二叉树，有深度遍历和广度遍历，深度遍历有前序、中序以及后序三种遍历方法，广度遍历即我们平常所说的层次遍历。因为树的定义本身就是递归定义，因此采用递归的方法去实现树的三种遍历不仅容易理解而且代码很简洁，而对于广度遍历来说，需要其他数据结构的支撑，比如">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20150204101904649?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTXlfSm9icw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+
+<link rel="canonical" href="https://yoursite.com/2019/09/14/数据结构/二叉树的遍历方式/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+// background
+
+body {
+  background-image:url(../images/user.jpg);
+  height:100%;
+  width:100%;
+  background-repeat:repeat-x;
+  background-attachment:fixed;
+  background-size:cover;
+}
+  <title>二叉树遍历 | し半世烟尘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/14/数据结构/二叉树的遍历方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二叉树遍历
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-14T00:00:00+08:00">2019-09-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:41:35" itemprop="dateModified" datetime="2020-03-17T13:41:35+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）"><a href="#二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）" class="headerlink" title="二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）"></a>二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）</h2><p>前言：</p>
+<p>二叉树是一种非常重要的数据结构，很多其它数据结构都是基于二叉树的基础演变而来的。对于二叉树，有深度遍历和广度遍历，深度遍历有前序、中序以及后序三种遍历方法，广度遍历即我们平常所说的层次遍历。因为树的定义本身就是递归定义，因此采用递归的方法去实现树的三种遍历不仅容易理解而且代码很简洁，而对于广度遍历来说，需要其他数据结构的支撑，比如堆了。所以，对于一段代码来说，可读性有时候要比代码本身的效率要重要的多。</p>
+<a id="more"></a>
+
+<p>四种主要的遍历思想为：</p>
+<p>前序遍历：根结点 —&gt; 左子树 —&gt; 右子树</p>
+<p>中序遍历：左子树—&gt; 根结点 —&gt; 右子树</p>
+<p>后序遍历：左子树 —&gt; 右子树 —&gt; 根结点</p>
+<p>层次遍历：只需按层次遍历即可</p>
+<p>例如，求下面二叉树的各种遍历</p>
+<p><img src="https://img-blog.csdn.net/20150204101904649?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTXlfSm9icw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
+<p>前序遍历：1  2  4  5  7  8  3  6 </p>
+<p>中序遍历：4  2  7  5  8  1  3  6</p>
+<p>后序遍历：4  7  8  5  2  6  3  1</p>
+<p>层次遍历：1  2  3  4  5  6  7  8</p>
+<h4 id="1，前序遍历（先序遍历）"><a href="#1，前序遍历（先序遍历）" class="headerlink" title="1，前序遍历（先序遍历）"></a>1，前序遍历（先序遍历）</h4><p>根据上文提到的遍历思路：根结点 —&gt; 左子树 —&gt; 右子树，很容易写出递归版本</p>
+<p>一般的正常遍历的递归代码</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">preOrderTraverse1</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">&gt; 		<span class="keyword">if</span> (root != null) &#123;</span><br><span class="line">&gt; 			System.out.print(root.val+<span class="string">"  "</span>);</span><br><span class="line">&gt; 			preOrderTraverse1(root.left);</span><br><span class="line">&gt; 			preOrderTraverse1(root.right);</span><br><span class="line">&gt; 		&#125;</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt; <span class="comment">//下面是迭代的版本</span></span><br><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">preOrderTraverse2</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">&gt; 		LinkedList&lt;TreeNode&gt; <span class="built_in">stack</span> = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">&gt; 		TreeNode pNode = root;</span><br><span class="line">&gt; 		<span class="keyword">while</span> (pNode != null || !<span class="built_in">stack</span>.isEmpty()) &#123;</span><br><span class="line">&gt; 			<span class="keyword">if</span> (pNode != null) &#123;</span><br><span class="line">&gt; 				System.out.print(pNode.val+<span class="string">"  "</span>);</span><br><span class="line">&gt; 				<span class="built_in">stack</span>.push(pNode);</span><br><span class="line">&gt; 				pNode = pNode.left;</span><br><span class="line">&gt; 			&#125; <span class="keyword">else</span> &#123; <span class="comment">//pNode == null &amp;&amp; !stack.isEmpty()</span></span><br><span class="line">&gt; 				TreeNode node = <span class="built_in">stack</span>.pop();</span><br><span class="line">&gt; 				pNode = node.right;</span><br><span class="line">&gt; 			&#125;</span><br><span class="line">&gt; 		&#125;</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>下面是Leecode 144题就是先序遍历的题目</p>
+<blockquote>
+<p>给定一个二叉树，返回它的 前序 遍历。</p>
+<p> 示例:</p>
+<p>输入: [1,null,2,3]<br>   1<br>    <br>     2<br>    /<br>   3 </p>
+<p>输出: [1,2,3]</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>/**</p>
+<ul>
+<li><p>Definition for a binary tree node.</p>
+</li>
+<li><p>struct TreeNode {</p>
+</li>
+<li><p>int val;</p>
+</li>
+<li><p>TreeNode *left;</p>
+</li>
+<li><p>TreeNode *right;</p>
+</li>
+<li><p>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</p>
+</li>
+<li><p>};</p>
+</li>
+</ul>
+<p><em>/<br>class Solution {<br>public:<br>vector<int> preorderTraversal(TreeNode</int></em> root) {<br>  //递归版本，效率极其低下<br>   vector<int>result;<br>   vector<int>data;<br>   if(root!=NULL)<br>   {</int></int></p>
+<pre><code>result.push_back(root-&gt;val);
+data=preorderTraversal(root-&gt;left);
+result.insert(result.end(),data.begin(),data.end());
+data=preorderTraversal(root-&gt;right);
+result.insert(result.end(),data.begin(),data.end());</code></pre><p>   }</p>
+<pre><code>return result;</code></pre><p>   //下面是迭代版本</p>
+<pre><code>vector&lt;int&gt;result;
+stack&lt;TreeNode*&gt;data;
+TreeNode* a1=root;</code></pre><p>   if(a1==NULL)</p>
+<pre><code>return result;</code></pre><p>   while(a1!=NULL||!data.empty())<br>   {</p>
+<pre><code>while(a1!=NULL)
+{
+    result.push_back(a1-&gt;val);   
+    data.push(a1);
+    a1=a1-&gt;left;
+}
+if(!data.empty()){
+a1=data.top();
+data.pop(); 
+a1=a1-&gt;right;
+}</code></pre><p>   }<br>   return result;</p>
+<p>}<br>};<br>执行用时 :4 ms, 在所有 C++ 提交中击败了84.55%的用户<br>内存消耗 :9.2 MB, 在所有 C++ 提交中击败了43.67%的用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h4 id="2，中序遍历"><a href="#2，中序遍历" class="headerlink" title="2，中序遍历"></a>2，中序遍历</h4><p>根据上文提到的遍历思路：左子树 —&gt; 根结点 —&gt; 右子树，很容易写出递归版本：</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inOrderTraverse1</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">&gt; 		<span class="keyword">if</span> (root != null) &#123;</span><br><span class="line">&gt; 			inOrderTraverse1(root.left);</span><br><span class="line">&gt; 			System.out.print(root.val+<span class="string">"  "</span>);</span><br><span class="line">&gt; 			inOrderTraverse1(root.right);</span><br><span class="line">&gt; 		&#125;</span><br><span class="line">&gt; 	&#125;                                        </span><br><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inOrderTraverse2</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">&gt; 		LinkedList&lt;TreeNode&gt; <span class="built_in">stack</span> = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">&gt; 		TreeNode pNode = root;</span><br><span class="line">&gt; 		<span class="keyword">while</span> (pNode != null || !<span class="built_in">stack</span>.isEmpty()) &#123;</span><br><span class="line">&gt; 			<span class="keyword">if</span> (pNode != null) &#123;</span><br><span class="line">&gt; 				<span class="built_in">stack</span>.push(pNode);</span><br><span class="line">&gt; 				pNode = pNode.left;</span><br><span class="line">&gt; 			&#125; <span class="keyword">else</span> &#123; <span class="comment">//pNode == null &amp;&amp; !stack.isEmpty()</span></span><br><span class="line">&gt; 				TreeNode node = <span class="built_in">stack</span>.pop();</span><br><span class="line">&gt; 				System.out.print(node.val+<span class="string">"  "</span>);</span><br><span class="line">&gt; 				pNode = node.right;</span><br><span class="line">&gt; 			&#125;</span><br><span class="line">&gt; 		&#125;</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>Leecode94题就是二叉树的中序遍历</p>
+<ul>
+<li><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<ul>
+<li>Definition for a binary tree node.<ul>
+<li>struct TreeNode {</li>
+<li>int val;</li>
+<li>TreeNode *left;</li>
+<li>TreeNode *right;</li>
+<li>TreeNode(int x) : val(x), left(NULL), right(NULL) {}</li>
+<li>};<br><em>/<br>class Solution {<br>public:<br>vector<int> inorderTraversal(TreeNode</int></em> root) {<br>  /* 递归<pre><code>vector&lt;int&gt;result;
+vector&lt;int&gt;data;
+if(root!=NULL)
+{
+ data=inorderTraversal(root-&gt;left);
+ result.insert(result.end(),data.begin(),data.end());
+ result.push_back(root-&gt;val);
+ data=inorderTraversal(root-&gt;right);
+ result.insert(result.end(),data.begin(),data.end());
+}
+ return result;*/
+//迭代 用栈
+vector&lt;int&gt;result;
+stack&lt;TreeNode*&gt;data;
+TreeNode* a=root;
+while(a||!data.empty())
+{
+    while(a!=NULL)
+    {
+       data.push(a);
+    a=a-&gt;left;
+ }
+ a=data.top();
+ data.pop();
+ result.push_back(a-&gt;val);
+ a=a-&gt;right;</code></pre> }<br>  return result;<br>}<br>};<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">#### 3，后序遍历</span><br><span class="line"></span><br><span class="line">根据上文提到的遍历思路：左子树 ---&gt; 右子树 ---&gt; 根结点，很容易写出递归版本：</span><br><span class="line"></span><br><span class="line">&gt; ```C++</span><br><span class="line">&gt; public void postOrderTraverse1(TreeNode root) &#123;</span><br><span class="line">&gt; 		if (root != null) &#123;</span><br><span class="line">&gt; 			postOrderTraverse1(root.left);</span><br><span class="line">&gt; 			postOrderTraverse1(root.right);</span><br><span class="line">&gt; 			System.out.print(root.val+&quot;  &quot;);</span><br><span class="line">&gt; 		&#125;</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<p>Leecode145后序遍历二叉树</p>
+<ul>
+<li><blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"> &gt; <span class="comment">/**</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - Definition for a binary tree node.</span></span><br><span class="line"><span class="comment">    &gt; - struct TreeNode &#123;</span></span><br><span class="line"><span class="comment">    &gt; - int val;</span></span><br><span class="line"><span class="comment">    &gt; - TreeNode *left;</span></span><br><span class="line"><span class="comment">    &gt; - TreeNode *right;</span></span><br><span class="line"><span class="comment">    &gt; - TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment">    &gt; - &#125;;</span></span><br><span class="line"><span class="comment">    &gt;   */</span></span><br><span class="line">    &gt;   <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    &gt;   <span class="keyword">public</span>:</span><br><span class="line">    &gt;   <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; postorderTraversal(TreeNode* root) &#123;</span><br><span class="line">    &gt;       <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;result;</span><br><span class="line">    &gt;       <span class="built_in">stack</span>&lt;TreeNode*&gt;data;<span class="comment">//存放已经遍历的节点</span></span><br><span class="line">    &gt;       TreeNode* a=root; <span class="comment">//这个节点用于遍历整个二叉树</span></span><br><span class="line">    &gt;       TreeNode* last=root; <span class="comment">//设置的最后一次访问的节点      </span></span><br><span class="line">    &gt;       <span class="keyword">while</span>(a!=<span class="literal">NULL</span>||!data.empty())</span><br><span class="line">    &gt;       &#123;</span><br><span class="line">    &gt;           <span class="keyword">while</span>(a!=<span class="literal">NULL</span>)</span><br><span class="line">    &gt;           &#123;</span><br><span class="line">    &gt;               data.push(a);</span><br><span class="line">    &gt;               a=a-&gt;left;</span><br><span class="line">    &gt;           &#125;</span><br><span class="line">    &gt;               a=data.top();<span class="comment">//这一步是关键，因为不断的从占中获取最上面的元素。</span></span><br><span class="line">    &gt;               <span class="keyword">if</span>(a-&gt;right==<span class="literal">NULL</span>||a-&gt;right==last)</span><br><span class="line">    &gt;               &#123;</span><br><span class="line">    &gt;               result.push_back(a-&gt;val);</span><br><span class="line">    &gt;               data.pop();</span><br><span class="line">    &gt;               last=a;</span><br><span class="line">&gt;               a=<span class="literal">NULL</span>;              </span><br><span class="line"> &gt;                &#125;</span><br><span class="line"> &gt;           <span class="keyword">else</span></span><br><span class="line"> &gt;           &#123;</span><br><span class="line"> &gt;           a=a-&gt;right;</span><br><span class="line"> &gt;           &#125;</span><br><span class="line"> &gt;       &#125;</span><br><span class="line"> &gt;       <span class="keyword">return</span> result;</span><br><span class="line"> &gt;   &#125;</span><br><span class="line"> &gt;   &#125;;</span><br><span class="line"> &gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<h4 id="4，层序遍历"><a href="#4，层序遍历" class="headerlink" title="4，层序遍历"></a>4，层序遍历</h4><p>层次遍历的代码比较简单，只需要一个队列即可，先在队列中加入根结点。之后对于任意一个结点来说，在其出队列的时候，访问之。同时如果左孩子和右孩子有不为空的，入队列。代码如下</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">&gt; <span class="keyword">public</span>:</span><br><span class="line">&gt;     <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; levelOrder(TreeNode* root) </span><br><span class="line">&gt;     &#123;</span><br><span class="line">&gt;         <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ret;</span><br><span class="line">&gt;         <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">&gt;         <span class="keyword">if</span>(root)</span><br><span class="line">&gt;             q.push(root);</span><br><span class="line">&gt;         <span class="keyword">while</span>(!q.empty())</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;             TreeNode* temp = q.front();</span><br><span class="line">&gt;             ret.push_back(temp-&gt;val);</span><br><span class="line">&gt;             q.pop();</span><br><span class="line">&gt;             <span class="keyword">if</span>(temp-&gt;left)</span><br><span class="line">&gt;                 q.push(temp-&gt;left);</span><br><span class="line">&gt;             <span class="keyword">if</span>(temp-&gt;right)</span><br><span class="line">&gt;                 q.push(temp-&gt;right);</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;         <span class="keyword">return</span> ret;</span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>Leecode 102题二叉树的层序遍历</p>
+<ul>
+<li><blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">/**</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - Definition for a binary tree node.</span></span><br><span class="line"><span class="comment">&gt; - struct TreeNode &#123;</span></span><br><span class="line"><span class="comment">&gt; - int val;</span></span><br><span class="line"><span class="comment">&gt; - TreeNode *left;</span></span><br><span class="line"><span class="comment">&gt; - TreeNode *right;</span></span><br><span class="line"><span class="comment">&gt; - TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment">&gt; - &#125;;</span></span><br><span class="line"><span class="comment">&gt;   */</span></span><br><span class="line">&gt;   <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">&gt;   <span class="keyword">public</span>:</span><br><span class="line">&gt;    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrder(TreeNode* root) &#123;</span><br><span class="line">&gt;       <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;result;</span><br><span class="line">&gt;         pre(root,<span class="number">0</span>,result);</span><br><span class="line">&gt;        <span class="keyword">return</span> result;</span><br><span class="line">&gt;        </span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;    <span class="function"><span class="keyword">void</span> <span class="title">pre</span><span class="params">(TreeNode* root,<span class="keyword">int</span> i,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp;result)</span></span></span><br><span class="line">&gt;    &#123;</span><br><span class="line">&gt;        <span class="keyword">if</span>(!root)</span><br><span class="line">&gt;            <span class="keyword">return</span>;</span><br><span class="line">&gt;        <span class="keyword">if</span>(i&gt;=result.size())</span><br><span class="line">&gt;        &#123;</span><br><span class="line">&gt;            result.push_back(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &#123;&#125;);</span><br><span class="line">&gt;        &#125;</span><br><span class="line">&gt;        result[i].push_back(root-&gt;val);</span><br><span class="line">&gt;        pre(root-&gt;left,i+<span class="number">1</span>,result);</span><br><span class="line">&gt;        pre(root-&gt;right,i+<span class="number">1</span>,result);</span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;   &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<p>Leecode 107 二叉树的层序遍历II </p>
+<ul>
+<li><blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">/**</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - Definition for a binary tree node.</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - struct TreeNode &#123;</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - int val;</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - TreeNode *left;</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - TreeNode *right;</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment">&gt; </span></span><br><span class="line"><span class="comment">&gt; - &#125;;</span></span><br><span class="line"><span class="comment">&gt;   */</span></span><br><span class="line">&gt;   <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">&gt;   <span class="keyword">public</span>:</span><br><span class="line">&gt;    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrderBottom(TreeNode* root) &#123;</span><br><span class="line">&gt;       <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;result;</span><br><span class="line">&gt; </span><br><span class="line">&gt;   ```</span><br><span class="line">&gt;     pre(root,<span class="number">0</span>,result);</span><br><span class="line">&gt;     <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;result1(result.size());</span><br><span class="line">&gt;    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;result.size();i++)</span><br><span class="line">&gt;    &#123;</span><br><span class="line">&gt;      result1[i]=result[result.size()<span class="number">-1</span>-i];  </span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;    <span class="keyword">return</span> result1;</span><br><span class="line">&gt;   ```</span><br><span class="line">&gt; </span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;    <span class="function"><span class="keyword">void</span> <span class="title">pre</span><span class="params">(TreeNode* root,<span class="keyword">int</span> i,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp;result)</span></span></span><br><span class="line">&gt;    &#123;</span><br><span class="line">&gt;        <span class="keyword">if</span>(!root)</span><br><span class="line">&gt;            <span class="keyword">return</span>;</span><br><span class="line">&gt;        <span class="keyword">if</span>(i&gt;=result.size())</span><br><span class="line">&gt;        &#123;</span><br><span class="line">&gt;            result.push_back(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &#123;&#125;);</span><br><span class="line">&gt;        &#125;</span><br><span class="line">&gt; </span><br><span class="line">&gt;   ```</span><br><span class="line">&gt;    pre(root-&gt;left,i+<span class="number">1</span>,result);</span><br><span class="line">&gt;    pre(root-&gt;right,i+<span class="number">1</span>,result);</span><br><span class="line">&gt;    result[i].push_back(root-&gt;val);</span><br><span class="line">&gt;   ```</span><br><span class="line">&gt; </span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;   &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<p> ```</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/Moonstar-Z.github.io/tags/树/" rel="tag"># 树</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/14/设计模式/单例模式/" rel="prev" title="单例模式">
+      <i class="fa fa-chevron-left"></i> 单例模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/14/字符串/大小写字母之间的转换/" rel="next" title="大小写字母的转换">
+      大小写字母的转换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）"><span class="nav-number">1.</span> <span class="nav-text">二叉树遍历（前序、中序、后序、层次遍历、深度优先、广度优先）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1，前序遍历（先序遍历）"><span class="nav-number">1.0.1.</span> <span class="nav-text">1，前序遍历（先序遍历）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2，中序遍历"><span class="nav-number">1.0.2.</span> <span class="nav-text">2，中序遍历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4，层序遍历"><span class="nav-number">1.0.3.</span> <span class="nav-text">4，层序遍历</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">半世烟尘</p>
+  <div class="site-description" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="C++内置了数组的类型，在使用数组的时候，必须指定数组的长度，一旦配置了就不能改变了，通常我们的做法是：尽量配置一个大的空间，以免不够用，这样做的缺点是比较浪费空间，预估空间不当会引起很多不便。 STL实现了一个Vector容器，该容器就是来改善数组的缺点。vector是一个动态空间，随着元素的加入，它的内部机制会自行扩充以容纳新元素。因此，vector的运用对于内存的合理利用与运用的灵活性有很大">
+<meta name="keywords" content="C++ STL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vector">
+<meta property="og:url" content="https://yoursite.com/2019/09/16/STL/Vector/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="C++内置了数组的类型，在使用数组的时候，必须指定数组的长度，一旦配置了就不能改变了，通常我们的做法是：尽量配置一个大的空间，以免不够用，这样做的缺点是比较浪费空间，预估空间不当会引起很多不便。 STL实现了一个Vector容器，该容器就是来改善数组的缺点。vector是一个动态空间，随着元素的加入，它的内部机制会自行扩充以容纳新元素。因此，vector的运用对于内存的合理利用与运用的灵活性有很大">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkg2cxastj30iu0dg0u0.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkg2eirlej30fz0c7dgm.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNc79gw1fbkg2dn6tcj30dw0fgabf.jpg">
+<meta property="og:updated_time" content="2020-03-17T05:51:53.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vector">
+<meta name="twitter:description" content="C++内置了数组的类型，在使用数组的时候，必须指定数组的长度，一旦配置了就不能改变了，通常我们的做法是：尽量配置一个大的空间，以免不够用，这样做的缺点是比较浪费空间，预估空间不当会引起很多不便。 STL实现了一个Vector容器，该容器就是来改善数组的缺点。vector是一个动态空间，随着元素的加入，它的内部机制会自行扩充以容纳新元素。因此，vector的运用对于内存的合理利用与运用的灵活性有很大">
+<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/006tNc79gw1fbkg2cxastj30iu0dg0u0.jpg">
+
+<link rel="canonical" href="https://yoursite.com/2019/09/16/STL/Vector/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+// background
+
+body {
+  background-image:url(../images/user.jpg);
+  height:100%;
+  width:100%;
+  background-repeat:repeat-x;
+  background-attachment:fixed;
+  background-size:cover;
+}
+  <title>Vector | し半世烟尘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/Vector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vector
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:51:53" itemprop="dateModified" datetime="2020-03-17T13:51:53+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>C++内置了数组的类型，在使用数组的时候，必须指定数组的长度，一旦配置了就不能改变了，通常我们的做法是：尽量配置一个大的空间，以免不够用，这样做的缺点是比较浪费空间，预估空间不当会引起很多不便。</p>
+<p>STL实现了一个Vector容器，该容器就是来改善数组的缺点。vector是一个动态空间，随着元素的加入，它的内部机制会自行扩充以容纳新元素。因此，vector的运用对于内存的合理利用与运用的灵活性有很大的帮助，再也不必因为害怕空间不足而一开始就配置一个大容量数组了，vector是用多少就分配多少。</p>
+<p>要想实现动态分配数组，Vector内部就需要对空间控制做到有效率的掌控，这些机制要如何运作才能高效地实现动态分配呢？本篇博客就从源代码的角度带你领略一下Vector容器内部的构造艺术。</p>
+<a id="more"></a>
+
+<h1 id="Vector概述"><a href="#Vector概述" class="headerlink" title="Vector概述"></a>Vector概述</h1><p>大家知道，初始化一个数组的时候，需要给数组分配一块内存，数组中的数据都是按序存放的。vector也是如此，再初始化的时候给vector容器分配一块内存，用来存放容器中的数据，一旦分配的内存不足以存放新加入的数据时，就需要扩充空间。STLVector的做法是：重新开辟一段新的空间，将原空间的数据迁移过去，然后新加入的数据存放在新空间之后并释放掉原有空间。</p>
+<p>在这个过程中，配置新空间-&gt;数据移动-&gt;释放旧空间会带来一定的时间成本，所以必须尽可能高效的实现，STL的Vector设计中对这一部分做了相当大的优化，使得时间成本尽可能的小。下面就一起去看看这些优秀的设计吧↓。</p>
+<h1 id="Vector的数据结构"><a href="#Vector的数据结构" class="headerlink" title="Vector的数据结构"></a>Vector的数据结构</h1><p>我们从最简单的开始，Vector的数据结构相当简单，由于需要判断内存是否够用，所以要用到三个指针，分别指向头，目前使用空间的尾，目前可用空间的尾。其源代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;//<span class="title">alloc</span>是<span class="title">STL</span>的空间配置器</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="comment">// 这里提供STL标准的allocator接口</span></span><br><span class="line">  <span class="keyword">typedef</span> simple_alloc&lt;value_type, Alloc&gt; data_allocator;</span><br><span class="line"></span><br><span class="line">  iterator start;               <span class="comment">// 内存空间起始点</span></span><br><span class="line">  iterator finish;              <span class="comment">// 当前使用的内存空间结束点</span></span><br><span class="line">  iterator end_of_storage;      <span class="comment">// 实际分配内存空间的结束点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每当初始化一个vector的时候，先分配一段内存，称为目前可用空间，大小为end_of_storage - start + 1，当往vector里面加入数据的时候，finish就往后移，代表目前已使用的空间，这样做的好处是，不用频繁的扩充空间和转移数据，使得时间成本下降。</p>
+<p>在上述代码中，我们看到vector采用了STL标准的空间配置其接口，关于空间配置器的知识在<a href="https://zcheng.ren/2016/08/17/STLAllocater/" target="_blank" rel="noopener">带你深入理解STL之空间配置器(思维导图+源码)</a>一文中有讲解，如有疑惑，可以跳转复习一下再来！</p>
+<p>vector提供了如下函数来支持获取其数据结构中的相关参数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指向vector首元素的迭代器</span></span><br><span class="line"><span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> start; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取指向vector尾元素的迭代器</span></span><br><span class="line"><span class="function">iterator <span class="title">end</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> finish; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回当前对象个数，即已使用空间的大小</span></span><br><span class="line"><span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(end() - begin()); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回重新分配内存前最多能存储的对象个数，即目前可用空间的大小</span></span><br><span class="line"><span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> size_type(end_of_storage - begin()); &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Vector的迭代器"><a href="#Vector的迭代器" class="headerlink" title="Vector的迭代器"></a>Vector的迭代器</h1><p>既然是STL的容器，必须要满足迭代器的相关要求，如对迭代器有疑惑的，参考<a href="https://zcheng.ren/2016/08/23/STLIterator/" target="_blank" rel="noopener">带你深入理解STL之迭代器和Traits技法 </a>。</p>
+<p>vector维护的是一段连续的内存空间，所以不论容器中元素的型别为何，普通指针都可以作为vector的迭代器而满足所有必要的条件。vector支持随机存取，所以vector提供的是Random Access Iterator。</p>
+<p>下面来看看vector关于迭代器的源码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// vector内部是连续内存空间，所以迭代器采用原生指针即可</span></span><br><span class="line">  <span class="keyword">typedef</span> value_type* iterator;  								</span><br><span class="line"></span><br><span class="line">  <span class="comment">//以下为满足Traits功能定义的内嵌型别</span></span><br><span class="line">  <span class="keyword">typedef</span> T value_type;</span><br><span class="line">  <span class="keyword">typedef</span> value_type* pointer;                  </span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type* const_pointer;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type* const_iterator;</span><br><span class="line">  <span class="keyword">typedef</span> value_type&amp; reference;                </span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">const</span> value_type&amp; const_reference;</span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="vector的构造函数"><a href="#vector的构造函数" class="headerlink" title="vector的构造函数"></a>vector的构造函数</h1><h2 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h2><p>在使用vector的时候，我们通常会有如下定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;</span><br></pre></td></tr></table></figure>
+
+<p>在上述定义中，调用了vector的默认构造函数，其默认不分配内存空间，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vector的默认构造函数默认不分配内存空间</span></span><br><span class="line"><span class="built_in">vector</span>() : start(<span class="number">0</span>), finish(<span class="number">0</span>), end_of_storage(<span class="number">0</span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="带参构造函数"><a href="#带参构造函数" class="headerlink" title="带参构造函数"></a>带参构造函数</h2><p>通常，vector的初始化可以指定元素个数和初始化类型。如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec(<span class="number">10</span>,<span class="number">1</span>); <span class="comment">// 将vec初始化为10个1</span></span><br></pre></td></tr></table></figure>
+
+<p>vector提供下面的构造函数以支持上述初始化操作：</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gw1fbkg2cxastj30iu0dg0u0.jpg" alt="带参构造函数"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造函数，允许指定vector的元素个数和初值</span></span><br><span class="line"><span class="built_in">vector</span>(size_type n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line"><span class="built_in">vector</span>(<span class="keyword">int</span> n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line"><span class="built_in">vector</span>(<span class="keyword">long</span> n, <span class="keyword">const</span> T&amp; value) &#123; fill_initialize(n, value); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 需要对象提供默认构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">vector</span><span class="params">(size_type n)</span> </span>&#123; fill_initialize(n, T()); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 填充并予以初始化</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fill_initialize</span><span class="params">(size_type n, <span class="keyword">const</span> T&amp; value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  start = allocate_and_fill(n, value);</span><br><span class="line">  finish = start + n;                         <span class="comment">// 设置当前使用内存空间的结束点</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//这里不过多的分配内存</span></span><br><span class="line">  end_of_storage = finish;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 配置一块大小为n的内存空间，并予以填充</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">iterator <span class="title">allocate_and_fill</span><span class="params">(size_type n, <span class="keyword">const</span> T&amp; x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 调用STL的空间配置器配置一块大小为n的内存空间</span></span><br><span class="line">  iterator result = data_allocator::allocate(n); </span><br><span class="line"></span><br><span class="line">  <span class="comment">// 调用底层函数uninitialized_fill_n予以填充</span></span><br><span class="line">  uninitialized_fill_n(result, n, x);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面调用了uninitialized_fill_n函数，这个函数是STL的内存基本处理函数，存放在stl_uninitialized.h中，下面来看看它的源码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果copy construction和operator =等效, 并且destructor is trivial</span></span><br><span class="line"><span class="comment">// 那么就可以使用本函数</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">Size</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">ForwardIterator</span></span></span><br><span class="line"><span class="class">__<span class="title">uninitialized_fill_n_aux</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">Size</span> <span class="title">n</span>,</span></span><br><span class="line"><span class="class">                           <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">x</span>, __<span class="title">true_type</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">return</span> fill_n(first, n, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 不是POD类型使用以下函数</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">Size</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ForwardIterator</span></span></span><br><span class="line"><span class="class">__<span class="title">uninitialized_fill_n_aux</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">Size</span> <span class="title">n</span>,</span></span><br><span class="line"><span class="class">                           <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">x</span>, __<span class="title">false_type</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ForwardIterator cur = first;</span><br><span class="line">  <span class="keyword">for</span> ( ; n &gt; <span class="number">0</span>; --n, ++cur)</span><br><span class="line">    construct(&amp;*cur, x);</span><br><span class="line">  <span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 利用type_traits来判断是否是POD类型</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">Size</span>, <span class="title">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">T1</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">ForwardIterator</span> __<span class="title">uninitialized_fill_n</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">Size</span> <span class="title">n</span>,</span></span><br><span class="line"><span class="class">    <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">x</span>, <span class="title">T1</span>*)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">typedef</span> <span class="keyword">typename</span> __type_traits&lt;T1&gt;::is_POD_type is_POD;</span><br><span class="line">  <span class="keyword">return</span> __uninitialized_fill_n_aux(first, n, x, is_POD());</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 利用Iterator_traits来萃取出其值类型</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">Size</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">ForwardIterator</span> <span class="title">uninitialized_fill_n</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">Size</span> <span class="title">n</span>,</span></span><br><span class="line"><span class="class">    <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">x</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">return</span> __uninitialized_fill_n(first, n, x, value_type(first));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="vector的元素操作函数"><a href="#vector的元素操作函数" class="headerlink" title="vector的元素操作函数"></a>vector的元素操作函数</h1><h2 id="push-back"><a href="#push-back" class="headerlink" title="push_back()"></a>push_back()</h2><p>push_back()函数将新元素插入于vector的尾部，该函数再完成这一操作的时候，先检查是否还有备用空间，如果有直接再备用空间上构造函数；如果没有就扩充空间，通过重新配置一块大空间，移动数据，释放原空间的操作来完成push_back操作。其源代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">// 向容器尾追加一个元素, 可能导致内存重新分配</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">//                          push_back(const T&amp; x)</span></span><br><span class="line"><span class="comment">//                                   |</span></span><br><span class="line"><span class="comment">//                                   |---------------- 容量已满?</span></span><br><span class="line"><span class="comment">//                                   |</span></span><br><span class="line"><span class="comment">//               ----------------------------</span></span><br><span class="line"><span class="comment">//           No  |                          |  Yes</span></span><br><span class="line"><span class="comment">//               |                          |</span></span><br><span class="line"><span class="comment">//               ↓                          ↓</span></span><br><span class="line"><span class="comment">//      construct(finish, x);       insert_aux(end(), x);</span></span><br><span class="line"><span class="comment">//      ++finish;                           |</span></span><br><span class="line"><span class="comment">//                                          |------ 内存不足, 重新分配</span></span><br><span class="line"><span class="comment">//                                          |       大小为原来的2倍</span></span><br><span class="line"><span class="comment">//      new_finish = data_allocator::allocate(len);       &lt;stl_alloc.h&gt;</span></span><br><span class="line"><span class="comment">//      uninitialized_copy(start, position, new_start);   &lt;stl_uninitialized.h&gt;</span></span><br><span class="line"><span class="comment">//      construct(new_finish, x);                         &lt;stl_construct.h&gt;</span></span><br><span class="line"><span class="comment">//      ++new_finish;</span></span><br><span class="line"><span class="comment">//      uninitialized_copy(position, finish, new_finish); &lt;stl_uninitialized.h&gt;</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(<span class="keyword">const</span> T&amp; x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// 内存满足条件则直接追加元素, 否则需要重新分配内存空间</span></span><br><span class="line">  <span class="keyword">if</span> (finish != end_of_storage) &#123;</span><br><span class="line">    construct(finish, x);</span><br><span class="line">    ++finish;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    insert_aux(end(), x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">// 提供插入操作</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">//                 insert_aux(iterator position, const T&amp; x)</span></span><br><span class="line"><span class="comment">//                                   |</span></span><br><span class="line"><span class="comment">//                                   |---------------- 容量是否足够?</span></span><br><span class="line"><span class="comment">//                                   ↓</span></span><br><span class="line"><span class="comment">//              -----------------------------------------</span></span><br><span class="line"><span class="comment">//        Yes   |                                       | No</span></span><br><span class="line"><span class="comment">//              |                                       |</span></span><br><span class="line"><span class="comment">//              ↓                                       |</span></span><br><span class="line"><span class="comment">// 从opsition开始, 整体向后移动一个位置                     |</span></span><br><span class="line"><span class="comment">// construct(finish, *(finish - 1));                    |</span></span><br><span class="line"><span class="comment">// ++finish;                                            |</span></span><br><span class="line"><span class="comment">// T x_copy = x;                                        |</span></span><br><span class="line"><span class="comment">// copy_backward(position, finish - 2, finish - 1);     |</span></span><br><span class="line"><span class="comment">// *position = x_copy;                                  |</span></span><br><span class="line"><span class="comment">//                                                      ↓</span></span><br><span class="line"><span class="comment">//                            data_allocator::allocate(len);</span></span><br><span class="line"><span class="comment">//                            uninitialized_copy(start, position, new_start);</span></span><br><span class="line"><span class="comment">//                            construct(new_finish, x);</span></span><br><span class="line"><span class="comment">//                            ++new_finish;</span></span><br><span class="line"><span class="comment">//                            uninitialized_copy(position, finish, new_finish);</span></span><br><span class="line"><span class="comment">//                            destroy(begin(), end());</span></span><br><span class="line"><span class="comment">//                            deallocate();</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:insert_aux(iterator position, <span class="keyword">const</span> T&amp; x)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (finish != end_of_storage) &#123;       <span class="comment">// 还有剩余内存</span></span><br><span class="line">    construct(finish, *(finish - <span class="number">1</span>));</span><br><span class="line">    ++finish;</span><br><span class="line">    T x_copy = x;</span><br><span class="line">    copy_backward(position, finish - <span class="number">2</span>, finish - <span class="number">1</span>);</span><br><span class="line">    *position = x_copy;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;        </span><br><span class="line">    <span class="comment">// 内存不足, 需要重新分配</span></span><br><span class="line">    <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">    <span class="comment">//配置原则：如果原大小为0，就配置1个元素大小</span></span><br><span class="line">    <span class="comment">//        如果原大小不为0，就配置原大小的两倍</span></span><br><span class="line">    <span class="comment">//				前半段用来放置原数据，后半段用来放置新数据</span></span><br><span class="line">    <span class="keyword">const</span> size_type len = old_size != <span class="number">0</span> ? <span class="number">2</span> * old_size : <span class="number">1</span>;</span><br><span class="line">    iterator new_start = data_allocator::allocate(len);</span><br><span class="line">    iterator new_finish = new_start;</span><br><span class="line">    <span class="comment">// 将内存重新配置</span></span><br><span class="line">    __STL_TRY &#123;</span><br><span class="line">    	<span class="comment">// 将原vector的内容拷贝到新vector</span></span><br><span class="line">      new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">      <span class="comment">// 构造新元素并赋值为x</span></span><br><span class="line">      construct(new_finish, x);</span><br><span class="line">      <span class="comment">// 调整finish的位置</span></span><br><span class="line">      ++new_finish;</span><br><span class="line">      <span class="comment">// 将安插点的原内容也拷贝过来</span></span><br><span class="line">      new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">    &#125;</span><br><span class="line">		<span class="comment">// 分配失败则抛出异常</span></span><br><span class="line">    <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">      destroy(new_start, new_finish);</span><br><span class="line">      data_allocator::deallocate(new_start, len);</span><br><span class="line">      <span class="keyword">throw</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 析构原容器中的对象</span></span><br><span class="line">    destroy(begin(), end());</span><br><span class="line">    <span class="comment">// 释放原容器分配的内存</span></span><br><span class="line">    deallocate();</span><br><span class="line">    <span class="comment">// 调整内存指针状态</span></span><br><span class="line">    start = new_start;</span><br><span class="line">    finish = new_finish;</span><br><span class="line">    end_of_storage = new_start + len;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="pop-back-函数"><a href="#pop-back-函数" class="headerlink" title="pop_back()函数"></a>pop_back()函数</h2><p>pop_back函数弹出当前尾端元素。其源代码比较简单，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//调整finish</span></span><br><span class="line">  --finish;</span><br><span class="line">  <span class="comment">//释放调弹出的元素</span></span><br><span class="line">  destroy(finish);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="erase-函数"><a href="#erase-函数" class="headerlink" title="erase()函数"></a>erase()函数</h2><p>erase函数支持两个版本：</p>
+<ul>
+<li>清除某个位置上的元素</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">iterator <span class="title">erase</span><span class="params">(iterator position)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (position + <span class="number">1</span> != end())</span><br><span class="line">    copy(position + <span class="number">1</span>, finish, position); <span class="comment">//将[position+1,finish]移到[position,finish]</span></span><br><span class="line">  --finish;</span><br><span class="line">  destroy(finish);</span><br><span class="line">  <span class="keyword">return</span> position;<span class="comment">//返回删除点的迭代器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>清除某个区间上的所有函数</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">iterator <span class="title">erase</span><span class="params">(iterator first, iterator last)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  iterator i = copy(last, finish, first);<span class="comment">//关于copy函数的源码分析在以后的博文中会提到</span></span><br><span class="line">  <span class="comment">// 析构掉需要析构的元素</span></span><br><span class="line">  destroy(i, finish);</span><br><span class="line">  finish = finish - (last - first);</span><br><span class="line">  <span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里放上两张《STL源码剖析》中的图，便于理解这一过程：</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkg2eirlej30fz0c7dgm.jpg" alt="erase函数"></p>
+<p>有上述erase函数，可以衍生出一个函数，用来清除迭代器中所有的元素</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123; erase(begin(), end()); &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="insert-函数"><a href="#insert-函数" class="headerlink" title="insert()函数"></a>insert()函数</h2><p>insert函数实现的功能是：从position开始，插入n个元素，元素的初值均为x。其源码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">// 在指定位置插入n个元素</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">//             insert(iterator position, size_type n, const T&amp; x)</span></span><br><span class="line"><span class="comment">//                                   |</span></span><br><span class="line"><span class="comment">//                                   |---------------- 插入元素个数是否为0?</span></span><br><span class="line"><span class="comment">//                                   ↓</span></span><br><span class="line"><span class="comment">//              -----------------------------------------</span></span><br><span class="line"><span class="comment">//        No    |                                       | Yes</span></span><br><span class="line"><span class="comment">//              |                                       |</span></span><br><span class="line"><span class="comment">//              |                                       ↓</span></span><br><span class="line"><span class="comment">//              |                                    return;</span></span><br><span class="line"><span class="comment">//              |----------- 内存是否足够?</span></span><br><span class="line"><span class="comment">//              |</span></span><br><span class="line"><span class="comment">//      -------------------------------------------------</span></span><br><span class="line"><span class="comment">//  Yes |                                               | No</span></span><br><span class="line"><span class="comment">//      |                                               |</span></span><br><span class="line"><span class="comment">//      |------ (finish - position) &gt; n?                |</span></span><br><span class="line"><span class="comment">//      |       分别调整指针                              |</span></span><br><span class="line"><span class="comment">//      ↓                                               |</span></span><br><span class="line"><span class="comment">//    ----------------------------                      |</span></span><br><span class="line"><span class="comment">// No |                          | Yes                  |</span></span><br><span class="line"><span class="comment">//    |                          |                      |</span></span><br><span class="line"><span class="comment">//    ↓                          ↓                      |</span></span><br><span class="line"><span class="comment">// 插入操作, 调整指针           插入操作, 调整指针           |</span></span><br><span class="line"><span class="comment">//                                                      ↓</span></span><br><span class="line"><span class="comment">//            data_allocator::allocate(len);</span></span><br><span class="line"><span class="comment">//            new_finish = uninitialized_copy(start, position, new_start);</span></span><br><span class="line"><span class="comment">//            new_finish = uninitialized_fill_n(new_finish, n, x);</span></span><br><span class="line"><span class="comment">//            new_finish = uninitialized_copy(position, finish, new_finish);</span></span><br><span class="line"><span class="comment">//            destroy(start, finish);</span></span><br><span class="line"><span class="comment">//            deallocate();</span></span><br><span class="line"><span class="comment">////////////////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">vector</span>&lt;T, Alloc&gt;:</span>:insert(iterator position, size_type n, <span class="keyword">const</span> T&amp; x)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 如果n为0则不进行任何操作</span></span><br><span class="line">  <span class="keyword">if</span> (n != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (size_type(end_of_storage - finish) &gt;= n) &#123;      <span class="comment">// 剩下的内存够分配</span></span><br><span class="line">      T x_copy = x;</span><br><span class="line">      <span class="keyword">const</span> size_type elems_after = finish - position; <span class="comment">// 计算插入点之后的现有元素个数</span></span><br><span class="line">      iterator old_finish = finish;</span><br><span class="line">      <span class="keyword">if</span> (elems_after &gt; n) &#123;  <span class="comment">// 插入点之后的现有元素个数大于新增元素个数，见下图1</span></span><br><span class="line">      	<span class="comment">// 先复制尾部n个元素到尾部</span></span><br><span class="line">        uninitialized_copy(finish - n, finish, finish);</span><br><span class="line">        finish += n; <span class="comment">// 调整新的finish</span></span><br><span class="line">        <span class="comment">// 从后往前复制剩余的旧元素</span></span><br><span class="line">        copy_backward(position, old_finish - n, old_finish);</span><br><span class="line">        <span class="comment">// 从position开始填充新元素</span></span><br><span class="line">        fill(position, position + n, x_copy);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">      	<span class="comment">// 插入点之后的现有元素个数小于新增元素个数，见下图2</span></span><br><span class="line">      	<span class="comment">// 先在尾部填充n - elems_after个新增元素</span></span><br><span class="line">        uninitialized_fill_n(finish, n - elems_after, x_copy);</span><br><span class="line">        <span class="comment">// 调整新的finish</span></span><br><span class="line">        finish += n - elems_after;</span><br><span class="line">        <span class="comment">// 复制[position,old_finish]区间的数到新的finish之后</span></span><br><span class="line">        uninitialized_copy(position, old_finish, finish);</span><br><span class="line">        <span class="comment">// 调整finish</span></span><br><span class="line">        finish += elems_after;</span><br><span class="line">        <span class="comment">// 从position开始填充新增元素</span></span><br><span class="line">        fill(position, old_finish, x_copy);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;      <span class="comment">// 剩下的内存不够分配, 需要重新分配</span></span><br><span class="line">      <span class="keyword">const</span> size_type old_size = size();</span><br><span class="line">      <span class="keyword">const</span> size_type len = old_size + max(old_size, n);</span><br><span class="line">      iterator new_start = data_allocator::allocate(len);</span><br><span class="line">      iterator new_finish = new_start;</span><br><span class="line">      __STL_TRY &#123;</span><br><span class="line">      	<span class="comment">// 将旧的vector中插入点之前的元素复制到新空间，见下图3</span></span><br><span class="line">        new_finish = uninitialized_copy(start, position, new_start);</span><br><span class="line">        <span class="comment">// 将新增元素复制到新空间</span></span><br><span class="line">        new_finish = uninitialized_fill_n(new_finish, n, x);</span><br><span class="line">        <span class="comment">// 将插入点之后的元素复制到新空间</span></span><br><span class="line">        new_finish = uninitialized_copy(position, finish, new_finish);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">        destroy(new_start, new_finish);</span><br><span class="line">        data_allocator::deallocate(new_start, len);</span><br><span class="line">        <span class="keyword">throw</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 清除并释放原有vector</span></span><br><span class="line">      destroy(start, finish);</span><br><span class="line">      deallocate();</span><br><span class="line">      <span class="comment">// 调整新的start和finish</span></span><br><span class="line">      start = new_start;</span><br><span class="line">      finish = new_finish;</span><br><span class="line">      end_of_storage = new_start + len;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述操作可以使插入操作达到最高的效率。配合以下图解更容易理解：</p>
+<ul>
+<li><p>插入点之后的现有元素个数大于新增元素个数的情况</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gw1fbkg2dn6tcj30dw0fgabf.jpg" alt="第一种情况"></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/Moonstar-Z.github.io/tags/C-STL/" rel="tag"># C++ STL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/16/STL/merge/" rel="prev" title="Merge">
+      <i class="fa fa-chevron-left"></i> Merge
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/16/STL/Set和Map/" rel="next" title="Set Map">
+      Set Map <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector概述"><span class="nav-number">1.</span> <span class="nav-text">Vector概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector的数据结构"><span class="nav-number">2.</span> <span class="nav-text">Vector的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector的迭代器"><span class="nav-number">3.</span> <span class="nav-text">Vector的迭代器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector的构造函数"><span class="nav-number">4.</span> <span class="nav-text">vector的构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#默认构造函数"><span class="nav-number">4.1.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带参构造函数"><span class="nav-number">4.2.</span> <span class="nav-text">带参构造函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vector的元素操作函数"><span class="nav-number">5.</span> <span class="nav-text">vector的元素操作函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#push-back"><span class="nav-number">5.1.</span> <span class="nav-text">push_back()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop-back-函数"><span class="nav-number">5.2.</span> <span class="nav-text">pop_back()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#erase-函数"><span class="nav-number">5.3.</span> <span class="nav-text">erase()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insert-函数"><span class="nav-number">5.4.</span> <span class="nav-text">insert()函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">半世烟尘</p>
+  <div class="site-description" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

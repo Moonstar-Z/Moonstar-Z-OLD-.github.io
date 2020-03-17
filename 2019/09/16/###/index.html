@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="写在文章的最前面，画图的颜色和形状的控制  1、散点图">
+<meta name="keywords" content="画图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python画图">
+<meta property="og:url" content="https://yoursite.com/2019/09/16/###/index.html">
+<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:description" content="写在文章的最前面，画图的颜色和形状的控制  1、散点图">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570259816725.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570159541439.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570160176285.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570260935359.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570160681285.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570161100420.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570161239095.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570162019986.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190418202726603.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fpaml1ZHU=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570163752589.png">
+<meta property="og:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570168196399.png">
+<meta property="og:updated_time" content="2020-03-17T05:52:30.899Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python画图">
+<meta name="twitter:description" content="写在文章的最前面，画图的颜色和形状的控制  1、散点图">
+<meta name="twitter:image" content="https://yoursite.com/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570259816725.png">
+
+<link rel="canonical" href="https://yoursite.com/2019/09/16/###/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+// background
+
+body {
+  background-image:url(../images/user.jpg);
+  height:100%;
+  width:100%;
+  background-repeat:repeat-x;
+  background-attachment:fixed;
+  background-size:cover;
+}
+  <title>python画图 | し半世烟尘</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">し半世烟尘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/###/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python画图
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:52:30" itemprop="dateModified" datetime="2020-03-17T13:52:30+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>写在文章的最前面</strong>，<strong>画图的颜色和形状的控制</strong></p>
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570259816725.png" alt="1570259816725"></p>
+<h4 id="1、散点图"><a href="#1、散点图" class="headerlink" title="1、散点图"></a>1、散点图</h4><a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">y1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]     <span class="comment">#第一组数据</span></span><br><span class="line"></span><br><span class="line">x2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">y2 = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]    <span class="comment">#第二组数据</span></span><br><span class="line"></span><br><span class="line">n = <span class="number">10</span></span><br><span class="line">x3 = np.random.randint(<span class="number">0</span>, <span class="number">5</span>, n)</span><br><span class="line">y3 = np.random.randint(<span class="number">0</span>, <span class="number">5</span>, n)   <span class="comment">#使用随机数产生</span></span><br><span class="line"></span><br><span class="line">plt.scatter(x1, y1, marker = <span class="string">'x'</span>,color = <span class="string">'red'</span>, s = <span class="number">40</span> ,label = <span class="string">'First'</span>)</span><br><span class="line"><span class="comment">#                   记号形状       颜色           点的大小    设置标签</span></span><br><span class="line">plt.scatter(x2, y2, marker = <span class="string">'+'</span>, color = <span class="string">'blue'</span>, s = <span class="number">40</span>, label = <span class="string">'Second'</span>)</span><br><span class="line">plt.scatter(x3, y3, marker = <span class="string">'o'</span>, color = <span class="string">'green'</span>, s = <span class="number">40</span>, label = <span class="string">'Third'</span>)</span><br><span class="line">plt.legend(loc = <span class="string">'best'</span>)    <span class="comment"># 设置 图例所在的位置 使用推荐位置</span></span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下</p>
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570159541439.png" alt="1570159541439"></p>
+<h4 id="2、折线图"><a href="#2、折线图" class="headerlink" title="2、折线图"></a>2、折线图</h4><h5 id="2-1、普通折线图"><a href="#2-1、普通折线图" class="headerlink" title="2.1、普通折线图"></a>2.1、普通折线图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">x = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>])     <span class="comment">#必须从1开始，而且间隔为1</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 元组表示：x = (1,2,3,4,5,6,7,8)</span></span><br><span class="line"><span class="comment"># 列表表示：x = [1,2,3,4,5,6,7,8]</span></span><br><span class="line"> </span><br><span class="line">y = np.array([<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">10</span>,<span class="number">15</span>])</span><br><span class="line">plt.plot(x,y,linewidth=<span class="number">3</span>)    <span class="comment">#这里也只有两个主要参数来支撑折线图的绘制</span></span><br><span class="line">plt.xlabel(<span class="string">"time(s)"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"value(m)"</span>)</span><br><span class="line">plt.title(<span class="string">"A simple plot"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图</p>
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570160176285.png" alt="1570160176285"></p>
+<h5 id="2-2、多线折线图"><a href="#2-2、多线折线图" class="headerlink" title="2.2、多线折线图"></a>2.2、多线折线图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">migtime = [<span class="number">16.6</span>, <span class="number">16.5</span>, <span class="number">16.9</span>, <span class="number">17.1</span>, <span class="number">17.2</span>, <span class="number">18.1</span>, <span class="number">18.2</span>, <span class="number">18.4</span>, <span class="number">19.4</span>, <span class="number">19.3</span>, <span class="number">20.4</span>, <span class="number">20.3</span>, <span class="number">22</span>, <span class="number">21.7</span>, <span class="number">22</span>]</span><br><span class="line">delay = [<span class="number">108</span>, <span class="number">98</span>, <span class="number">92</span>, <span class="number">83</span>, <span class="number">87</span>, <span class="number">77</span>, <span class="number">85</span>, <span class="number">48</span>, <span class="number">31</span>, <span class="number">58</span>, <span class="number">35</span>, <span class="number">43</span>, <span class="number">36</span>, <span class="number">31</span>, <span class="number">19</span>]</span><br><span class="line"></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'migration speed (MB/s)'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'migration time (s); request delay (ms)'</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""set interval for y label"""</span></span><br><span class="line">yticks = range(<span class="number">10</span>, <span class="number">110</span>, <span class="number">10</span>)</span><br><span class="line">ax.set_yticks(yticks)</span><br><span class="line"></span><br><span class="line"><span class="string">"""set min and max value for axes"""</span></span><br><span class="line">ax.set_ylim([<span class="number">10</span>, <span class="number">110</span>])</span><br><span class="line">ax.set_xlim([<span class="number">58</span>, <span class="number">42</span>])</span><br><span class="line"></span><br><span class="line">x = [<span class="number">57</span>, <span class="number">56</span>, <span class="number">55</span>, <span class="number">54</span>, <span class="number">53</span>, <span class="number">52</span>, <span class="number">51</span>, <span class="number">50</span>, <span class="number">49</span>, <span class="number">48</span>, <span class="number">47</span>, <span class="number">46</span>, <span class="number">45</span>, <span class="number">44</span>, <span class="number">43</span>]</span><br><span class="line">plt.plot(x, migtime, <span class="string">"x-"</span>, label=<span class="string">"migration time"</span>)</span><br><span class="line">plt.plot(x, delay, <span class="string">"+-"</span>, label=<span class="string">"request delay"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""open the grid"""</span></span><br><span class="line">plt.grid(<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">plt.legend(bbox_to_anchor=(<span class="number">1.0</span>, <span class="number">1</span>), loc=<span class="number">1</span>, borderaxespad=<span class="number">0.</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570260935359.png" alt="1570260935359"></p>
+<h4 id="3、柱形图"><a href="#3、柱形图" class="headerlink" title="3、柱形图"></a>3、柱形图</h4><h5 id="3-1、普通柱形图"><a href="#3-1、普通柱形图" class="headerlink" title="3.1、普通柱形图"></a>3.1、普通柱形图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">data = [<span class="number">5</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">25</span>, <span class="number">10</span>]</span><br><span class="line"></span><br><span class="line">labels = [<span class="string">'Tom'</span>, <span class="string">'Dick'</span>, <span class="string">'Harry'</span>, <span class="string">'Slim'</span>, <span class="string">'Jim'</span>]</span><br><span class="line">plt.bar(range(len(data)), data, color=<span class="string">'rgb'</span>,tick_label=labels)  <span class="comment"># or `color=['r', 'g', 'b']`</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图</p>
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570160681285.png" alt="1570160681285"></p>
+<h5 id="3-2、并列柱状图"><a href="#3-2、并列柱状图" class="headerlink" title="3.2、并列柱状图"></a>3.2、并列柱状图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">size = <span class="number">5</span></span><br><span class="line">x = np.arange(size)</span><br><span class="line"></span><br><span class="line">a = np.random.random(size)</span><br><span class="line">b = np.random.random(size)</span><br><span class="line">c = np.random.random(size)</span><br><span class="line"></span><br><span class="line">total_width, n = <span class="number">0.9</span>, <span class="number">3</span></span><br><span class="line">width = total_width / n           <span class="comment">#每一个的宽度</span></span><br><span class="line">x = x - (total_width - width) / <span class="number">2</span>  <span class="comment">#第一个宽度的起始位置</span></span><br><span class="line"></span><br><span class="line">plt.bar(x, a, width=width, label=<span class="string">'a'</span>)</span><br><span class="line">plt.bar(x + width, b, width=width, label=<span class="string">'b'</span>)</span><br><span class="line">plt.bar(x + <span class="number">2</span> * width, c, width=width, label=<span class="string">'c'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570161100420.png" alt="1570161100420"></p>
+<h5 id="3-3、正负条形图"><a href="#3-3、正负条形图" class="headerlink" title="3.3、正负条形图"></a>3.3、正负条形图</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">a = np.array([<span class="number">5</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">25</span>, <span class="number">10</span>])</span><br><span class="line">b = np.array([<span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">plt.barh(range(len(a)), a)</span><br><span class="line">plt.barh(range(len(b)), -b)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570161239095.png" alt="1570161239095"></p>
+<h4 id="4、饼形图"><a href="#4、饼形图" class="headerlink" title="4、饼形图"></a>4、饼形图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>]=[<span class="string">'SimHei'</span>] <span class="comment">#解决中文乱码</span></span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">9</span>)) <span class="comment">#调节图形大小</span></span><br><span class="line">labels = [<span class="string">u'大型'</span>,<span class="string">u'中型'</span>,<span class="string">u'小型'</span>,<span class="string">u'微型'</span>] <span class="comment">#定义标签</span></span><br><span class="line">sizes = [<span class="number">46</span>,<span class="number">253</span>,<span class="number">321</span>,<span class="number">66</span>] <span class="comment">#每块值</span></span><br><span class="line">colors = [<span class="string">'red'</span>,<span class="string">'yellowgreen'</span>,<span class="string">'lightskyblue'</span>,<span class="string">'yellow'</span>] <span class="comment">#每块颜色定义</span></span><br><span class="line">explode = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>) <span class="comment">#将某一块分割出来，值越大分割出的间隙越大</span></span><br><span class="line">patches,text1,text2 = plt.pie(sizes,</span><br><span class="line">                      explode=explode,</span><br><span class="line">                      labels=labels,</span><br><span class="line">                      colors=colors,</span><br><span class="line">                      autopct = <span class="string">'%3.2f%%'</span>, <span class="comment">#数值保留固定小数位</span></span><br><span class="line">                      shadow = <span class="literal">False</span>, <span class="comment">#无阴影设置</span></span><br><span class="line">                      startangle =<span class="number">90</span>, <span class="comment">#逆时针起始角度设置</span></span><br><span class="line">                      pctdistance = <span class="number">0.6</span>) <span class="comment">#数值距圆心半径倍数距离</span></span><br><span class="line"><span class="comment">#patches饼图的返回值，texts1饼图外label的文本，texts2饼图内部的文本</span></span><br><span class="line"><span class="comment"># x，y轴刻度设置一致，保证饼图为圆形</span></span><br><span class="line">plt.axis(<span class="string">'equal'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>效果图</p>
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570162019986.png" alt="1570162019986"></p>
+<h4 id="5、箱形图"><a href="#5、箱形图" class="headerlink" title="5、箱形图"></a>5、箱形图</h4><p>如下灰色框里的就是箱形图（英文：Box plot）：又称为盒须图、盒式图、盒状图或箱线图，是一种用作显示一组数据分散情况资料的统计图。因型状如箱子而得名。</p>
+<p>箱形图最大的优点就是不受异常值的影响，可以以一种相对稳定的方式描述数据的离散分布情况。</p>
+<p>五数概括法：即用下面的五个数来概括数据（最小值；第1四分位数(Q1)；中位数(Q2)；第3四分位数(Q3)；最大值），箱形图与之类似。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190418202726603.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fpaml1ZHU=,size_16,color_FFFFFF,t_70" alt="箱形图"></p>
+<p>举个例子<br>$$<br>num=[1,2,3,4,5,6,7,8]<br>$$<br><strong>中位数Q2</strong>=4.5</p>
+<p><strong>下四分分位数Q1</strong>=2.75：是怎么计算出来的呢？首先序列长度n=8，(1+n)/4=2.25，说明上四分位数在第2.25个位置数，实际上这个数是不存在的，但我们知道这个位置是在第2个数与第3个数之间的。假设从第2个数到第3个数之间是均匀分布的。那么第2.25个数就是第二个数<em>0.25+第三个数</em>0.75，即2<em>0.25+3</em>0.75=0.5+2.25=2.75。<br><strong>下四分位数Q3=6.25</strong>：这个下四分位数所在位置计算方法同上，只不过是(1+n)/4<em>3=6.75，这个是个介于第六个位置与第七个位置之间的地方。对应的具体的值是0.75</em>6+0.25*7=6.25。</p>
+<p><strong>四分位距IQR</strong>=Q3-Q1</p>
+<p><strong>上限</strong>=（Q3+1.5IQR，max）取最小</p>
+<p><strong>下限</strong>=（Q1-1.5IQR ，min)取最大</p>
+<p><strong>异常值：</strong>比如num=[1,2,3,4,5,6,7,8,20]，20会被识别为异常值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>]=[<span class="string">'SimHei'</span>] <span class="comment">#解决中文乱码</span></span><br><span class="line">data = [<span class="number">1200</span>, <span class="number">1300</span>, <span class="number">1400</span>, <span class="number">1500</span>, <span class="number">1600</span>, <span class="number">1700</span>, <span class="number">1800</span>, <span class="number">1900</span>, <span class="number">2000</span>, <span class="number">2100</span>]</span><br><span class="line"> </span><br><span class="line">df = pd.DataFrame(data)</span><br><span class="line">df.plot.box(title=<span class="string">"箱形图"</span>)</span><br><span class="line">plt.grid(linestyle=<span class="string">"--"</span>, alpha=<span class="number">0.3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570163752589.png" alt="1570163752589"></p>
+<h4 id="6、画直方图与概率分布曲线"><a href="#6、画直方图与概率分布曲线" class="headerlink" title="6、画直方图与概率分布曲线"></a>6、画直方图与概率分布曲线</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">mu, sigma = <span class="number">0.5</span>, <span class="number">0.1</span></span><br><span class="line">s = np.random.normal(mu, sigma, <span class="number">80000</span>)</span><br><span class="line">count, bins, ignored = plt.hist(s, <span class="number">20</span>, normed=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">plt.plot(bins, <span class="number">1</span>/(sigma * np.sqrt(<span class="number">2</span> * np.pi)) *np.exp( - (bins - mu)**<span class="number">2</span> / (<span class="number">2</span> * sigma**<span class="number">2</span>) ),linewidth=<span class="number">2</span>, color=<span class="string">'y'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/Moonstar-Z.github.io/.com//C:%5CUsers%5CCCTVZYX%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570168196399.png" alt="1570168196399"></p>
+<h4 id="7、更高级的画图技巧"><a href="#7、更高级的画图技巧" class="headerlink" title="7、更高级的画图技巧"></a>7、更高级的画图技巧</h4><p><a href="https://vlight.me/2018/04/14/Numerical-Python-Plotting-and-Visualization/" target="_blank" rel="noopener">https://vlight.me/2018/04/14/Numerical-Python-Plotting-and-Visualization/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/Moonstar-Z.github.io/tags/画图/" rel="tag"># 画图</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/16/STL/Deque/" rel="prev" title="Deque">
+      <i class="fa fa-chevron-left"></i> Deque
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/17/算法/各种排序的方法/" rel="next" title="各种排序方法总结">
+      各种排序方法总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、散点图"><span class="nav-number">1.</span> <span class="nav-text">1、散点图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、折线图"><span class="nav-number">2.</span> <span class="nav-text">2、折线图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、普通折线图"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、普通折线图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、多线折线图"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、多线折线图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、柱形图"><span class="nav-number">3.</span> <span class="nav-text">3、柱形图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1、普通柱形图"><span class="nav-number">3.1.</span> <span class="nav-text">3.1、普通柱形图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2、并列柱状图"><span class="nav-number">3.2.</span> <span class="nav-text">3.2、并列柱状图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3、正负条形图"><span class="nav-number">3.3.</span> <span class="nav-text">3.3、正负条形图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、饼形图"><span class="nav-number">4.</span> <span class="nav-text">4、饼形图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、箱形图"><span class="nav-number">5.</span> <span class="nav-text">5、箱形图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、画直方图与概率分布曲线"><span class="nav-number">6.</span> <span class="nav-text">6、画直方图与概率分布曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7、更高级的画图技巧"><span class="nav-number">7.</span> <span class="nav-text">7、更高级的画图技巧</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">半世烟尘</p>
+  <div class="site-description" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
