@@ -46,16 +46,19 @@
     isPost : false
   };
 </script>
-// background
+<!-- 打字礼花及震动特效 -->
 
-body {
-  background-image:url(../images/user.jpg);
-  height:100%;
-  width:100%;
-  background-repeat:repeat-x;
-  background-attachment:fixed;
-  background-size:cover;
-}
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <title>し半世烟尘</title>
   
 
@@ -160,7 +163,7 @@ body {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/C++基础知识/递归的详细理解/">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/LeeCode/下一个排列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
@@ -174,7 +177,7 @@ body {
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/递归的详细理解/" class="post-title-link" itemprop="url">递归的详细理解</a>
+            <a href="/Moonstar-Z.github.io/2019/09/12/LeeCode/下一个排列/" class="post-title-link" itemprop="url">下一个排列</a>
         </h1>
 
         <div class="post-meta">
@@ -191,7 +194,7 @@ body {
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:24:11" itemprop="dateModified" datetime="2020-03-17T13:24:11+08:00">2020-03-17</time>
+                <time title="修改时间：2020-03-17 13:30:55" itemprop="dateModified" datetime="2020-03-17T13:30:55+08:00">2020-03-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -199,7 +202,7 @@ body {
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/基础/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                  <a href="/Moonstar-Z.github.io/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
             </span>
 
@@ -214,12 +217,14 @@ body {
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="什么是递归"><a href="#什么是递归" class="headerlink" title="什么是递归"></a>什么是递归</h2><p>函数直接或间接调用自身的过程称为递归，相应的函数称为递归函数。使用递归算法，可以很容易地解决某些问题。此类问题的示例包括河内塔TOH，订单/预订/后序树遍历，图表DFS等。</p>
-<h5 id="2-1递归时间复杂度"><a href="#2-1递归时间复杂度" class="headerlink" title="2.1递归时间复杂度"></a><strong><em>2.1递归时间复杂度</em></strong></h5><p>给出一个递归算法，其时间复杂度 O(T)通常是<strong>递归调用的数量</strong>（记作 {<em>R</em>） 和计算的时间复杂度的乘积（表示为 O(S)的乘积：<br>$$<br>O(T)=R∗O(s<br>)<br>$$</p>
-<h5 id="2-1递归空间复杂度"><a href="#2-1递归空间复杂度" class="headerlink" title="2.1递归空间复杂度"></a><strong><em>2.1递归空间复杂度</em></strong></h5>
+          <h4 id="下一个排列"><a href="#下一个排列" class="headerlink" title="下一个排列"></a><strong>下一个排列</strong></h4><p>实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。</p>
+<p>如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。</p>
+<p>必须原地修改，只允许使用额外常数空间。</p>
+<p>以下是一些例子，输入位于左侧列，其相应输出位于右侧列。</p>
+<p>1,2,3 → 1,3,2<br>3,2,1 → 1,2,3<br>1,1,5 → 1,5,1</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/递归的详细理解/#more" rel="contents">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/LeeCode/下一个排列/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -338,6 +343,89 @@ body {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/C++基础知识/递归的详细理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/递归的详细理解/" class="post-title-link" itemprop="url">递归的详细理解</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-12T00:00:00+08:00">2019-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:24:11" itemprop="dateModified" datetime="2020-03-17T13:24:11+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/基础/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是递归"><a href="#什么是递归" class="headerlink" title="什么是递归"></a>什么是递归</h2><p>函数直接或间接调用自身的过程称为递归，相应的函数称为递归函数。使用递归算法，可以很容易地解决某些问题。此类问题的示例包括河内塔TOH，订单/预订/后序树遍历，图表DFS等。</p>
+<h5 id="2-1递归时间复杂度"><a href="#2-1递归时间复杂度" class="headerlink" title="2.1递归时间复杂度"></a><strong><em>2.1递归时间复杂度</em></strong></h5><p>给出一个递归算法，其时间复杂度 O(T)通常是<strong>递归调用的数量</strong>（记作 {<em>R</em>） 和计算的时间复杂度的乘积（表示为 O(S)的乘积：<br>$$<br>O(T)=R∗O(s<br>)<br>$$</p>
+<h5 id="2-1递归空间复杂度"><a href="#2-1递归空间复杂度" class="headerlink" title="2.1递归空间复杂度"></a><strong><em>2.1递归空间复杂度</em></strong></h5>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/递归的详细理解/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/剑指offer/剑指offer题目二刷/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -397,88 +485,6 @@ body {
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/剑指offer/剑指offer题目二刷/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/字符串/手写字符串函数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="半世烟尘">
-      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="し半世烟尘">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/12/字符串/手写字符串函数/" class="post-title-link" itemprop="url">手写字符串的库函数</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-12T00:00:00+08:00">2019-09-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-14 23:26:02" itemprop="dateModified" datetime="2019-09-14T23:26:02+08:00">2019-09-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/字符串/" itemprop="url" rel="index"><span itemprop="name">字符串</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1、strcpy"><a href="#1、strcpy" class="headerlink" title="1、strcpy"></a>1、strcpy</h4><p><strong>函数作用：</strong>把 src 所指向的字符串复制到 dest。</p>
-<p>注意：dest定义的空间应该比src大。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/字符串/手写字符串函数/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -586,7 +592,7 @@ body {
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/C++基础知识/指针/">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/字符串/手写字符串函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
@@ -600,7 +606,7 @@ body {
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/指针/" class="post-title-link" itemprop="url">C指针</a>
+            <a href="/Moonstar-Z.github.io/2019/09/12/字符串/手写字符串函数/" class="post-title-link" itemprop="url">手写字符串的库函数</a>
         </h1>
 
         <div class="post-meta">
@@ -617,7 +623,7 @@ body {
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:29:26" itemprop="dateModified" datetime="2020-03-17T13:29:26+08:00">2020-03-17</time>
+                <time title="修改时间：2019-09-14 23:26:02" itemprop="dateModified" datetime="2019-09-14T23:26:02+08:00">2019-09-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -625,7 +631,7 @@ body {
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/基础/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                  <a href="/Moonstar-Z.github.io/categories/字符串/" itemprop="url" rel="index"><span itemprop="name">字符串</span></a>
                 </span>
             </span>
 
@@ -640,16 +646,94 @@ body {
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="C指针"><a href="#C指针" class="headerlink" title="C指针"></a>C指针</h2><h4 id="1、内存、实时内存和虚拟内存"><a href="#1、内存、实时内存和虚拟内存" class="headerlink" title="1、内存、实时内存和虚拟内存"></a>1、内存、实时内存和虚拟内存</h4><h5 id="1-1内存与类型"><a href="#1-1内存与类型" class="headerlink" title="1.1内存与类型"></a>1.1内存与类型</h5><p><strong>类型</strong></p>
-<p>寄存器、cache、RAM、辅存</p>
-<h5 id="1-2数据与指令"><a href="#1-2数据与指令" class="headerlink" title="1.2数据与指令"></a>1.2数据与指令</h5><p>数据如何传到内存中呢？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">move eax, A</span><br></pre></td></tr></table></figure>
-
-<p> 上面的将A送到exa寄存器里面，CUP把变量A的地址发送到地址总线，查看该数据是否存在L1 cache中，没有则不被命中，如果存在，则被命中。</p>
-<p>未被命中时会在下一级内存里面查找 L2 cache。</p>
+          <h4 id="1、strcpy"><a href="#1、strcpy" class="headerlink" title="1、strcpy"></a>1、strcpy</h4><p><strong>函数作用：</strong>把 src 所指向的字符串复制到 dest。</p>
+<p>注意：dest定义的空间应该比src大。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/指针/#more" rel="contents">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/字符串/手写字符串函数/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/操作系统/操作系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="半世烟尘">
+      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="し半世烟尘">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/" class="post-title-link" itemprop="url">操作系统基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-12T00:00:00+08:00">2019-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:32:04" itemprop="dateModified" datetime="2020-03-17T13:32:04+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1、-请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"><a href="#1、-请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的" class="headerlink" title="1、 请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"></a>1、 请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的</h3><p>基本概念：</p>
+<p>进程是对运行时程序的封装，是系统进行资源调度和分配的的基本单位，实现了操作系统的并发；</p>
+<p>线程是进程的子任务，是CPU调度和分派的基本单位，用于保证程序的实时性，==实现进程内部的并发==；==线程是操作系统可识别的最小执行和调度单位。==每个线程都独自占用一个虚拟处理器：独自的寄存器组，指令计数器和处理器状态。==每个线程完成不同的任务==，但是共享同一地址空间（==也就是同样的动态内存，映射文件，目标代码等==等），打开的文件队列和其他内核资源。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -736,89 +820,6 @@ body {
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/C++/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/操作系统/操作系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="半世烟尘">
-      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="し半世烟尘">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/" class="post-title-link" itemprop="url">操作系统基础</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-12T00:00:00+08:00">2019-09-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:32:04" itemprop="dateModified" datetime="2020-03-17T13:32:04+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1、-请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"><a href="#1、-请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的" class="headerlink" title="1、 请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"></a>1、 请你说一下进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的</h3><p>基本概念：</p>
-<p>进程是对运行时程序的封装，是系统进行资源调度和分配的的基本单位，实现了操作系统的并发；</p>
-<p>线程是进程的子任务，是CPU调度和分派的基本单位，用于保证程序的实时性，==实现进程内部的并发==；==线程是操作系统可识别的最小执行和调度单位。==每个线程都独自占用一个虚拟处理器：独自的寄存器组，指令计数器和处理器状态。==每个线程完成不同的任务==，但是共享同一地址空间（==也就是同样的动态内存，映射文件，目标代码等==等），打开的文件队列和其他内核资源。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1017,7 +1018,7 @@ body {
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

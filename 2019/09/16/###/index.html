@@ -60,16 +60,19 @@
     isPost : true
   };
 </script>
-// background
+<!-- 打字礼花及震动特效 -->
 
-body {
-  background-image:url(../images/user.jpg);
-  height:100%;
-  width:100%;
-  background-repeat:repeat-x;
-  background-attachment:fixed;
-  background-size:cover;
-}
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <title>python画图 | し半世烟尘</title>
   
 
@@ -278,7 +281,10 @@ body {
 
     
     
-    
+    .content-wrap {
+  opacity: 0.0;
+}
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -382,7 +388,7 @@ body {
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

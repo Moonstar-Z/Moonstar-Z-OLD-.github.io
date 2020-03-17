@@ -48,16 +48,19 @@
     isPost : true
   };
 </script>
-// background
+<!-- 打字礼花及震动特效 -->
 
-body {
-  background-image:url(../images/user.jpg);
-  height:100%;
-  width:100%;
-  background-repeat:repeat-x;
-  background-attachment:fixed;
-  background-size:cover;
-}
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <title>剑指Offer题目知识点（二刷）{33-----66题} | し半世烟尘</title>
   
 
@@ -281,7 +284,10 @@ body {
 
     
     
-    
+    .content-wrap {
+  opacity: 0.0;
+}
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -294,12 +300,12 @@ body {
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Moonstar-Z.github.io/2019/09/12/字符串/手写字符串函数/" rel="prev" title="手写字符串的库函数">
-      <i class="fa fa-chevron-left"></i> 手写字符串的库函数
+    <a href="/Moonstar-Z.github.io/2019/09/12/剑指offer/剑指Offer题目解释和对应代码的手写/" rel="prev" title="剑指Offer题目知识点（二刷）{1-----33题}">
+      <i class="fa fa-chevron-left"></i> 剑指Offer题目知识点（二刷）{1-----33题}
     </a></div>
       <div class="post-nav-item">
-    <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/链表/" rel="next" title="链表">
-      链表 <i class="fa fa-chevron-right"></i>
+    <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/递归的详细理解/" rel="next" title="递归的详细理解">
+      递归的详细理解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -385,7 +391,7 @@ body {
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

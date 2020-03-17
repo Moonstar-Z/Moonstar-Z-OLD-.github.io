@@ -55,16 +55,19 @@
     isPost : true
   };
 </script>
-// background
+<!-- 打字礼花及震动特效 -->
 
-body {
-  background-image:url(../images/user.jpg);
-  height:100%;
-  width:100%;
-  background-repeat:repeat-x;
-  background-attachment:fixed;
-  background-size:cover;
-}
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <title>空间配置器的标准接口 | し半世烟尘</title>
   
 
@@ -276,7 +279,10 @@ body {
 
     
     
-    
+    .content-wrap {
+  opacity: 0.0;
+}
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -289,12 +295,12 @@ body {
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Moonstar-Z.github.io/2019/09/16/算法/哈希表/" rel="prev" title="哈希表和哈希算法">
-      <i class="fa fa-chevron-left"></i> 哈希表和哈希算法
+    <a href="/Moonstar-Z.github.io/2019/09/16/STL/sort/" rel="prev" title="Sort">
+      <i class="fa fa-chevron-left"></i> Sort
     </a></div>
       <div class="post-nav-item">
-    <a href="/Moonstar-Z.github.io/2019/09/16/STL/remove/" rel="next" title="Remove">
-      Remove <i class="fa fa-chevron-right"></i>
+    <a href="/Moonstar-Z.github.io/2019/09/16/STL/find/" rel="next" title="Find">
+      Find <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -380,7 +386,7 @@ body {
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
