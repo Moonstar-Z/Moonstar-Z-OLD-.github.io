@@ -175,8 +175,7 @@ body {
 }
 body {
   background: var(--body-bg-color);
-  /* color: var(--text-color);  */
-  color: #262a30;
+  color: var(--text-color);
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1em;
   line-height: 2;
@@ -1170,7 +1169,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #06d0df;
+  background: #f0e470;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2285,19 +2284,19 @@ body {
   background-image: url("../images/background.jpg");
   height: 100%;
   width: 100%;
-  background-repeat: repeat-x;
   background-attachment: fixed;
-  background-size: 100% 100%;
+  background-size: cover;
 }
 .content-wrap {
-  opacity: 0.85;
+  opacity: 0.9;
+  background: rgba(255,255,255,0.8);
 }
 .sidebar {
-  opacity: 0.85;
+  opacity: 0.5;
 }
 .header-inner {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.8);
 }
 .popup {
-  opacity: 0.9;
+  opacity: 0.2;
 }
