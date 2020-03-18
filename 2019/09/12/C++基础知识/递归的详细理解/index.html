@@ -29,7 +29,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="递归的详细理解">
 <meta property="og:url" content="https://yoursite.com/2019/09/12/C++基础知识/递归的详细理解/index.html">
-<meta property="og:site_name" content="し半世烟尘">
+<meta property="og:site_name" content="苍山负雪">
 <meta property="og:description" content="什么是递归函数直接或间接调用自身的过程称为递归，相应的函数称为递归函数。使用递归算法，可以很容易地解决某些问题。此类问题的示例包括河内塔TOH，订单/预订/后序树遍历，图表DFS等。 2.1递归时间复杂度给出一个递归算法，其时间复杂度 O(T)通常是递归调用的数量（记作 {R） 和计算的时间复杂度的乘积（表示为 O(S)的乘积：$$O(T)=R∗O(s)$$ 2.1递归空间复杂度">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://images0.cnblogs.com/blog/305504/201303/04214621-bde3e339931444a1a56ce66dd73d1f9b.png">
@@ -64,7 +64,7 @@
 <!-- jquery -->
 
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-  <title>递归的详细理解 | し半世烟尘</title>
+  <title>递归的详细理解 | 苍山负雪</title>
   
 
 
@@ -116,7 +116,7 @@
     <div>
       <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">し半世烟尘</span>
+        <span class="site-title">苍山负雪</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -135,6 +135,16 @@
         <li class="menu-item menu-item-home">
 
     <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/Moonstar-Z.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/Moonstar-Z.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -172,12 +182,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="半世烟尘">
-      <meta itemprop="description" content="黄沙百战穿金甲，不破楼兰誓不还。">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="し半世烟尘">
+      <meta itemprop="name" content="苍山负雪">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -284,8 +294,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/链表/" rel="prev" title="链表">
-      <i class="fa fa-chevron-left"></i> 链表
+    <a href="/Moonstar-Z.github.io/2019/09/12/LeeCode/下一个排列/" rel="prev" title="下一个排列">
+      <i class="fa fa-chevron-left"></i> 下一个排列
     </a></div>
       <div class="post-nav-item">
     <a href="/Moonstar-Z.github.io/2019/09/12/C++基础知识/数组/" rel="next" title="数组">
@@ -356,8 +366,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">半世烟尘</p>
-  <div class="site-description" itemprop="description">黄沙百战穿金甲，不破楼兰誓不还。</div>
+  <p class="site-author-name" itemprop="name">苍山负雪</p>
+  <div class="site-description" itemprop="description">三十功名尘与土，八千里路云和月。</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -370,16 +380,26 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/Moonstar-Z.github.io/categories/">
+          
         <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
+          
         <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/COTVZHAOYUEXING" title="GitHub → https://github.com/COTVZHAOYUEXING" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1998lovexs@gmail.com" title="E-Mail → mailto:1998lovexs@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -404,7 +424,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">半世烟尘</span>
+  <span class="author" itemprop="copyrightHolder">苍山负雪</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
   </div>
