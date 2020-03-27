@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="请说一说你理解的stack overflow，并举个简单例子导致栈溢出参考回答： 栈溢出概念： 栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。">
+<meta name="keywords" content="堆和栈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="递归的详细理解">
+<meta property="og:url" content="https://yoursite.com/2019/09/12/C++基础/堆与栈/index.html">
+<meta property="og:site_name" content="苍山负雪">
+<meta property="og:description" content="请说一说你理解的stack overflow，并举个简单例子导致栈溢出参考回答： 栈溢出概念： 栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-17T05:45:50.532Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="递归的详细理解">
+<meta name="twitter:description" content="请说一说你理解的stack overflow，并举个简单例子导致栈溢出参考回答： 栈溢出概念： 栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。">
+
+<link rel="canonical" href="https://yoursite.com/2019/09/12/C++基础/堆与栈/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <title>递归的详细理解 | 苍山负雪</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">苍山负雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/Moonstar-Z.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/Moonstar-Z.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/C++基础/堆与栈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          递归的详细理解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-12T00:00:00+08:00">2019-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:45:50" itemprop="dateModified" datetime="2020-03-17T13:45:50+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/基础/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="请说一说你理解的stack-overflow，并举个简单例子导致栈溢出"><a href="#请说一说你理解的stack-overflow，并举个简单例子导致栈溢出" class="headerlink" title="请说一说你理解的stack overflow，并举个简单例子导致栈溢出"></a>请说一说你理解的stack overflow，并举个简单例子导致栈溢出</h2><p>参考回答：</p>
+<p>栈溢出概念：</p>
+<p>栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。</p>
+<a id="more"></a>
+
+<p>栈溢出的原因：</p>
+<p>\1. 局部数组过大。当函数内部的数组过大时，有可能导致堆栈溢出。局部变量是存储在栈中的，因此这个很好理解。解决这类问题的办法有两个，一是增大栈空间,二是改用动态分配，使用堆（heap）而不是栈（stack）。</p>
+<p>\2. 递归调用层次太多。递归函数在运行时会执行压栈操作，当压栈次数太多时，也会导致堆栈溢出。</p>
+<p>\3. 指针或数组越界。这种情况最常见，例如进行字符串拷贝，或处理用户输入等等。</p>
+<p>栈溢出例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">int main(int argc, char* argv[]) &#123;</span><br><span class="line">char buf[256];</span><br><span class="line">strcpy(buf,argv[1]);</span><br><span class="line">printf(&quot;Input:%s\n&quot;,buf);</span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中的strcpy(buf,argv[1]);这一行发生了缓冲区溢出错误，因为源缓冲区内容是用户输入的。</p>
+<h2 id="请你回答一下栈和堆的区别，以及为什么栈要快"><a href="#请你回答一下栈和堆的区别，以及为什么栈要快" class="headerlink" title="请你回答一下栈和堆的区别，以及为什么栈要快"></a>请你回答一下栈和堆的区别，以及为什么栈要快</h2><p>参考回答：</p>
+<p>堆和栈的区别：</p>
+<p>堆是由低地址向高地址扩展；栈是由高地址向低地址扩展</p>
+<p>堆中的内存需要手动申请和手动释放；栈中内存是由OS自动申请和自动释放，存放着参数、局部变量等内存</p>
+<p>堆中频繁调用malloc和free,会产生内存碎片，降低程序效率；而栈由于其先进后出的特性，不会产生内存碎片</p>
+<p>堆的分配效率较低，而栈的分配效率较高</p>
+<p>栈的效率高的原因：</p>
+<p>栈是操作系统提供的数据结构，计算机底层对栈提供了一系列支持：分配专门的寄存器存储栈的地址，压栈和入栈有专门的指令执行；而堆是由C/C++函数库提供的，机制复杂，需要一些列分配内存、合并内存和释放内存的算法，因此效率较低。</p>
+<h2 id="手写代码：两个栈实现一个队列"><a href="#手写代码：两个栈实现一个队列" class="headerlink" title="手写代码：两个栈实现一个队列"></a>手写代码：两个栈实现一个队列</h2><p>参考回答：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`<span class="class"><span class="keyword">class</span>` `<span class="title">Solution</span>``&#123;</span>``<span class="keyword">public</span>``:``<span class="keyword">void</span>` `push(``<span class="keyword">int</span>` `node) &#123;``stack1.push(node);``&#125;``<span class="keyword">int</span>` `pop() &#123;``<span class="keyword">if</span>``(stack2.size()!=<span class="number">0</span>)&#123;``<span class="keyword">int</span>` `tmp = stack2.top();``stack2.pop();``<span class="keyword">return</span>` `tmp;``&#125;``<span class="keyword">else</span>``&#123;``<span class="keyword">while</span>``(stack1.size()!=<span class="number">0</span>)&#123;``<span class="keyword">int</span>` `tmp = stack1.top();``stack1.pop();``stack2.push(tmp);``&#125;``<span class="keyword">return</span>` `pop();``&#125;``&#125;`  `<span class="keyword">private</span>``:``<span class="built_in">stack</span>&lt;``<span class="keyword">int</span>``&gt; stack1;``<span class="built_in">stack</span>&lt;``<span class="keyword">int</span>``&gt; stack2;`` ``&#125;；`</span><br></pre></td></tr></table></figure>
+
+<h2 id="请你来说一下堆和栈的区别"><a href="#请你来说一下堆和栈的区别" class="headerlink" title="请你来说一下堆和栈的区别"></a>请你来说一下堆和栈的区别</h2><p>参考回答：</p>
+<p>1）申请方式：</p>
+<p>栈由系统自动分配和管理，堆由程序员手动分配和管理。</p>
+<p>2）效率：</p>
+<p>栈由系统分配，速度快，不会有内存碎片。</p>
+<p>堆由程序员分配，速度较慢，可能由于操作不当产生内存碎片。</p>
+<p>3）扩展方向</p>
+<p>栈从高地址向低地址进行扩展，堆由低地址向高地址进行扩展。</p>
+<p>4）程序局部变量是使用的栈空间，new/malloc动态申请的内存是堆空间，函数调用时会进行形参和返回值的压栈出栈，也是用的栈空间。</p>
+<h2 id="请你说一说小根堆特点"><a href="#请你说一说小根堆特点" class="headerlink" title="请你说一说小根堆特点"></a>请你说一说小根堆特点</h2><p>参考回答：</p>
+<p>堆是一棵完全二叉树（如果一共有h层，那么1~h-1层均满，在h层可能会连续缺失若干个右叶子）。</p>
+<p>1）小根堆</p>
+<p>若根节点存在左子女则根节点的值小于左子女的值；若根节点存在右子女则根节点的值小于右子女的值。</p>
+<p>2）大根堆</p>
+<p>若根节点存在左子女则根节点的值大于左子女的值；若根节点存在右子女则根节点的值大于右子女的值。</p>
+
+    </div>
+
+    
+    
+    .content-wrap {
+  opacity: 0.0;
+}
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/Moonstar-Z.github.io/tags/堆和栈/" rel="tag"># 堆和栈</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/12/C++基础/数组/" rel="prev" title="数组">
+      <i class="fa fa-chevron-left"></i> 数组
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/12/C++基础/基础知识/" rel="next" title="C++基础">
+      C++基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#请说一说你理解的stack-overflow，并举个简单例子导致栈溢出"><span class="nav-number">1.</span> <span class="nav-text">请说一说你理解的stack overflow，并举个简单例子导致栈溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请你回答一下栈和堆的区别，以及为什么栈要快"><span class="nav-number">2.</span> <span class="nav-text">请你回答一下栈和堆的区别，以及为什么栈要快</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手写代码：两个栈实现一个队列"><span class="nav-number">3.</span> <span class="nav-text">手写代码：两个栈实现一个队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请你来说一下堆和栈的区别"><span class="nav-number">4.</span> <span class="nav-text">请你来说一下堆和栈的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请你说一说小根堆特点"><span class="nav-number">5.</span> <span class="nav-text">请你说一说小根堆特点</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">苍山负雪</p>
+  <div class="site-description" itemprop="description">三十功名尘与土，八千里路云和月。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/COTVZHAOYUEXING" title="GitHub → https://github.com/COTVZHAOYUEXING" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1998lovexs@gmail.com" title="E-Mail → mailto:1998lovexs@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">苍山负雪</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

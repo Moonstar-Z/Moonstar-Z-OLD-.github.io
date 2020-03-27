@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/Moonstar-Z.github.io/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/Moonstar-Z.github.io/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/Moonstar-Z.github.io/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/Moonstar-Z.github.io/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/css/main.css">
+
+
+<link rel="stylesheet" href="/Moonstar-Z.github.io/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="LEVELDB学习笔记和心得关于Varint编码进行存储 （Coding.h and coding.cc）在最开始的时候因为小端模式可以加快CPU的读取速度，所以选取小端模式进行存储，下面是编码进行大小端转化。为什么小端模式会加快存储？ 12345大小端模式，不同机器内存中存储字节的方式不同，这里有两个概念，高/低地址和高/低字节，举    个栗子：如果我们要存储 0x12345678高/低字节：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="苍山负雪">
+<meta property="og:url" content="https://yoursite.com/2020/03/03/C++基础/Varint/index.html">
+<meta property="og:site_name" content="苍山负雪">
+<meta property="og:description" content="LEVELDB学习笔记和心得关于Varint编码进行存储 （Coding.h and coding.cc）在最开始的时候因为小端模式可以加快CPU的读取速度，所以选取小端模式进行存储，下面是编码进行大小端转化。为什么小端模式会加快存储？ 12345大小端模式，不同机器内存中存储字节的方式不同，这里有两个概念，高/低地址和高/低字节，举    个栗子：如果我们要存储 0x12345678高/低字节：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://segmentfault.com/img/bVbybpa">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583481293028.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583481380273.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583481778444.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583481937938.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583482412301.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583482463422.png">
+<meta property="og:image" content="https://yoursite.com/2020/03/03/C++基础/AppData/Roaming/Typora/typora-user-images/1583482508446.png">
+<meta property="og:updated_time" content="2020-03-06T09:56:28.355Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="苍山负雪">
+<meta name="twitter:description" content="LEVELDB学习笔记和心得关于Varint编码进行存储 （Coding.h and coding.cc）在最开始的时候因为小端模式可以加快CPU的读取速度，所以选取小端模式进行存储，下面是编码进行大小端转化。为什么小端模式会加快存储？ 12345大小端模式，不同机器内存中存储字节的方式不同，这里有两个概念，高/低地址和高/低字节，举    个栗子：如果我们要存储 0x12345678高/低字节：">
+<meta name="twitter:image" content="https://segmentfault.com/img/bVbybpa">
+
+<link rel="canonical" href="https://yoursite.com/2020/03/03/C++基础/Varint/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+<!-- 打字礼花及震动特效 -->
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+<script type="text/javascript" src="/lib/activate-power-mode/activate-power-mode.js"></script>
+<script>
+	POWERMODE.colorful = true;
+	POWERMODE.shake = false;
+	document.body.addEventListener('input',POWERMODE);
+</script>
+
+<!-- jquery -->
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <title> | 苍山负雪</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/Moonstar-Z.github.io/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">苍山负雪</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/Moonstar-Z.github.io/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/Moonstar-Z.github.io/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/Moonstar-Z.github.io/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/Moonstar-Z.github.io/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2020/03/03/C++基础/Varint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-03 23:22:54" itemprop="dateCreated datePublished" datetime="2020-03-03T23:22:54+08:00">2020-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-06 17:56:28" itemprop="dateModified" datetime="2020-03-06T17:56:28+08:00">2020-03-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="LEVELDB学习笔记和心得"><a href="#LEVELDB学习笔记和心得" class="headerlink" title="LEVELDB学习笔记和心得"></a>LEVELDB学习笔记和心得</h3><h6 id="关于Varint编码进行存储-（Coding-h-and-coding-cc）"><a href="#关于Varint编码进行存储-（Coding-h-and-coding-cc）" class="headerlink" title="关于Varint编码进行存储 （Coding.h and coding.cc）"></a>关于Varint编码进行存储 <strong><em>（Coding.h and coding.cc）</em></strong></h6><p>在最开始的时候因为小端模式可以加快CPU的读取速度，所以选取小端模式进行存储，下面是编码进行大小端转化。<strong>为什么小端模式会加快存储？</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">大小端模式，不同机器内存中存储字节的方式不同，这里有两个概念，高/低地址和高/低字节，举    个栗子：如果我们要存储 <span class="number">0x12345678</span></span><br><span class="line">高/低字节：从高位到低位的字节依次是<span class="number">0x12</span>、<span class="number">0x34</span>、<span class="number">0x56</span>和<span class="number">0x78</span></span><br><span class="line">高/低地址：大端模式 高位高地址，低位低地址；小端模式 低位高地址，高位低地址</span><br><span class="line">大端模式：高地址 <span class="number">0x78</span>|<span class="number">0x56</span>|<span class="number">0x34</span>|<span class="number">0x12</span> 低地址</span><br><span class="line">小端模式：高地址 <span class="number">0x12</span>|<span class="number">0x34</span>|<span class="number">0x56</span>|<span class="number">0x78</span> 低地址</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> uint32_t <span class="title">DecodeFixed32</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* ptr)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">uint8_t</span>* <span class="keyword">const</span> buffer = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> <span class="keyword">uint8_t</span>*&gt;(ptr);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (port::kLittleEndian) &#123;</span><br><span class="line">    <span class="comment">// Fast path for little-endian CPUs. All major compilers optimize this to a</span></span><br><span class="line">    <span class="comment">// single mov (x86_64) / ldr (ARM) instruction.</span></span><br><span class="line">    <span class="keyword">uint32_t</span> result;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">memcpy</span>(&amp;result, buffer, <span class="keyword">sizeof</span>(<span class="keyword">uint32_t</span>));</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Platform-independent code.</span></span><br><span class="line">    <span class="comment">// Clang and gcc optimize this to a single mov / ldr instruction.</span></span><br><span class="line">    <span class="comment">// 大端模式转化为小端模式</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(buffer[<span class="number">0</span>])) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(buffer[<span class="number">1</span>]) &lt;&lt; <span class="number">8</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(buffer[<span class="number">2</span>]) &lt;&lt; <span class="number">16</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(buffer[<span class="number">3</span>]) &lt;&lt; <span class="number">24</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> uint64_t <span class="title">DecodeFixed64</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* ptr)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">uint8_t</span>* <span class="keyword">const</span> buffer = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> <span class="keyword">uint8_t</span>*&gt;(ptr);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (port::kLittleEndian) &#123;</span><br><span class="line">    <span class="comment">// Fast path for little-endian CPUs. All major compilers optimize this to a</span></span><br><span class="line">    <span class="comment">// single mov (x86_64) / ldr (ARM) instruction.</span></span><br><span class="line">    <span class="keyword">uint64_t</span> result;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">memcpy</span>(&amp;result, buffer, <span class="keyword">sizeof</span>(<span class="keyword">uint64_t</span>));</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Platform-independent code.</span></span><br><span class="line">  <span class="comment">// Clang and gcc optimize this to a single mov / ldr instruction.</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">0</span>])) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">1</span>]) &lt;&lt; <span class="number">8</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">2</span>]) &lt;&lt; <span class="number">16</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">3</span>]) &lt;&lt; <span class="number">24</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">4</span>]) &lt;&lt; <span class="number">32</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">5</span>]) &lt;&lt; <span class="number">40</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">6</span>]) &lt;&lt; <span class="number">48</span>) |</span><br><span class="line">         (<span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(buffer[<span class="number">7</span>]) &lt;&lt; <span class="number">56</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一般的编码格式是定长的4字节或者是8字节进行存储，写入的时候会进行大小端的区分代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EncodeFixd32</span><span class="params">(<span class="keyword">char</span> *buf,<span class="keyword">uint32_t</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(port::kLittleEndian)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(buf,&amp;value,<span class="keyword">sizeof</span>(value));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        buf[<span class="number">0</span>] = value &amp; <span class="number">0xff</span>;</span><br><span class="line">        buf[<span class="number">1</span>] = (value &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">        buf[<span class="number">2</span>] = (value &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">        buf[<span class="number">3</span>] = (value &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们将每个小整数都使用 4 个字节来进行存储，势必会浪费很多的空间（当同时存储上百万的 Key/Value 对时问题就出现了）。</p>
+<h6 id="Varint编码过程"><a href="#Varint编码过程" class="headerlink" title="Varint编码过程"></a>Varint编码过程</h6><p>LevelDB 使用了一种很简单的方案 <em>varint</em> 来节省小整数的存储。对于每一个字节，levelDB 使用其最高的 bit 位来表示当前的编码是否结束，而用低 7 bit 来存储实际的数据。<strong>如果最高位为1，表示当前的编码尚为结束，需要继续读下一字节的数据，否则当前的编码结束</strong>。简单来说，就是把平时的编码方式由 8 bit 制改为了 7 bit 制。因此在区间 [0-127] 内的整数都可以使用一个字节来表示。</p>
+<p><img src="https://segmentfault.com/img/bVbybpa" alt="图片描述"></p>
+<p>需要注意的是，在编码变长整数的时候是从最低字节开始的。也就是说，如果将数字 <code>N</code> 编码得到字节数组 <code>char* K</code>，那么 <code>K[0]</code> 存储的是 <code>N</code> 的最低 7 bit 的数据，这也就是为什么上面要 <code>C+B+A</code> 才会得到原始数据。知道了原理再来看代码就很好理解了:</p>
+<p>下面是代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">EncodeVarint32</span><span class="params">(<span class="keyword">char</span>* dst, <span class="keyword">uint32_t</span> v)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Operate on characters as unsigneds</span></span><br><span class="line">  <span class="keyword">uint8_t</span>* ptr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">uint8_t</span>*&gt;(dst);</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> B = <span class="number">128</span>;</span><br><span class="line">  <span class="keyword">if</span> (v &lt; (<span class="number">1</span> &lt;&lt; <span class="number">7</span>)) &#123;</span><br><span class="line">    *(ptr++) = v;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span> &lt;&lt; <span class="number">14</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = v &gt;&gt; <span class="number">7</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span> &lt;&lt; <span class="number">21</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = v &gt;&gt; <span class="number">14</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (v &lt; (<span class="number">1</span> &lt;&lt; <span class="number">28</span>)) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">14</span>) | B;</span><br><span class="line">    *(ptr++) = v &gt;&gt; <span class="number">21</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">7</span>) | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">14</span>) | B;</span><br><span class="line">    *(ptr++) = (v &gt;&gt; <span class="number">21</span>) | B;</span><br><span class="line">    *(ptr++) = v &gt;&gt; <span class="number">28</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ptr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面是8位数据存储的过程 比较简单</span></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">EncodeVarint64</span><span class="params">(<span class="keyword">char</span>* dst, <span class="keyword">uint64_t</span> v)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> B = <span class="number">128</span>;</span><br><span class="line">  <span class="keyword">uint8_t</span>* ptr = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">uint8_t</span>*&gt;(dst);</span><br><span class="line">  <span class="keyword">while</span> (v &gt;= B) &#123;</span><br><span class="line">    *(ptr++) = v | B;</span><br><span class="line">    v &gt;&gt;= <span class="number">7</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  *(ptr++) = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint8_t</span>&gt;(v);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">char</span>*&gt;(ptr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面还有解码的过程 比较巧妙 可以自己手动实现一次</p>
+<h6 id="下面是在Visual-Studio2019上进行的测试"><a href="#下面是在Visual-Studio2019上进行的测试" class="headerlink" title="下面是在Visual Studio2019上进行的测试"></a>下面是在Visual Studio2019上进行的测试</h6><p><img src="../AppData/Roaming/Typora/typora-user-images/1583481293028.png" alt="1583481293028"></p>
+<p>因为超过128会用两个字节进行存储 我们可以看一下一个字节和两个字节存储</p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583481380273.png" alt="1583481380273"></p>
+<p>他这里并不是直接调用EncodeVarint(),而是多一层调用PutVarint—-&gt;EncodeVarint。</p>
+<p>下面我们看一下调试的时候内存的占用情况 存入的值</p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583481778444.png" alt="1583481778444"></p>
+<p>387的二进制数字为110000011</p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583481937938.png" alt="1583481937938"></p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583482412301.png" alt="1583482412301"></p>
+<p>再转化为二进制</p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583482463422.png" alt="1583482463422"></p>
+<p><img src="../AppData/Roaming/Typora/typora-user-images/1583482508446.png" alt="1583482508446"></p>
+<p>这里的应该是<strong>s[3],s[4]</strong>地址里面 可以见得，本来应该是4个字节存储的内容，通过Varint编码之后，内存得到一定程度的优化。</p>
+<h6 id="Varint-解码过程"><a href="#Varint-解码过程" class="headerlink" title="Varint 解码过程"></a>Varint 解码过程</h6><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">GetVarint32PtrFallback</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* p, <span class="keyword">const</span> <span class="keyword">char</span>* limit,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   <span class="keyword">uint32_t</span>* value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">uint32_t</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">uint32_t</span> shift = <span class="number">0</span>; shift &lt;= <span class="number">28</span> &amp;&amp; p &lt; limit; shift += <span class="number">7</span>) &#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> byte = *(<span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> <span class="keyword">uint8_t</span>*&gt;(p));</span><br><span class="line">    p++;</span><br><span class="line">    <span class="keyword">if</span> (byte &amp; <span class="number">128</span>) &#123;</span><br><span class="line">      <span class="comment">// More bytes are present</span></span><br><span class="line">      result |= ((byte &amp; <span class="number">127</span>) &lt;&lt; shift);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      result |= (byte &lt;&lt; shift);</span><br><span class="line">      *value = result;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> <span class="keyword">char</span>*&gt;(p);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    .content-wrap {
+  opacity: 0.0;
+}
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2019/09/21/数据结构/树/" rel="prev" title="树相关">
+      <i class="fa fa-chevron-left"></i> 树相关
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Moonstar-Z.github.io/2020/03/23/C++基础/cin和cout/" rel="next" title="cin和cout">
+      cin和cout <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#LEVELDB学习笔记和心得"><span class="nav-number">1.</span> <span class="nav-text">LEVELDB学习笔记和心得</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#关于Varint编码进行存储-（Coding-h-and-coding-cc）"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">关于Varint编码进行存储 （Coding.h and coding.cc）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Varint编码过程"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">Varint编码过程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#下面是在Visual-Studio2019上进行的测试"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">下面是在Visual Studio2019上进行的测试</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Varint-解码过程"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">Varint 解码过程</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">苍山负雪</p>
+  <div class="site-description" itemprop="description">三十功名尘与土，八千里路云和月。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/Moonstar-Z.github.io/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/Moonstar-Z.github.io/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/Moonstar-Z.github.io/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/COTVZHAOYUEXING" title="GitHub → https://github.com/COTVZHAOYUEXING" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1998lovexs@gmail.com" title="E-Mail → mailto:1998lovexs@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">苍山负雪</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/Moonstar-Z.github.io/lib/anime.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.min.js"></script>
+  <script src="/Moonstar-Z.github.io/lib/velocity/velocity.ui.min.js"></script>
+<script src="/Moonstar-Z.github.io/js/utils.js"></script><script src="/Moonstar-Z.github.io/js/motion.js"></script>
+<script src="/Moonstar-Z.github.io/js/schemes/muse.js"></script>
+<script src="/Moonstar-Z.github.io/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

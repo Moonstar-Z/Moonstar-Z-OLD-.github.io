@@ -173,6 +173,340 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/Set和Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/Set和Map/" class="post-title-link" itemprop="url">Set Map</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:49:42" itemprop="dateModified" datetime="2020-03-17T13:49:42+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在上一篇博客中，讲到了STL中关于红黑树的实现，理解起来比较复杂，正所谓前人种树，后人乘凉，RBTree把树都种好了，接下来就该set和map这类关联式容器来“乘凉”了。</p>
+<p>STL的set和map都是基于红黑树实现的，和stack和queue都是基于deque一样，它们仅仅是调用了RBTree提供的接口函数，然后进行外层封装即可。本篇博客理解起来比较轻松，set和map的源代码也不多，大家可以慢慢“品味”。另外，还会介绍multiset和multimap这两个容器，并给出它们的区别和应用等。还等什么呢？走吧，带你理解理解set和map吧</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/Set和Map/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/STL函数对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/STL函数对象/" class="post-title-link" itemprop="url">STL函数对象</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:50:54" itemprop="dateModified" datetime="2020-03-17T13:50:54+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在STL中，函数对象也是比较重要的，有时候可以限定STL算法的行为，例如在前面介绍的《<a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">STL</a><a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">算法剖析</a>》中，每个算法基本上都提供了两个操作版本，其中就有一个版本允许用户指定函数对象，这样可以根据用户的需要对算法进行操作。函数对象是一种具有函数特质的对象，所以可以作为算法的参数。本文介绍的函数对象比较简单，是基于一元或者二元操作结构的算术类函数对象、关系运算类函数对象、逻辑运算类函数对象。在定义函数对象时，为了使其具有函数行为，则必须重载operator()操作符。本文源码出自SGI STL中的&lt;stl_function.h&gt;文件。</p>
+<h3 id="函数对象源码剖析"><a href="#函数对象源码剖析" class="headerlink" title="函数对象源码剖析"></a>函数对象源码剖析</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/STL函数对象/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/Stcak和Queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/Stcak和Queue/" class="post-title-link" itemprop="url">Stack Queue</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:50:30" itemprop="dateModified" datetime="2020-03-17T13:50:30+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> 上一篇博客，<a href="https://zcheng.ren/2016/08/26/STLDeque/" target="_blank" rel="noopener">带你深入理解STL之Deque容器</a>中详细介绍了deque容器的源码实现方式。结合前面介绍的两个容器vector和list，在使用的过程中，我们确实要知道在什么情况下需要选择恰当的容器来满足需求和提升效率。一般选择的准则有如下几条：</p>
+<ul>
+<li>如果需要随机访问一个容器，vector比list要好</li>
+<li>如果需要经常插入和删除操作的话，list比vector要好</li>
+<li>如果既要随机存取，又要关心两端数据的插入和删除，则选择deque</li>
+</ul>
+<p>好了，复习完前面的知识后，开始介绍今天的两个容器stack和queue。由于stack和queue都是基于deque来实现的，所以相应的代码会比较简单，也是比较轻松易实现的，下面一起去看看吧。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/Stcak和Queue/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/Vector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/Vector/" class="post-title-link" itemprop="url">Vector</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:51:53" itemprop="dateModified" datetime="2020-03-17T13:51:53+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++内置了数组的类型，在使用数组的时候，必须指定数组的长度，一旦配置了就不能改变了，通常我们的做法是：尽量配置一个大的空间，以免不够用，这样做的缺点是比较浪费空间，预估空间不当会引起很多不便。</p>
+<p>STL实现了一个Vector容器，该容器就是来改善数组的缺点。vector是一个动态空间，随着元素的加入，它的内部机制会自行扩充以容纳新元素。因此，vector的运用对于内存的合理利用与运用的灵活性有很大的帮助，再也不必因为害怕空间不足而一开始就配置一个大容量数组了，vector是用多少就分配多少。</p>
+<p>要想实现动态分配数组，Vector内部就需要对空间控制做到有效率的掌控，这些机制要如何运作才能高效地实现动态分配呢？本篇博客就从源代码的角度带你领略一下Vector容器内部的构造艺术。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/Vector/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/find/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -231,6 +565,170 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/find/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/merge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/merge/" class="post-title-link" itemprop="url">Merge</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:48:04" itemprop="dateModified" datetime="2020-03-17T13:48:04+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于在前文的《<a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">STL算法剖析</a>》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。</p>
+<h3 id="merge合并算法源码剖析"><a href="#merge合并算法源码剖析" class="headerlink" title="merge合并算法源码剖析"></a>merge合并算法源码剖析</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/merge/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/remove/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
+      <meta itemprop="name" content="苍山负雪">
+      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="苍山负雪">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/Moonstar-Z.github.io/2019/09/16/STL/remove/" class="post-title-link" itemprop="url">Remove</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-17 13:49:14" itemprop="dateModified" datetime="2020-03-17T13:49:14+08:00">2020-03-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于在前文的《<a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">STL算法剖析</a>》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的remove删除算法，源码中介绍了函数remove、remove_copy、remove_if、remove_copy_if、unique、unique_copy。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。</p>
+<h3 id="remove移除算法源码剖析"><a href="#remove移除算法源码剖析" class="headerlink" title="remove移除算法源码剖析"></a>remove移除算法源码剖析</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/remove/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -418,254 +916,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/STL/merge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/16/STL/merge/" class="post-title-link" itemprop="url">Merge</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:48:04" itemprop="dateModified" datetime="2020-03-17T13:48:04+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/STL/" itemprop="url" rel="index"><span itemprop="name">STL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>由于在前文的《<a href="http://blog.csdn.net/chenhanzhun/article/details/39698523" target="_blank" rel="noopener">STL算法剖析</a>》中，源码剖析非常多，不方便学习，也不方便以后复习，这里把这些算法进行归类，对他们单独的源码剖析进行讲解。本文介绍的STL算法中的merge合并算法。源码中介绍了函数merge、inplace_merge。并对这些函数的源码进行详细的剖析，并适当给出使用例子，具体详见下面源码剖析。</p>
-<h3 id="merge合并算法源码剖析"><a href="#merge合并算法源码剖析" class="headerlink" title="merge合并算法源码剖析"></a>merge合并算法源码剖析</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/STL/merge/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/网络编程/OSI7层协议详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/16/网络编程/OSI7层协议详解/" class="post-title-link" itemprop="url">OSI7层协议详解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:54:47" itemprop="dateModified" datetime="2020-03-17T13:54:47+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/网络编程/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、OSI7层模型"><a href="#一、OSI7层模型" class="headerlink" title="一、OSI7层模型"></a>一、OSI7层模型</h2><p><img src="http://hi.csdn.net/attachment/201201/5/0_1325744597WM32.gif" alt="img"></p>
-<p>OSI 七层模型通过七个层次化的结构模型使不同的系统不同的网络之间实现可靠的通讯，<span style="color:red">因此其最主要的功能就是帮助不同类型的主机实现数据传输 。</span></p>
-<p>完成中继功能的节点通常称为中继系统。在OSI七层模型中，处于不同层的中继系统具有不同的名称。   </p>
-<p>一个设备工作在哪一层，关键看它工作时利用哪一层的数据头部信息。网桥工作时，是以MAC头部来决定转发端口的，因此显然它是数据链路层的设备。<br>具体说:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/网络编程/OSI7层协议详解/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/网络编程/计算机网路/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/16/网络编程/计算机网路/" class="post-title-link" itemprop="url">计算机网络</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:54:17" itemprop="dateModified" datetime="2020-03-17T13:54:17+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/网络编程/" itemprop="url" rel="index"><span itemprop="name">网络编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1、-请你说一下TCP怎么保证可靠性，并且简述一下TCP建立连接和断开连接的过程"><a href="#1、-请你说一下TCP怎么保证可靠性，并且简述一下TCP建立连接和断开连接的过程" class="headerlink" title="1、 请你说一下TCP怎么保证可靠性，并且简述一下TCP建立连接和断开连接的过程"></a>1、 请你说一下TCP怎么保证可靠性，并且简述一下TCP建立连接和断开连接的过程</h2><p>TCP保证可靠性：</p>
-<p>（1）序列号、确认应答、超时重传</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/16/网络编程/计算机网路/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/16/算法/哈希表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -743,268 +993,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/15/C++基础知识/引用计数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/15/C++基础知识/引用计数/" class="post-title-link" itemprop="url">引用计数</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:28:59" itemprop="dateModified" datetime="2020-03-17T13:28:59+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/C-基础/" itemprop="url" rel="index"><span itemprop="name">C++基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>引用计数是在各个领域都经常使用的一种技术，使用它，可以保证资源有效共享的同时，节省系统的开支。</p>
-<p><strong><em>关于相同字符串指向的问题</em></strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span>* szHello = <span class="string">"hello"</span>;</span><br><span class="line">	<span class="keyword">char</span>* szHello2 = <span class="string">"hello"</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%p, %p\r\n"</span>, szHello, szHello2);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/15/C++基础知识/引用计数/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/15/重载、继承、多态/C++中的虚函数(表)实现机制以及用C语言对其进行的模拟实现/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/15/重载、继承、多态/C++中的虚函数(表)实现机制以及用C语言对其进行的模拟实现/" class="post-title-link" itemprop="url">重载、继承、多态</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:38:04" itemprop="dateModified" datetime="2020-03-17T13:38:04+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/重载、继承、多态/" itemprop="url" rel="index"><span itemprop="name">重载、继承、多态</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p><strong>就是一种传承，可以把父类型中的数据传承到子类中，子类除了传承了父类的数据之外，还可以对父类型进行扩展；</strong></p>
-<ol>
-<li><strong>公开继承  public</strong></li>
-<li><strong>保护继承  protected</strong></li>
-<li><strong>私有继承  private</strong></li>
-<li><strong>保护成员：在子类和本类中可以访问，其他不行；</strong></li>
-</ol>
-<p>1、公开继承：在公开继承下，父类型中的数据是公开的到子类型中权限是公开的；父类型中保护权限的数据到子类中是保护的；父类中私有的数据到子类中会隐藏掉（就是说看不见权限，但是实际上式在子类中的）；</p>
-<p>2、私有继承：在私有继承下，父类中的公开数据到子类中变成私有的，父类中的保护数据到子类中称为私有的，父类中的私有数据到子类中隐藏；</p>
-<p>3、保护继承：保护继承下，父类中的公开数据和保护数据到了子类中都成为保护权限，父类中私有的数据到了子类中就变成了隐藏的；<br>4、注意：不管何种类型的继承关系，父类私有成员到子类中都成为了隐藏掉。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/15/重载、继承、多态/C++中的虚函数(表)实现机制以及用C语言对其进行的模拟实现/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/15/重载、继承、多态/运算符的重载/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
-      <meta itemprop="name" content="苍山负雪">
-      <meta itemprop="description" content="三十功名尘与土，八千里路云和月。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="苍山负雪">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/Moonstar-Z.github.io/2019/09/15/重载、继承、多态/运算符的重载/" class="post-title-link" itemprop="url">运算符的重载</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-15T00:00:00+08:00">2019-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-17 13:59:42" itemprop="dateModified" datetime="2020-03-17T13:59:42+08:00">2020-03-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/重载、继承、多态/" itemprop="url" rel="index"><span itemprop="name">重载、继承、多态</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h4><p>$$<br>&lt;返回类型说明符&gt; operator &lt;运算符符号&gt;(&lt;参数表&gt;)<br>$$</p>
-<p>正常情况下 自然类型的定义的数据类型是自己自然支持重载各种= - * /等常见的运算重载符号的，但是对于我们自己定义的复杂类型是不支持运算符的，需要我们自己去定义。</p>
-<p>不能进行重载的运算符：成员运算符，作用域运算符，条件运算符，sizeof运算符，typeid（一个RTTI运算符），const_cast、dynamic_cast、reinterpret_cast、static_cast强制类型转换运算符</p>
-<p>大多数运算符可以通过<strong>成员函数</strong>和<strong>非成员函数</strong>进行重载但是下面这四种运算符只能通过成函数进行重载：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/15/重载、继承、多态/运算符的重载/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/Moonstar-Z.github.io/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/Moonstar-Z.github.io/">1</a><a class="page-number" href="/Moonstar-Z.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/Moonstar-Z.github.io/page/4/">4</a><a class="page-number" href="/Moonstar-Z.github.io/page/5/">5</a><a class="extend next" rel="next" href="/Moonstar-Z.github.io/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/Moonstar-Z.github.io/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/Moonstar-Z.github.io/">1</a><a class="page-number" href="/Moonstar-Z.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/Moonstar-Z.github.io/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/Moonstar-Z.github.io/page/6/">6</a><a class="extend next" rel="next" href="/Moonstar-Z.github.io/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1070,20 +1063,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/Moonstar-Z.github.io/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/Moonstar-Z.github.io/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1166,6 +1159,8 @@
 
 
 
+
+  
 
   
 
