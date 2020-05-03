@@ -24,22 +24,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/Moonstar-Z.github.io/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述  进程状态 1234567891011121314151）可运行状态 处于这种状态的">
+  <meta name="description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述">
 <meta name="keywords" content="Liunx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程 进程 协程">
 <meta property="og:url" content="https://yoursite.com/2020/03/26/操作系统/进程---进程控制块/index.html">
 <meta property="og:site_name" content="苍山负雪">
-<meta property="og:description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述  进程状态 1234567891011121314151）可运行状态 处于这种状态的">
+<meta property="og:description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://yoursite.com/2020/03/26/images/state_pcb.png">
 <meta property="og:image" content="https://yoursite.com/2020/03/26/images/%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E6%9C%BA%E5%88%B6.png">
 <meta property="og:image" content="https://yoursite.com/2020/03/26/images/%E6%A0%87%E8%AF%86%E7%AC%A6_linux.png">
 <meta property="og:image" content="https://yoursite.com/2020/03/26/images/%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB%E6%8C%87%E9%92%88.png">
-<meta property="og:updated_time" content="2020-03-27T07:49:36.349Z">
+<meta property="og:updated_time" content="2020-05-03T15:46:19.427Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程 进程 协程">
-<meta name="twitter:description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述  进程状态 1234567891011121314151）可运行状态 处于这种状态的">
+<meta name="twitter:description" content="进程资源分配的基本单位 一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。 123//下面就分别理解    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。    task_struct 结构描述">
 <meta name="twitter:image" content="https://yoursite.com/2020/03/26/images/state_pcb.png">
 
 <link rel="canonical" href="https://yoursite.com/2020/03/26/操作系统/进程---进程控制块/">
@@ -210,7 +210,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-27 15:49:36" itemprop="dateModified" datetime="2020-03-27T15:49:36+08:00">2020-03-27</time>
+                <time title="修改时间：2020-05-03 23:46:19" itemprop="dateModified" datetime="2020-05-03T23:46:19+08:00">2020-05-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,6 +236,8 @@
         <h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p><span style="color:red">资源分配的基本单位</span></p>
 <p>一个进程包括：进程控制块PCB（Process Control Block），有关程序段，该程序段对其操作的数据结构集。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面就分别理解</span></span><br><span class="line">    pcb是常驻内存的，在建立进程的时候就已经分配了一个pcb。pcb里面记载的是关于进程各种信息。</span><br><span class="line">    task_struct 结构描述</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <h6 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a><span style="color:red">进程状态</span></h6><p><img src="../../images/state_pcb.png" alt="state_pcb"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>）可运行状态 处于这种状态的进程，要么正在运行、要么正准备运行。正在运行的进程就是当前进程 （由 current 所指向的进程）</span><br><span class="line">而准备运行的进程只要得到 CPU 就可以立即投入运行，CPU 是 这些进程唯一等待的系统资源。系统中有一个运行队列（run_queue），</span><br><span class="line">用来容纳所有处于可 运行状态的进程，调度程序执行时，从中选择一个进程投入运行。在后面我们讨论进程调度 的时候，可以看到运行队</span><br><span class="line">列的作用。当前运行进程一直处于该队列中，也就是说，current 总是指向运行队列中的某个元素，只是具体指向谁由调度程序决定。 </span><br><span class="line"></span><br><span class="line"><span class="number">2</span>）等待状态 处于该状态的进程正在等待某个事件（Event）或某个资源，它肯定位于系统中的某个 等待队列（wait_queue）中。</span><br><span class="line">Linux 中处于等待状态的进程分为两种：可中断的等待状态和 不可中断的等待状态。处于可中断等待态的进程可以被信号唤醒，如果收到</span><br><span class="line">信号，该进程就 从等待状态进入可运行状态，并且加入到运行队列中，等待被调度；而处于不可中断等待态 的进程是因为硬件环境不能满</span><br><span class="line">足而等待，例如等待特定的系统资源，它任何情况下都不能被 打断，只能用特定的方式来唤醒它，例如唤醒函数 wake_up（）等。 </span><br><span class="line"></span><br><span class="line"><span class="number">3</span>）暂停状态 此时的进程暂时停止运行来接受某种特殊处理。通常当进程接收到 SIGSTOP、SIGTSTP、 SIGTTIN 或 SIGTTOU 信号</span><br><span class="line">后就处于这种状态。例如，正接受调试的进程就处于这种状态。 </span><br><span class="line"></span><br><span class="line"><span class="number">4</span>）僵死状态 进程虽然已经终止，但由于某种原因，父进程还没有执行 wait()系统调用，终止进程的 信息也还没有回收。顾名思义，</span><br><span class="line">处于该状态的进程就是死进程，这种进程实际上是系统中的 垃圾，必须进行相应处理以释放其占用的资源。</span><br></pre></td></tr></table></figure>
@@ -368,7 +370,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/Moonstar-Z.github.io/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
