@@ -177,7 +177,7 @@ body {
   background: var(--body-bg-color);
   color: #000;
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 25px;
+  font-size: 16px;
   line-height: 2;
 }
 @media (max-width: 991px) {
@@ -928,7 +928,7 @@ pre .javascript .function {
 }
 .main-inner {
   margin: 0 auto;
-  width: 1080px;
+  width: 1300px;
 }
 @media (min-width: 1200px) {
   .main-inner {
@@ -945,7 +945,7 @@ pre .javascript .function {
 }
 .header-inner {
   margin: 0 auto;
-  width: 1080px;
+  width: 1300px;
 }
 @media (min-width: 1200px) {
   .header-inner {
@@ -1169,7 +1169,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff2aac;
+  background: #ffb6ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1377,7 +1377,7 @@ pre .javascript .function {
   box-sizing: border-box;
   margin: 0 auto;
   text-align: center;
-  width: 1080px;
+  width: 1300px;
 }
 @media (min-width: 1200px) {
   .footer-inner {
