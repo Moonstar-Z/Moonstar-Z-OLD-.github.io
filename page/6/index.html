@@ -173,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/操作系统/操作系统/">
+    <link itemprop="mainEntityOfPage" href="https://yoursite.com/2019/09/12/C++基础/C++/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Moonstar-Z.github.io/images/avatar.gif">
@@ -187,7 +187,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/" class="post-title-link" itemprop="url">操作系统基础</a>
+            <a href="/Moonstar-Z.github.io/2019/09/12/C++基础/C++/" class="post-title-link" itemprop="url">C++基础</a>
         </h1>
 
         <div class="post-meta">
@@ -204,7 +204,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-23 01:14:51" itemprop="dateModified" datetime="2020-03-23T01:14:51+08:00">2020-03-23</time>
+                <time title="修改时间：2020-03-17 13:30:07" itemprop="dateModified" datetime="2020-03-17T13:30:07+08:00">2020-03-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,7 +212,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/Moonstar-Z.github.io/categories/基础知识/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                  <a href="/Moonstar-Z.github.io/categories/基础/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
                 </span>
             </span>
 
@@ -227,12 +227,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="关于进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"><a href="#关于进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的" class="headerlink" title="关于进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的"></a>关于进程与线程的概念，以及为什么要有进程线程，其中有什么区别，他们各自又是怎么同步的</h3><p>基本概念：</p>
-<p><strong>进程</strong>是对运行时程序的封装，是系统进行资源调度和分配的的基本单位，实现了操作系统的并发;</p>
-<p><strong>线程</strong>是进程的子任务，是CPU调度和分派的基本单位，用于保证程序的实时性，==实现进程内部的并发==；==线程是操作系统可识别的最小执行和调度单位。==每个线程都独自占用一个虚拟处理器：独自的寄存器组，指令计数器和处理器状态。==每个线程完成不同的任务==，但是共享同一地址空间（==也就是同样的动态内存，映射文件，目标代码等==等），打开的文件队列和其他内核资源。</p>
+          <h1 id="➕-C-C"><a href="#➕-C-C" class="headerlink" title="➕ C/C++"></a>➕ C/C++</h1><h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><ol>
+<li>修饰变量，说明该变量不可以被改变；</li>
+<li>修饰指针，分为指向常量的指针和指针常量；</li>
+<li>常量引用，经常用于形参类型，即避免了拷贝，又避免了函数对值的修改；</li>
+<li>修饰成员函数，说明该成员函数内不能修改成员变量。(在C++中，只有被声明为const的成员函数才能被一个const类对象调用。)</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/操作系统/操作系统/#more" rel="contents">
+              <a class="btn" href="/Moonstar-Z.github.io/2019/09/12/C++基础/C++/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
